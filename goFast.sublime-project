@@ -1,0 +1,12 @@
+{
+	"folders":
+	[
+		{
+			"follow_symlinks": true,
+			"path": "."
+		}
+	],
+  "syntax_override": {
+    "\\.js$": ["Babel", "JavaScript (Babel)"],
+  }
+}

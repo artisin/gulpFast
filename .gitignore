@@ -1,0 +1,10 @@
+.DS_Store
+<<<<<<< HEAD
+build
+=======
+.sass-cache
+public
+>>>>>>> jade
+Desktop.ini
+node_modules
+app/assets/stylesheets/generated
