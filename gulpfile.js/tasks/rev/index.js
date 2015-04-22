@@ -16,6 +16,5 @@ gulp.task('rev', [
   //Minify html
   'mini-html',
   //Report Size
-  'size-report',
-  'complete'
+  'size-report'
 ]);

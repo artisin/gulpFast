@@ -1,3 +1,12 @@
-$light-grey= lightgrey
-$dark-grey= #555
-$red= #e53339
+$seed_color = #3083bf
+
+$mc = monochrom($seed_color)
+.mc_1
+  background: $seed_color
+  color: $seed_color
+.mc_2
+  background: $mc[0]
+  color: $mc[0]
+.mc_2
+  background: $mc[1]
+  color: $mc[1]

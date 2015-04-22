@@ -1,13 +1,4 @@
-var config = require('./'),
-    git    = require('github-url-from-git');
-
-
-var gitUserName = require('git-user-name');
-
-// gitUserName();
-// repo();
-
-var gulp    = require('gulp');
+var config = require('./'); 
 
 module.exports = {
   url: function () {

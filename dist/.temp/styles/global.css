@@ -1,3 +1,15 @@
+.mc_1 {
+  background: #3083bf;
+  color: #3083bf;
+}
+.mc_2 {
+  background: monochrom(#3083bf);
+  color: monochrom(#3083bf);
+}
+.mc_2 {
+  background: ;
+  color: ;
+}
 @font-face {
   font-family: icons;
   src: url("../../assets/fonts/icons.eot");
@@ -476,4 +488,9 @@ body {
   background: linear-gradient(to top, rgba(0,0,255,0.1) 5%, #fff 5%);
   background-size: 100% 1.75em;
   background-position: 0 2px;
+}
+.gulp {
+  filter: blur(5px);
+  background: #639;
+  size: 400px;
 }

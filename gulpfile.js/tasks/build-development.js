@@ -6,7 +6,7 @@ gulp.task('build:development', function(cb) {
     'clean', 
     ['fonts', 'images', 'iconFont'], 
     ['stylus', 'webpack:development'],
-    ['jade', 'jadeWatch'],
+    'jade',
     ['watch', 'browserSync'], 
   cb);
 });
