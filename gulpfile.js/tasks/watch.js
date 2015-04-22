@@ -4,10 +4,13 @@ var images   = require('../config/images');
 var stylus     = require('../config/stylus');
 var fonts    = require('../config/fonts');
 var watch    = require('gulp-watch');
+var postCss     = require('../config/postCss');
 
 gulp.task('watch', ['browserSync'], function() {
   watch(images.src, function() { gulp.start('images'); });
   watch(stylus.src, function() { gulp.start('stylus'); });
+  watch(stylus.src, function() { gulp.start('stylus')});
   watch(fonts.src, function() { gulp.start('fonts'); });
   watch(jade.watch, function() { gulp.start('jade'); });
 });
+

@@ -7,6 +7,6 @@ gulp.task('deploy', ['build:production'], function() {
   return gulp.src(config.src)
     .pipe(ghPages())
     .on('end', function(){
-      open(config.url);
-    })
+      open(config.url());
+    });
 });

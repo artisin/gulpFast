@@ -8,19 +8,29 @@ var gulp         = require('gulp'),
     koutoSwiss   = require('kouto-swiss'),
     lost         = require('lost-grid'),
     rupture      = require('rupture'),
+    filter = require('gulp-filter'),
     typographic  = require('typographic');
 
 
 gulp.task('stylus', function () {
   return gulp.src(config.src)
-    .pipe(sourcemaps.init())
+    //filter out partials (folders and files starting with "_" )
+    .pipe(filter(function (file) {
+        return !/\/_/.test(file.path) || !/^_/.test(file.relative);
+    }))
     .pipe(stylus({
         use:[koutoSwiss(), rupture(), lost(), typographic()],
         'include css': true,
     }))
-    .pipe(autoprefixer(config.autoprefixer))
+    // .pipe(autoprefixer(config.autoprefixer))
     .on('error', handleErrors)
-    .pipe(sourcemaps.write())
+    // .pipe(sourcemaps.write())
     .pipe(gulp.dest(config.dest))
-    .pipe(browserSync.reload({stream:true}));
+    // .pipe(browserSync.reload({stream:true}))
+    .on('end', postCss) 
 });
+
+
+function postCss () {
+  return gulp.start('postCss');
+}

@@ -1,1 +1,0 @@
-webpackJsonp([0],[function(o,n,s){o.exports=s(1)},function(o,n,s){"use strict";var c=s(3);console.log(c("app.js loaded"))}]);
