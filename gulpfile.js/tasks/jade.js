@@ -10,20 +10,47 @@ var browserSync     = require('browser-sync'),
     filter          = require('gulp-filter'),
     inject          = require('gulp-inject'),
     browserSync     = require('browser-sync'),
-    devel           = process.env.NODE_ENV !== 'production';
+    gulpif          = require('gulp-if'),
+    tap             = require('gulp-tap'),
+    path            = require('path'),
+    argv            = require('yargs').argv,
+    devel           = argv._[0] !== 'build';
 
 gulp.task('jade', ['compileJade'], function () {
   var target = gulp.src(config.injectJade);
   // It's not necessary to read the files (will speed up things), we're only after their paths:
-  var globalCss = gulp.src(
-    [config.publicAssets + '/styles/**/*.css'], {read: false}
-  );
+
+  var global = gulp.src([
+    config.publicAssets + '/styles/**/*.css',
+    config.publicAssets + '/js/**/*.js'
+  ], {read: false})
+  // .pipe(tap(function(file, t) {
+  //   // console.log(file)
+  //   // console.log(path.basename(file.path))
+  //   var filePath = path.basename(file.path);
+  //   if (/shared/.test(filePath)) {
+  //     return file;
+  //   }
+  // }))
+
+  var fuck = [];
+  var find = require('find');
+
+  // var sharedFiles =  
+  find.file(/shared/, config.publicAssets, function(files) {
+    fuck.push(files);
+  }, function () {
+    console.log('test')
+  })
+  // console.log(sharedFiles)
+
+
   return target
-    .pipe(inject(globalCss,{
-    relative: true,
+    .pipe(inject(global ,{
+    relative: false,
     ignorePath: 'dist',
     addRootSlash: false,
-    // name: 'global'
+    name: 'global'
     }))
     .pipe(gulp.dest(config.dest))
     .pipe(browserSync.reload({stream:true}))
@@ -46,5 +73,5 @@ gulp.task('compileJade', function() {
       pretty: true
     }))
     .on('error', handleErrors)
-    .pipe(gulp.dest(config.tempDest));
+    .pipe(gulp.dest(config.publicTemp));
 });

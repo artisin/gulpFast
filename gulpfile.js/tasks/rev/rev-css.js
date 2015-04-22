@@ -4,9 +4,9 @@ var gulp   = require('gulp');
 var rev    = require('gulp-rev');
 var nano = require('gulp-cssnano');
 var sourcemaps = require('gulp-sourcemaps');
-var minify = require('gulp-minify-css');
 var gulp = require('gulp');
 var config = require('../../config');
+
 
 gulp.task('rev-css', ['rev-update-references'], function(){
 

@@ -12,9 +12,9 @@ console.log(exclaimify('app.js loaded'));
 //   })
 // }
 
-// console.log(`
-//   asset references liksde this one:
-//     assets/images/gulp.png
-//   get updated in js too!`)
+console.log(`
+  asset references liksde this one:
+    assets/images/gulp.png
+  get updated in js too!`)
 
 // button.addEventListener('click', alertAsyncMessage)

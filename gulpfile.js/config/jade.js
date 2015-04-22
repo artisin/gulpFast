@@ -4,7 +4,7 @@ module.exports = {
   watch: config.sourceDirectory + '/views/**/**/*.jade',
   src: config.sourceDirectory + '/views/**/*.jade',
   injectJade: config.publicTemp + '/**/*.html', 
-  tempDest: config.publicTemp,
+  publicTemp: config.publicTemp,
   dest: config.publicDirectory,
   publicAssets: config.publicAssets
 };

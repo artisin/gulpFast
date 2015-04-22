@@ -1,1 +1,1 @@
-module.exports = 'I was loaded async'
+module.exports = 'I was loaded async';

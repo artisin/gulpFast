@@ -5,14 +5,14 @@ var gulp         = require('gulp'),
     del          = require('del');
 
 
-gulp.task('build:production', function(cb) {
+gulp.task('build', function(cb) {
   process.env.NODE_ENV = 'production';
   //Karma is being a bitch
   gulpSequence('clean', 
     ['fonts', 'images', 'iconFont'], 
-    ['stylus', 'webpack:production', 'jade'], 
+    ['stylus', 'jade', 'webpack:production'], 
     'rev', 
-    'cleanTemp', 
+    // 'cleanTemp', 
     'complete', 
     cb);
 });

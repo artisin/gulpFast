@@ -8,7 +8,8 @@ var gulp         = require('gulp'),
     postEasings  = require('postcss-easings'),
     gulpif       = require('gulp-if'),
     postSize     = require('postcss-size'),
-    revCompile   = process.env.NODE_ENV === 'production';
+    argv         = require('yargs').argv,
+    devel        = argv._[0] !== 'build';
 
 gulp.task('postCss', function () {
     var processors = [
@@ -20,14 +21,11 @@ gulp.task('postCss', function () {
     return gulp.src(config.src)
         .pipe(postcss(processors))
         .on('error', handleErrors)
-        // .pipe(gulp.dest(config.dest))
+        .pipe(gulp.dest(config.dest))
         //If we doing production we then need to make a second copy
         //and put that into a seperate location so rev-css has
         //some styles to work with
-        .pipe(gulpif(revCompile, 
-            gulp.dest(config.compiled),
-            gulp.dest(config.dest)
-        ))
+        .pipe(gulpif(!devel, gulp.dest(config.compiled)))
         .pipe(browserSync.reload({stream:true}));
 });
 

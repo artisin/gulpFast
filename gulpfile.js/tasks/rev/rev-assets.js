@@ -4,9 +4,10 @@ var rev    = require('gulp-rev');
 
 gulp.task('rev-assets', function() {
   // Ignore what we dont want to hash in this step
-  var ignore = '!' + config.publicDirectory + '/**/*+(css|js|json|html)';
+  var pub = config.publicDirectory + '/**/*',
+      ignore = '!' + config.publicDirectory + '/**/*+(css|js|json|html)';
 
-  return gulp.src([config.publicDirectory + '/**/*', ignore])
+  return gulp.src([pub, ignore])
     .pipe(rev())
     .pipe(gulp.dest(config.publicDirectory))
     .pipe(rev.manifest('dist/rev-manifest.json', {merge: true}))
