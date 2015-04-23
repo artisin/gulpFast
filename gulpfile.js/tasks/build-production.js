@@ -10,9 +10,9 @@ gulp.task('build', function(cb) {
   //Karma is being a bitch
   gulpSequence('clean', 
     ['fonts', 'images', 'iconFont'], 
-    ['stylus', 'jade', 'webpack:production'], 
+    ['postCss', 'jade', 'webpack:production'], 
     'rev', 
-    // 'cleanTemp', 
+    'cleanTemp', 
     'complete', 
     cb);
 });

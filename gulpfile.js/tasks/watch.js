@@ -8,7 +8,7 @@ var config       = require('../config/index');
 
 gulp.task('watch', ['browserSync'], function() {
   watch(images.src, function() { gulp.start('images'); });
-  watch(stylus.src, function() { gulp.start('stylus'); });
+  watch(stylus.src, function() { gulp.start('postCss'); });
   watch(fonts.src, function() { gulp.start('fonts'); });
   watch(jade.watch, function() { gulp.start('jade'); });
 });

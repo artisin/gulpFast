@@ -6,7 +6,7 @@ gulp.task('development', function(cb) {
   gulpSequence(
     'clean', 
     ['fonts', 'images', 'iconFont'], 
-    ['stylus', 'webpack:development'],
+    ['postCss', 'webpack:development'],
     'jade',
     ['watch', 'browserSync'], 
   cb);

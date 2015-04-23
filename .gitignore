@@ -1,5 +1,6 @@
 .DS_Store
-build
+dist
+.public
 .sass-cache
 public
 Desktop.ini

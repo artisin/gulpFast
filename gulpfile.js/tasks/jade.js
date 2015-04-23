@@ -11,39 +11,19 @@ var browserSync     = require('browser-sync'),
     inject          = require('gulp-inject'),
     browserSync     = require('browser-sync'),
     gulpif          = require('gulp-if'),
-    tap             = require('gulp-tap'),
-    path            = require('path'),
+    // tap             = require('gulp-tap'),
+    // path            = require('path'),
     argv            = require('yargs').argv,
     devel           = argv._[0] !== 'build';
 
 gulp.task('jade', ['compileJade'], function () {
-  var target = gulp.src(config.injectJade);
-  // It's not necessary to read the files (will speed up things), we're only after their paths:
-
+    var target = gulp.src(config.injectJade);
+  // It's not necessary to read the files (will speed up things), we're only after their paths
   var global = gulp.src([
-    config.publicAssets + '/styles/**/*.css',
-    config.publicAssets + '/js/**/*.js'
-  ], {read: false})
-  // .pipe(tap(function(file, t) {
-  //   // console.log(file)
-  //   // console.log(path.basename(file.path))
-  //   var filePath = path.basename(file.path);
-  //   if (/shared/.test(filePath)) {
-  //     return file;
-  //   }
-  // }))
-
-  var fuck = [];
-  var find = require('find');
-
-  // var sharedFiles =  
-  find.file(/shared/, config.publicAssets, function(files) {
-    fuck.push(files);
-  }, function () {
-    console.log('test')
-  })
-  // console.log(sharedFiles)
-
+    //Inject assests that only have `shared` in their name
+    config.publicAssets + '/styles/**/*shared*.css',
+    config.publicAssets + '/js/**/*shared*.js'
+  ], {read: false});
 
   return target
     .pipe(inject(global ,{
@@ -53,8 +33,9 @@ gulp.task('jade', ['compileJade'], function () {
     name: 'global'
     }))
     .pipe(gulp.dest(config.dest))
-    .pipe(browserSync.reload({stream:true}))
+    .pipe(browserSync.reload({stream:true}));
 });
+
 
 
 gulp.task('compileJade', function() {
@@ -73,5 +54,5 @@ gulp.task('compileJade', function() {
       pretty: true
     }))
     .on('error', handleErrors)
-    .pipe(gulp.dest(config.publicTemp));
+    .pipe(gulp.dest(config.publicTemp))
 });

@@ -11,7 +11,7 @@ var gulp         = require('gulp'),
     argv         = require('yargs').argv,
     devel        = argv._[0] !== 'build';
 
-gulp.task('postCss', function () {
+gulp.task('postCss', ['stylus'], function () {
     var processors = [
         postSize,
         postEasings,

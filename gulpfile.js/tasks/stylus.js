@@ -25,12 +25,5 @@ gulp.task('stylus', function () {
     // .pipe(autoprefixer(config.autoprefixer))
     .on('error', handleErrors)
     // .pipe(sourcemaps.write())
-    .pipe(gulp.dest(config.dest))
-    // .pipe(browserSync.reload({stream:true}))
-    .on('end', postCss) 
+    .pipe(gulp.dest(config.dest));
 });
-
-
-function postCss () {
-  return gulp.start('postCss');
-}

@@ -1,12 +1,84 @@
-.mc_1 {
+.ag_0 {
   background: #3083bf;
   color: #3083bf;
 }
-.mc_2 {
-  background: monochrom(#3083bf);
-  color: monochrom(#3083bf);
+.ag_1 {
+  background: #303bbf;
+  color: #303bbf;
+}
+.ag_2 {
+  background: #30bfb3;
+  color: #30bfb3;
+}
+.age_0 {
+  background: #3083bf;
+  color: #3083bf;
+}
+.age_1 {
+  background: #30bfb3;
+  color: #30bfb3;
+}
+.age_2 {
+  background: #6c30bf;
+  color: #6c30bf;
+}
+.age_3 {
+  background: #30bf6c;
+  color: #30bf6c;
+}
+.mc_0 {
+  background: #3083bf;
+  color: #3083bf;
+}
+.mc_1 {
+  background: #6aabda;
+  color: #6aabda;
 }
 .mc_2 {
+  background: #4898d1;
+  color: #4898d1;
+}
+.sc_0 {
+  background: #3083bf;
+  color: #3083bf;
+}
+.sc_1 {
+  background: #bf303b;
+  color: #bf303b;
+}
+.sc_2 {
+  background: #bfb330;
+  color: #bfb330;
+}
+.ti_0 {
+  background: #3083bf;
+  color: #3083bf;
+}
+.ti_1 {
+  background: #bf3083;
+  color: #bf3083;
+}
+.ti_2 {
+  background: #83bf30;
+  color: #83bf30;
+}
+.qd_0 {
+  background: #3083bf;
+  color: #3083bf;
+}
+.qd_1 {
+  background: #b330bf;
+  color: #b330bf;
+}
+.qd_2 {
+  background: #3bbf30;
+  color: #3bbf30;
+}
+.qd_3 {
+  background: #bf6c30;
+  color: #bf6c30;
+}
+.qd_4 {
   background: ;
   color: ;
 }
@@ -481,8 +553,50 @@ td {
 nav {
   background: #008080 !important;
 }
+* {
+  background: rgba(0,0,255,0.1);
+}
+.color_Wrapper {
+  *zoom: 1;
+}
+.color_Wrapper:before,
+.color_Wrapper:after {
+  content: '';
+  display: table;
+}
+.color_Wrapper:after {
+  clear: both;
+}
+.color_Wrapper h3 {
+  text-align: center;
+}
+.color_Wrapper section {
+  display: flex;
+  flex-flow: row wrap;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.color_Wrapper section .color {
+  width: calc(99.99% * 1/4 - (30px - 30px * 1/4));
+  flex: 0 0 auto;
+  size: 150px;
+}
+.color_Wrapper section .color:nth-child(n) {
+  margin-right: 30px;
+}
+.color_Wrapper section .color:last-child {
+  margin-right: 0;
+}
+.color_Wrapper section .color:nth-child(4n) {
+  margin-right: 0;
+}
 .home_Wrapper {
-  background: #eee;
+  display: flex;
+  flex-flow: row wrap;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
 }
 body {
   background: linear-gradient(to top, rgba(0,0,255,0.1) 5%, #fff 5%);
