@@ -1,8 +1,23 @@
+//- - var links = {home: './index.html', color: './color.html' };
+
+//- nav
+//-   ul
+//-     li
+//-       a(href=links.home) Home
+//-     li
+//-       a(href=links.color) Colors
+//-     li 
+//-       a(href="./magic-magic.html") Magic
+//-     li Contact
+
+- var links = {home: '/index.html', color: '/color.html' };
+
 nav
   ul
     li
-      a(href="index.html") Home
+      a(href=links.home) Home
     li
-      a(href="color.html") Colors
-    li Friends
+      a(href=links.color) Colors
+    li 
+      a(href="../magic/magic.html") Magic
     li Contact
