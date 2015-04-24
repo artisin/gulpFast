@@ -6,7 +6,12 @@
 			"path": "."
 		}
 	],
-  "syntax_override": {
-    "\\.js$": ["Babel", "JavaScript (Babel)"],
-  }
+	"syntax_override":
+	{
+		"\\.js$":
+		[
+			"Babel",
+			"JavaScript (Babel)"
+		]
+	}
 }
