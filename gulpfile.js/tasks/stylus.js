@@ -1,14 +1,11 @@
 var gulp         = require('gulp'),
-    browserSync  = require('browser-sync'),
-    sourcemaps   = require('gulp-sourcemaps'),
     handleErrors = require('../lib/handleErrors'),
     config       = require('../config/stylus'),
-    autoprefixer = require('gulp-autoprefixer'),
     stylus       = require('gulp-stylus'),
     koutoSwiss   = require('kouto-swiss'),
     lost         = require('lost-grid'),
     rupture      = require('rupture'),
-    filter = require('gulp-filter'),
+    filter       = require('gulp-filter'),
     typographic  = require('typographic');
 
 

@@ -19,7 +19,7 @@ var browserSync     = require('browser-sync'),
 
 
 gulp.task('jade', ['compileJade'], function () {
-    var target = gulp.src(config.injectJade);
+  var target = gulp.src(config.injectJade);
   // It's not necessary to read the files (will speed up things), we're only after their paths
   var global = gulp.src([
     //Inject assests that only have `shared` in their name
@@ -46,14 +46,6 @@ gulp.task('jade', ['compileJade'], function () {
     .pipe(browserSync.reload({stream:true}));
 });
 
-var j = require('jade');
-var katex = require('katex');
-
-j.filters = function (str) {
-  console.log(arguments)
-}
-
-
 
 gulp.task('compileJade', function() {
   return gulp.src(config.src)
@@ -68,7 +60,6 @@ gulp.task('compileJade', function() {
         return !/\/_/.test(file.path) || !/^_/.test(file.relative);
     }))
     .pipe(jade({
-      jade: j,
       pretty: true
     }))
     //Remove subPages dirc 

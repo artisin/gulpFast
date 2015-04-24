@@ -292,19 +292,19 @@ h6 {
   clear: both;
 }
 h1 {
-  font-size: 30.175589115035667px;
+  font-size: 30.17558911503566px;
   margin-top: 0.942400822452556em;
   line-height: 1.130880986943067em;
   margin-bottom: 0.188480164490511em;
 }
 @media (min-width: 600px) {
   h1 {
-    font-size: calc( 30.175589115035667px + (46.42398325390103 - 30.175589115035667) * ((100vw - 600px) / (1000 - 600)) );
+    font-size: calc( 30.17558911503566px + (46.423983253901014 - 30.17558911503566) * ((100vw - 600px) / (1000 - 600)) );
   }
 }
 @media (min-width: 1000px) {
   h1 {
-    font-size: 46.42398325390103px;
+    font-size: 46.423983253901014px;
     margin-top: 0.942400822452556em;
     line-height: 1.130880986943067em;
     margin-bottom: 0.188480164490511em;
@@ -318,31 +318,31 @@ h2 {
 }
 @media (min-width: 600px) {
   h2 {
-    font-size: calc( 25.49842035932217px + (39.2283390143418 - 25.49842035932217) * ((100vw - 600px) / (1000 - 600)) );
+    font-size: calc( 25.49842035932217px + (39.228339014341806 - 25.49842035932217) * ((100vw - 600px) / (1000 - 600)) );
   }
 }
 @media (min-width: 1000px) {
   h2 {
-    font-size: 39.2283390143418px;
+    font-size: 39.228339014341806px;
     margin-top: 1.115265165420465em;
     line-height: 1.338318198504558em;
     margin-bottom: 0.240111086421698em;
   }
 }
 h3 {
-  font-size: 21.546205389466095px;
+  font-size: 21.546205389466092px;
   margin-top: 1.319837970815179em;
   line-height: 1.583805564978215em;
   margin-bottom: 0.300721294788032em;
 }
 @media (min-width: 600px) {
   h3 {
-    font-size: calc( 21.546205389466095px + (33.1480082914863 - 21.546205389466095) * ((100vw - 600px) / (1000 - 600)) );
+    font-size: calc( 21.546205389466092px + (33.14800829148629 - 21.546205389466092) * ((100vw - 600px) / (1000 - 600)) );
   }
 }
 @media (min-width: 1000px) {
   h3 {
-    font-size: 33.1480082914863px;
+    font-size: 33.14800829148629px;
     margin-top: 1.319837970815179em;
     line-height: 1.583805564978215em;
     margin-bottom: 0.287857499569283em;
@@ -368,21 +368,21 @@ h4 {
   }
 }
 h5 {
-  font-size: 15.38458669076125px;
-  margin-top: 1.84844094752817em;
-  line-height: 2.218129137033804em;
+  font-size: 15.384586690761246px;
+  margin-top: 1.848440947528171em;
+  line-height: 2.218129137033805em;
   margin-bottom: 0.369688189505634em;
 }
 @media (min-width: 600px) {
   h5 {
-    font-size: calc( 15.38458669076125px + (23.66859490886346 - 15.38458669076125) * ((100vw - 600px) / (1000 - 600)) );
+    font-size: calc( 15.384586690761246px + (23.668594908863454 - 15.384586690761246) * ((100vw - 600px) / (1000 - 600)) );
   }
 }
 @media (min-width: 1000px) {
   h5 {
-    font-size: 23.66859490886346px;
+    font-size: 23.668594908863454px;
     margin-top: 1.84844094752817em;
-    line-height: 2.218129137033804em;
+    line-height: 2.218129137033805em;
     margin-bottom: 0.369688189505634em;
   }
 }
