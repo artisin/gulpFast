@@ -67,25 +67,25 @@ gulp build
 _Not set in stone yet, but will be soon._
 
 + __Views__ (All jade files and components are located here.)
-    + ___components__
+    + __`_components`__
         + Various reusable components. 
-    + ___includes__
+    + __`_includes`__
         + Header, footer, ect.
-    + ___layouts__
-    + __subPages__
+    + __`_layouts`__
+    + __`subPages`__
         + Any sub-directory pages go here. 
 + __Assets__
-    + ___root__
+    + __`_root`__
         + All root assets go in this folder which will automatically be injected into the projects root directory on `deploy` or `build` commands. 
         + Useful for putting `404`, `favicon`, ect assets so they don't get in the way during development.
-    +  __fonts__
-    + __icons__
+    +  __`fonts`__
+    + __`icons`__
         + Any `svg` files in this folder will be automatically compiled and converted to a  `fonts`. Additionally, it will generate `css` `class`'s for you based on the file name. The folder in which you can locate these `class`'s is in ` assets\styles\_generated` _Note: this file will be regenerated every time your run a `gulp` command_
         + For optimal results use a `unicode` prefix for the file name. For example `uE001-facbook.svg` the following generated `class` you could then use in your `html` via `.icon.-facebook`
-    + __images__
+    + __`images`__
         + Any image put in this folder will automatically be compressed
-    + __js__ (JavaScript goes here)
-    + __stlyes__
+    + __`js`__ (JavaScript goes here)
+    + __`stlyes`__
         + This is where your `stylus` files will be located. And as of right now I still have not decided on a finial structure, although, everything should be self explanatory. 
 
 __Underscore folders/files__
