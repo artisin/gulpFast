@@ -82,7 +82,7 @@ _Not set in stone yet, but will be soon._
     + __icons__
         + Any `svg` files in this folder will be automatically compiled and converted to a  `fonts`. Additionally, it will generate `css` `class`'s for you based on the file name. The folder in which you can locate these `class`'s is in ` assets\styles\_generated` _Note: this file will be regenerated every time your run a `gulp` command_
         + For optimal results use a `unicode` prefix for the file name. For example `uE001-facbook.svg` the following generated `class` you could then use in your `html` via `.icon.-facebook`
-    + Images
+    + __images__
         + Any image put in this folder will automatically be compressed
     + __js__ (JavaScript goes here)
     + __stlyes__
