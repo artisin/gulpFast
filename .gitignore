@@ -1,10 +1,11 @@
 .DS_Store
-dist
 .dist
 .public
-.sass-cache
 .publish 
+dist
 public
+private
+goFast.sublime-workspace
 Desktop.ini
 node_modules
 app/assets/stylesheets/generated
