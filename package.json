@@ -1,7 +1,7 @@
 {
-  "name": "gulp-starter",
-  "version": "2.0.0",
-  "description": "Gulp starter with common tasks and scenarios",
+  "name": "goFast",
+  "version": "0.0.1",
+  "description": "A Gulp Build Tool To Help You Go Fast",
   "engines": {
     "node": "0.10.36",
     "npm": "2.3.0"
@@ -9,9 +9,6 @@
   "repository": {
     "type": "git",
     "url": ""
-  },
-  "scripts": {
-    "test": "gulp build:production"
   },
   "browserify-shim": {
     "plugin": {
@@ -82,17 +79,17 @@
     "postcss-easings": "^0.1.0",
     "autoprefixer-core": "^5.1.11",
     "gulp-cssnano": "^1.0.0",
-    "postcss-size": "^0.1.0"
+    "postcss-size": "^0.1.0",
+    "git-repo-name": "^ 0.3.1",
+    "git-username": "^0.4.0",
+    "gulp-gh-pages": "^0.5.0",
+    "yargs": "^3.7.2"
   },
   "devDependencies": {
     "compression": "^1.4.3",
     "express": "^4.12.3",
-    "git-repo-name": "^ 0.3.1",
-    "git-username": "^0.4.0",
-    "gulp-gh-pages": "^0.5.0",
     "gulp-inject": "^1.2.0",
     "morgan": "^1.5.2",
-    "open": "0.0.5",
-    "yargs": "^3.7.2"
+    "open": "0.0.5"
   }
 }
