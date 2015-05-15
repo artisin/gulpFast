@@ -1,16 +1,7 @@
-//- - var links = {home: './index.html', color: './color.html' };
-
-//- nav
-//-   ul
-//-     li
-//-       a(href=links.home) Home
-//-     li
-//-       a(href=links.color) Colors
-//-     li 
-//-       a(href="./magic-magic.html") Magic
-//-     li Contact
-
+//Production links
 - var links = {home: '/index.html', color: '/color.html' };
+//Deploy links
+//- - var links = {home: '/index.html', color: '/color.html', magic: './magic-magic.html' };
 
 nav
   ul
@@ -18,6 +9,7 @@ nav
       a(href=links.home) Home
     li
       a(href=links.color) Colors
+    li
+      a(href="#") Colors
     li 
       a(href="../magic/magic.html") Magic
-    li Contact

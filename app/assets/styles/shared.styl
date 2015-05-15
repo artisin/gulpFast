@@ -1,36 +1,37 @@
-//FrameWork
-// @import 'framework/_pure.css'
-
-//Plugins
+//Settings/Plugins
 ks-no-conflict = true
 @import "kouto-swiss"
 @import 'rupture';
 @import 'lost';
+//Lost Settings
+$flexbox = true;
+$gutter = 30px
+$rtl = false
 @import 'typographic';
+//Type init
+typographic()
+//Resets
+ks-meyer-reset()
+ks-box-sizing-reset()
+ks-normalize()
 
 //Base
 @import '_base/*'
-//Generated
+//Generated Icons
 @import '_generated/*'
-
-//Resets
-//using these rather than kouto due to the conflicts with lost
-@import '_reset/reset.css';
-
-//Type init
-typographic()
-
 //Component Styles
 @import '_components/*'
-
 //Page Styles
-@import 'pages/*'
+@import '_pages/*'
 
 //Helper Overlays
+//Lost Grid
 // edit()
-grid-overlay(blue, 2)
+//Typographic
+// grid-overlay(blue, 2)
 
-.gulp
-  filter: blur(5px);
-  background: rebeccapurple
-  size: 400px
+// .gulp
+//   filter: blur(5px);
+//   background: rebeccapurple
+//   size: 400px
+

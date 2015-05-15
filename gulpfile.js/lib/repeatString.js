@@ -4,5 +4,5 @@ module.exports = function(pattern, number) {
       number--;
       string += pattern;
     }
-    return string
-  }
+    return string;
+  };

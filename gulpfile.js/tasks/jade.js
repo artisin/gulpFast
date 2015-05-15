@@ -25,7 +25,22 @@ gulp.task('jade', ['compileJade'], function () {
     //Inject assests that only have `shared` in their name
     config.publicAssets + '/styles/**/*shared*.css',
     config.publicAssets + '/js/**/*shared*.js'
-  ], {read: false});
+  ], {read: false})
+  //Filter out any js or css files that have an underscore in file name
+  //since we do not want to inject these files into html
+  //NOTE: this is only done on produciton
+  //This is mainly for buttron since we want a sepearte file during devel
+  //avoide lengthy compile times but in production we only want one shared css file
+  .pipe(filter(function (file) {
+      if(devel){
+        return file;
+      }else{
+        if (!(/\_/g).test(file.relative)) {
+          return file;
+        }
+      }
+  }));
+  
 
   return target
     .pipe(inject(global ,{
@@ -37,7 +52,7 @@ gulp.task('jade', ['compileJade'], function () {
       //there is prbly a better way of doing this. But, this works. 
       transform: function (filepath) {
         var newArg = arguments;
-        filepath = filepath.substring(3, filepath.length)
+        filepath = filepath.substring(3, filepath.length);
         newArg[0] = filepath;
         return inject.transform.apply(inject.transform, newArg);
       },

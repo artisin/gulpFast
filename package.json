@@ -88,7 +88,9 @@
   "devDependencies": {
     "compression": "^1.4.3",
     "express": "^4.12.3",
+    "gulp-concat-css": "^2.2.0",
     "gulp-inject": "^1.2.0",
+    "gulp-newer": "^0.5.0",
     "morgan": "^1.5.2",
     "open": "0.0.5"
   }
