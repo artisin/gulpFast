@@ -852,8 +852,8 @@ td {
 }
 @font-face {
   font-family: icons;
-  src: url("../../assets/fonts/icons-7c7ee8d7.eot");
-  src: url("../../assets/fonts/icons-7c7ee8d7.eot?#iefix") format('embedded-opentype'), url("../../assets/fonts/icons-39c1f0ee.woff") format('woff'), url("../../assets/fonts/icons-9791c4c3.ttf") format('truetype'), url("../../assets/fonts/icons-847ad039.svg#icons") format('svg');
+  src: url("../../assets/fonts/icons-4d94bdf2.eot");
+  src: url("../../assets/fonts/icons-4d94bdf2.eot?#iefix") format('embedded-opentype'), url("../../assets/fonts/icons-fc0accd5.woff") format('woff'), url("../../assets/fonts/icons-eae89559.ttf") format('truetype'), url("../../assets/fonts/icons-847ad039.svg#icons") format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -880,6 +880,18 @@ td {
 }
 .icon.-twitter:before {
   content: "\e004";
+}
+body {
+  background: #ecf0f1;
+}
+code {
+  padding: 0;
+  padding-top: 0.2em;
+  padding-bottom: 0.2em;
+  margin: 0;
+  font-size: 85%;
+  background-color: rgba(0,0,0,0.04);
+  border-radius: 3px;
 }
 .artisin {
   position: fixed;
@@ -1153,16 +1165,4 @@ nav ul .navLink a {
   transition: all 0.6s ease-in-out;
   -webkit-filter: invert(0%);
           filter: invert(0%);
-}
-body {
-  background: #ecf0f1;
-}
-code {
-  padding: 0;
-  padding-top: 0.2em;
-  padding-bottom: 0.2em;
-  margin: 0;
-  font-size: 85%;
-  background-color: rgba(0,0,0,0.04);
-  border-radius: 3px;
 }
