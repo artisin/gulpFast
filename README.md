@@ -39,9 +39,11 @@ gulp build
     * Typographic
     * Kouto-swiss
     * Buttron
-    * Custom Mixin
+    * Custom Mixin's
++ PostCss
+    * cssnext
+    * easings
 + IconFont (for automatic svg to icon font generation)
-+ Image Minification
 + WebPack (to handle js)
 + PostCss
     * easings
@@ -54,11 +56,9 @@ gulp build
     + Css
     + Js
     + Html
-+ Automatic Name Revision
++ Automatic Hash Name Revision
 + Error handling and Desktop Notifications
 + BrowserSync (for live reloading and a static server)
-+ Browserify (with browserify-shim)
-+ Watchify (caching version of browserify)
 + Automatic Asset Injection
 + Automatic Deployment to github
 + Automatic root asset deployment on production
