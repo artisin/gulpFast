@@ -5,7 +5,7 @@ var gulp         = require('gulp'),
 
 gulp.task('rev-update-references', function(){
   var manifest = gulp.src(config.publicDirectory + "/rev-manifest.json");
-  return gulp.src(config.publicDirectory + '/**/*')
+  return gulp.src(config.publicDirectory + '/**/*.js')
     .pipe(revReplace({manifest: manifest}))
     .pipe(gulp.dest(config.publicDirectory));
 });

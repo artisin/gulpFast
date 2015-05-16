@@ -1,1 +1,3 @@
-module.exports = (string) => `${string}!`
+module.exports = function (string) {
+  return "" + string + "!";
+};

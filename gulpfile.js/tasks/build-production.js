@@ -7,14 +7,15 @@ var gulp         = require('gulp'),
 
 gulp.task('build', function(cb) {
   process.env.NODE_ENV = 'production';
-  //Karma is being a bitch
-  gulpSequence('clean', 
+  gulpSequence(
+    'karma',
+    'clean', 
     ['fonts', 'images', 'iconFont'], 
     ['postCss', 'jade', 'webpack:production'], 
     'rev', 
     'cleanTemp', 
     'complete', 
-    cb);
+    cb)
 });
 
 gulp.task('cleanTemp', function (cb) {

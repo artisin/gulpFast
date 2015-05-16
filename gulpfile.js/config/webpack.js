@@ -1,18 +1,18 @@
-var paths           = require('./'),
-    webpack         = require('webpack'),
-    webpackManifest = require('../lib/webpackManifest');
+var path            = require('path')
+var paths           = require('./')
+var webpack         = require('webpack')
+var webpackManifest = require('../lib/webpackManifest')
 
 module.exports = function(env) {
-  var jsSrc = paths.sourceAssets + '/js/',
-      jsDest = paths.publicAssets + '/js/',
+  var jsSrc = path.resolve(paths.sourceAssets + '/js'),
+      jsDest = paths.publicAssets + '/js',
       publicPath = 'assets/js/';
 
   var webpackConfig = {
-    useMemoryFs: true,
-    progress: true,
+    context: jsSrc,
     entry: {
-      app: [jsSrc + 'app.js'],
-      vendor: [jsSrc + 'vendor.js']
+      main: [ './main.js' ],
+      vendor: ['./vendor.js']
     },
 
     output: {
@@ -31,8 +31,8 @@ module.exports = function(env) {
       loaders: [
         {
           test: /\.js?$/,
-          exclude: /(node_modules|bower_components)/,
-          loader: 'babel'
+          loader: 'babel',
+          exclude: /(node_modules|bower_components)/
         }
       ]
     }
