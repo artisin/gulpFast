@@ -1,8 +1,8 @@
-var gulp = require('gulp');
-var del = require('del');
-var config = require('../config');
-var jadeConfig = require('../config/jade');
-var iconConfig = require('../config/iconFont');
+var gulp       = require('gulp'),
+    del        = require('del'),
+    config     = require('../config'),
+    jadeConfig = require('../config/jade'),
+    iconConfig = require('../config/iconFont');
 
 gulp.task('clean', function (cb) {
   del([

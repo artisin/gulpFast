@@ -1,10 +1,10 @@
-var gulp     = require('gulp');
-var express  = require('express');
-var config   = require('../config/server');
-var gutil    = require('gulp-util');
-var compress = require('compression');
-var logger   = require('morgan');
-var open     = require('open');
+var gulp     = require('gulp'),
+    express  = require('express'),
+    config   = require('../config/server'),
+    gutil    = require('gulp-util'),
+    compress = require('compression'),
+    logger   = require('morgan'),
+    openUrl  = require('open');
 
 gulp.task('server', function() {
   var url = 'http://localhost:' + config.port;
@@ -13,8 +13,7 @@ gulp.task('server', function() {
     .use(compress())
     .use(logger(config.logLevel))
     .use('/', express.static(config.root, config.staticOptions))
-    .listen(config.port)
-
+    .listen(config.port);
   gutil.log('production server started on ' + gutil.colors.green(url));
-  open(url);
+  openUrl(url);
 });

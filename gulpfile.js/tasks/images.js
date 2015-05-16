@@ -1,8 +1,8 @@
-var browserSync = require('browser-sync');
-var changed     = require('gulp-changed');
-var config      = require('../config/images');
-var gulp        = require('gulp');
-var imagemin    = require('gulp-imagemin');
+var browserSync = require('browser-sync'),
+    changed     = require('gulp-changed'),
+    config      = require('../config/images'),
+    gulp        = require('gulp'),
+    imagemin    = require('gulp-imagemin');
 
 gulp.task('images', function() {
   return gulp.src(config.src)
