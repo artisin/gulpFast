@@ -9,7 +9,7 @@ var gulp         = require('gulp'),
     gulpif       = require('gulp-if'),
     postSize     = require('postcss-size'),
     argv         = require('yargs').argv,
-    devel        = argv._[0] !== 'build';
+    devel        = argv._[0] === 'build' || 'deploy' ? true : false;
 
 gulp.task('postCss', ['stylus'], function () {
     var processors = [
@@ -25,7 +25,7 @@ gulp.task('postCss', ['stylus'], function () {
         //If we doing production we then need to make a second copy
         //and put that into a seperate location so rev-css has
         //some styles to work with
-        .pipe(gulpif(!devel, gulp.dest(config.compiled)))
+        .pipe(gulpif(devel, gulp.dest(config.compiled)))
         .pipe(browserSync.reload({stream:true}));
 });
 

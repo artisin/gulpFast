@@ -13,7 +13,7 @@ var browserSync     = require('browser-sync'),
     browserSync     = require('browser-sync'),
     gulpif          = require('gulp-if'),
     argv            = require('yargs').argv,
-    devel           = argv._[0] !== 'build',
+    devel           = argv._[0] === 'build' || 'deploy' ? false : true,
     deploy          = argv._[0] === 'deploy';
 
 
@@ -36,6 +36,7 @@ gulp.task('jade', ['compileJade'], function () {
         return file;
       }else{
         if (!(/\_/g).test(file.relative)) {
+          console.log(file)
           return file;
         }
       }

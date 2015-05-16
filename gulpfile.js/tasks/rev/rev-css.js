@@ -7,7 +7,7 @@ var gulp       = require('gulp'),
     config     = require('../../config');
 
 
-gulp.task('rev-css', ['removeOldCss'], function(){
+gulp.task('rev-css', function(){
   return gulp.src(config.publicTemp + "/compiled/**/*.css")
     //Concat css into one file
     .pipe(concatCss('shared.css'))

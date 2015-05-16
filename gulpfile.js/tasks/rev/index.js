@@ -5,12 +5,10 @@ var gulp = require('gulp'),
 
 gulp.task('rev', function(cb) {
   gulpSequence(
-    [
-    //Add md5 hashes to assets referenced by CSS and JS files
-    'rev-assets',
     //Import root-assest, such as 404, favicon, ect
     'root-assets',
-    ],
+    //Add md5 hashes to reffrenced assests
+    'rev-assets',
     //Rev and compress CSS and JS files (this is done after assets, so that if
     //a referenced asset hash changes, the parent hash will change as well
     'rev-css',
@@ -20,8 +18,6 @@ gulp.task('rev', function(cb) {
     'update-html',
     //Minify html
     'mini-html',
-    //Remove old
-    'rev-del',
     //Report Size
     'size-report',
   cb);

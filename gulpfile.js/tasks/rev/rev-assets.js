@@ -5,7 +5,7 @@ var rev    = require('gulp-rev');
 gulp.task('rev-assets', function() {
   // Ignore what we dont want to hash in this step
   var pub = config.publicDirectory + '/**/*',
-      ignore = '!' + config.publicDirectory + '/**/*+(css|js|json|html)';
+      ignore = '!' + config.publicDirectory + '/**/*+(css|js|json|html|txt|xml)';
 
   return gulp.src([pub, ignore])
     .pipe(rev())
