@@ -1,0 +1,1 @@
+webpackJsonp([0],[function(e,s,n){e.exports=n(1)},function(e,s,n){"use strict";var o=n(2);console.log(o("app.js loaded")),console.log("\n  asset references liksde this one:\n    assets/images/gulp-743c01b8.png\n  get updated in js too!")}]);
