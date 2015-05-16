@@ -6,8 +6,6 @@
   "favicon.ico": "favicon-338abbb5.ico",
   "tile-wide.png": "tile-wide-8eec2319.png",
   "tile.png": "tile-9bee3f49.png",
-  "assets/images/gulp.png": "assets/images/gulp-743c01b8.png",
-  "assets/images/magic.png": "assets/images/magic-2352757e.png",
   "assets/fonts/OpenSans-Bold-webfont.eot": "assets/fonts/OpenSans-Bold-webfont-71ed5feb.eot",
   "assets/fonts/OpenSans-Bold-webfont.svg": "assets/fonts/OpenSans-Bold-webfont-fc16469d.svg",
   "assets/fonts/OpenSans-Bold-webfont.ttf": "assets/fonts/OpenSans-Bold-webfont-a3e7019a.ttf",
@@ -18,8 +16,10 @@
   "assets/fonts/OpenSans-Regular-webfont.ttf": "assets/fonts/OpenSans-Regular-webfont-321aa799.ttf",
   "assets/fonts/OpenSans-Regular-webfont.woff": "assets/fonts/OpenSans-Regular-webfont-9f97f6d5.woff",
   "assets/fonts/OpenSans-Regular-webfont.woff2": "assets/fonts/OpenSans-Regular-webfont-d4231ba7.woff2",
-  "assets/fonts/icons.eot": "assets/fonts/icons-4d94bdf2.eot",
+  "assets/fonts/icons.eot": "assets/fonts/icons-636c0738.eot",
   "assets/fonts/icons.svg": "assets/fonts/icons-847ad039.svg",
-  "assets/fonts/icons.ttf": "assets/fonts/icons-eae89559.ttf",
-  "assets/fonts/icons.woff": "assets/fonts/icons-fc0accd5.woff"
+  "assets/fonts/icons.ttf": "assets/fonts/icons-1dd8a59e.ttf",
+  "assets/fonts/icons.woff": "assets/fonts/icons-a03eeb93.woff",
+  "assets/images/gulp.png": "assets/images/gulp-743c01b8.png",
+  "assets/images/magic.png": "assets/images/magic-2352757e.png"
 }
