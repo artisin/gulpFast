@@ -1,15 +1,13 @@
-var config = require('../../config');
-var gulp   = require('gulp');
-var rev    = require('gulp-rev');
-var nano = require('gulp-cssnano');
-var sourcemaps = require('gulp-sourcemaps');
-var gulp = require('gulp');
-var concatCss = require('gulp-concat-css');
-var config = require('../../config');
+var gulp       = require('gulp'),
+    rev        = require('gulp-rev'),
+    nano       = require('gulp-cssnano'),
+    sourcemaps = require('gulp-sourcemaps'),
+    concatCss  = require('gulp-concat-css'),
+    del        = require('del'),
+    config     = require('../../config');
 
 
-gulp.task('rev-css', ['rev-update-references'], function(){
-
+gulp.task('rev-css', ['removeOldCss'], function(){
   return gulp.src(config.publicTemp + "/compiled/**/*.css")
     //Concat css into one file
     .pipe(concatCss('shared.css'))
@@ -23,3 +21,8 @@ gulp.task('rev-css', ['rev-update-references'], function(){
 });
 
 
+gulp.task('removeOldCss', function (cb) {
+  del([
+    config.publicAssets + "/styles/",
+  ], cb);
+});

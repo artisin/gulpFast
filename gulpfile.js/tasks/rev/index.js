@@ -11,15 +11,17 @@ gulp.task('rev', function(cb) {
     //Import root-assest, such as 404, favicon, ect
     'root-assets',
     ],
-    //Update asset references with reved filenames in compiled css + js
-    'rev-update-references',
     //Rev and compress CSS and JS files (this is done after assets, so that if
     //a referenced asset hash changes, the parent hash will change as well
     'rev-css',
+    //Update asset references with reved filenames in compiled css + js
+    'rev-update-references',
     //Update asset references in HTML
     'update-html',
     //Minify html
     'mini-html',
+    //Remove old
+    'rev-del',
     //Report Size
     'size-report',
   cb);

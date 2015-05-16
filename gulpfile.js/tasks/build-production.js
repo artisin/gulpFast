@@ -1,8 +1,8 @@
 var gulp         = require('gulp'),
     gulpSequence = require('gulp-sequence'),
     colors       = require('colors'),
-    config       = require('../config'),
-    del          = require('del');
+    del          = require('del'),
+    config       = require('../config');
 
 
 gulp.task('build', function(cb) {

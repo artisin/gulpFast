@@ -1,8 +1,8 @@
-var gulp         = require('gulp');
-var config       = require('../../config');
-var revReplace = require('gulp-rev-replace')
+var gulp        = require('gulp'),
+    revReplace  = require('gulp-rev-replace'),
+    config      = require('../../config');
 
-gulp.task('update-html', ['rev-css'], function(){
+gulp.task('update-html', function(){
   var manifest = gulp.src(config.publicDirectory + "/rev-manifest.json");
   return gulp.src(config.publicDirectory + '/**/*.html')
     .pipe(revReplace({manifest: manifest}))
