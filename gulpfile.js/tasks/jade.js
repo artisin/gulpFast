@@ -57,6 +57,7 @@ gulp.task('jade', ['compileJade'], function () {
         return inject.transform.apply(inject.transform, newArg);
       },
     }))
+    .on('error', handleErrors)
     .pipe(gulp.dest(config.dest))
     .pipe(browserSync.reload({stream:true}));
 });
@@ -77,22 +78,22 @@ gulp.task('compileJade', function() {
     .pipe(jade({
       pretty: true
     }))
+    .on('error', handleErrors)
     //Remove subPages dirc 
     .pipe(rename(function (path) {
       // console.log(arguments)
-      var newDir = path.dirname.replace('subPages', '')
+      var newDir = path.dirname.replace('subPages', '');
       //On deploy to github remove all directories and hifenate them
       if (deploy) {
         if (/(\\|\/)$|^(\\|\/)/.test(newDir)) {
           newDir = newDir.replace('/', '-');
           path.basename = path.basename + newDir;
           newDir = '.';
-        };
-      };
+        }
+      }
       path.dirname = newDir;
-      // console.log(path)
       return path;
     }))
     .on('error', handleErrors)
-    .pipe(gulp.dest(config.publicTemp))
+    .pipe(gulp.dest(config.publicTemp));
 });
