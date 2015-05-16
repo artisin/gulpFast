@@ -852,8 +852,8 @@ td {
 }
 @font-face {
   font-family: icons;
-  src: url("../../assets/fonts/icons-460781fd.eot");
-  src: url("../../assets/fonts/icons-460781fd.eot?#iefix") format('embedded-opentype'), url("../../assets/fonts/icons-7831af03.woff") format('woff'), url("../../assets/fonts/icons-6ac6ef89.ttf") format('truetype'), url("../../assets/fonts/icons-847ad039.svg#icons") format('svg');
+  src: url("../../assets/fonts/icons-efd1e2eb.eot");
+  src: url("../../assets/fonts/icons-efd1e2eb.eot?#iefix") format('embedded-opentype'), url("../../assets/fonts/icons-9e593226.woff") format('woff'), url("../../assets/fonts/icons-463c4cad.ttf") format('truetype'), url("../../assets/fonts/icons-847ad039.svg#icons") format('svg');
   font-weight: normal;
   font-style: normal;
 }
