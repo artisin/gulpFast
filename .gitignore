@@ -3,6 +3,7 @@
 .public
 .publish 
 .directory
+publish
 dist
 public
 private
