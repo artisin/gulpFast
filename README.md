@@ -1,6 +1,6 @@
 goFast - A Gulp Build Tool
 ============
-https://david-dm.org/artisin/goFast.svg
+![Node Dependency](https://david-dm.org/artisin/goFast.svg)
 ###Description
 This is a tailored build tool for front end development designed for speed and efficiency.
 
