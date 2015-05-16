@@ -1021,8 +1021,8 @@ td {
 
 @font-face {
   font-family: icons;
-  src: url("../../assets/fonts/icons-4139e7bb.eot");
-  src: url("../../assets/fonts/icons-4139e7bb.eot?#iefix") format('embedded-opentype'), url("../../assets/fonts/icons-b1875c32.woff") format('woff'), url("../../assets/fonts/icons-3479f33b.ttf") format('truetype'), url("../../assets/fonts/icons-847ad039.svg#icons") format('svg');
+  src: url("../../assets/fonts/icons-ea11b6e9.eot");
+  src: url("../../assets/fonts/icons-ea11b6e9.eot?#iefix") format('embedded-opentype'), url("../../assets/fonts/icons-7ef32ae9.woff") format('woff'), url("../../assets/fonts/icons-eb6cab66.ttf") format('truetype'), url("../../assets/fonts/icons-847ad039.svg#icons") format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -1378,7 +1378,7 @@ nav ul .navLink a {
   -webkit-align-items: center;
   -ms-flex-align: center;
   align-items: center;
-  background: url("../images/gulp-743c01b8.png") no-repeat;
+  background: url("../images/gulp.png") no-repeat;
   width: 300px;
   height: 300px;
 }
@@ -2417,8 +2417,8 @@ td {
 
 @font-face {
   font-family: icons;
-  src: url("../../assets/fonts/icons-4139e7bb.eot");
-  src: url("../../assets/fonts/icons-4139e7bb.eot?#iefix") format('embedded-opentype'), url("../../assets/fonts/icons-b1875c32.woff") format('woff'), url("../../assets/fonts/icons-3479f33b.ttf") format('truetype'), url("../../assets/fonts/icons-847ad039.svg#icons") format('svg');
+  src: url("../../assets/fonts/icons-ea11b6e9.eot");
+  src: url("../../assets/fonts/icons-ea11b6e9.eot?#iefix") format('embedded-opentype'), url("../../assets/fonts/icons-7ef32ae9.woff") format('woff'), url("../../assets/fonts/icons-eb6cab66.ttf") format('truetype'), url("../../assets/fonts/icons-847ad039.svg#icons") format('svg');
   font-weight: normal;
   font-style: normal;
 }
