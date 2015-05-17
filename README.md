@@ -1,8 +1,7 @@
 Go Fast - A Gulp Build Tool
 ============
 [![Build Status](https://travis-ci.org/artisin/goFast.svg?branch=master)](https://travis-ci.org/artisin/goFast)
-![Node Dependency](https://david-dm.org/artisin/goFast.svg)
-[![devDependency Status](https://david-dm.org/artisin/goFast/dev-status.svg)](https://david-dm.org/artisin/goFast#info=devDependencies)
+[![Dependency Status](https://gemnasium.com/artisin/goFast.svg)](https://gemnasium.com/artisin/goFast)
 ###Description
 This is a tailored build tool for front end development designed for speed and efficiency.
 
