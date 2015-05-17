@@ -1,6 +1,6 @@
 {
   "name": "goFast",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "A Gulp Build Tool To Help You Go Fast",
   "engines": {
     "node": "0.10.36",
