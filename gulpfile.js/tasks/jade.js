@@ -23,8 +23,8 @@ gulp.task('jade', ['compileJade'], function () {
   // It's not necessary to read the files (will speed up things), we're only after their paths
   var global = gulp.src([
     //Inject assests that only have `shared` in their name
-    config.publicAssets + '/styles/**/*shared*.css',
-    config.publicAssets + '/js/**/*shared*.js'
+    config.publicAssets + '/styles/**/*.css',
+    config.publicAssets + '/js/**/*.js'
   ], {read: false})
   //Filter out any js or css files that have an underscore in file name
   //since we do not want to inject these files into html
@@ -32,13 +32,18 @@ gulp.task('jade', ['compileJade'], function () {
   //This is mainly for buttron since we want a sepearte file during devel
   //avoide lengthy compile times but in production we only want one shared css file
   .pipe(filter(function (file) {
+    var name = file.relative;
+    //Extract files only that have shared in their name
+    if (/(?=share)/gi.test(name)) {
       if(devel){
         return file;
       }else{
-        if (!(/\_|\-/g).test(file.relative)) {
+        //Filter out files with _
+        if (!(/\_/g).test(file.relative)) {
           return file;
         }
       }
+    };
   }));
   
 
@@ -73,7 +78,9 @@ gulp.task('compileJade', function() {
     .pipe(jadeInheritance({basedir: './app/views'}))
     //filter out partials (folders and files starting with "_" )
     .pipe(filter(function (file) {
-        return !/\/_/.test(file.path) || !/^_/.test(file.relative);
+      if(!/\/_/.test(file.path) || !/^_/.test(file.relative)){
+        return file;
+      }
     }))
     .pipe(jade({
       pretty: true
@@ -87,7 +94,6 @@ gulp.task('compileJade', function() {
       if (deploy) {
         if (newDir) {
           newDir = newDir.replace('/', '-');
-          console.log(newDir)
           path.basename = newDir + "-" + path.basename;
           newDir = '.';
         }
