@@ -4,9 +4,9 @@
   "assets/js/shared.js": "assets/js/shared-e6972d8f9e7de345c271.js",
   "fonts/OpenSans-Regular-webfont.woff2": "fonts/OpenSans-Regular-webfont-d4231ba7.woff2",
   "fonts/OpenSans-Regular-webfont.woff": "fonts/OpenSans-Regular-webfont-9f97f6d5.woff",
-  "fonts/OpenSans-Regular-webfont.ttf": "fonts/OpenSans-Regular-webfont-321aa799.ttf",
   "fonts/OpenSans-Regular-webfont.svg": "fonts/OpenSans-Regular-webfont-f9859eda.svg",
   "fonts/OpenSans-Regular-webfont.eot": "fonts/OpenSans-Regular-webfont-227e7245.eot",
+  "fonts/OpenSans-Regular-webfont.ttf": "fonts/OpenSans-Regular-webfont-321aa799.ttf",
   "fonts/OpenSans-Bold-webfont.woff2": "fonts/OpenSans-Bold-webfont-8b4a0872.woff2",
   "fonts/OpenSans-Bold-webfont.woff": "fonts/OpenSans-Bold-webfont-417f2b69.woff",
   "fonts/OpenSans-Bold-webfont.ttf": "fonts/OpenSans-Bold-webfont-a3e7019a.ttf",
@@ -15,11 +15,11 @@
   "styles/sharedTest.css.map": "styles/sharedTest.css-a4e7187b.map",
   "styles/shared.css.map": "styles/shared.css-cacc20e4.map",
   "styles/sharedTest.css": "styles/sharedTest-e323ddd3.css",
-  "styles/shared.css": "styles/shared-adbddaec.css",
+  "styles/shared.css": "styles/shared-f325fd48.css",
   "images/magic.png": "images/magic-2352757e.png",
-  "fonts/icons.woff": "fonts/icons-c93eb6d1.woff",
+  "fonts/icons.woff": "fonts/icons-b28bc1dd.woff",
   "images/gulp.png": "images/gulp-743c01b8.png",
-  "fonts/icons.eot": "fonts/icons-7943c68d.eot",
+  "fonts/icons.eot": "fonts/icons-9ca4f0c7.eot",
   "fonts/icons.svg": "fonts/icons-847ad039.svg",
-  "fonts/icons.ttf": "fonts/icons-0533a1a7.ttf"
+  "fonts/icons.ttf": "fonts/icons-6b19f2ed.ttf"
 }
