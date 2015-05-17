@@ -1,0 +1,1 @@
+{"version":3,"sources":["sharedTest.css"],"names":[],"mappings":"AAAA,KACE,gBAAoB,CACrB","file":"sharedTest.css","sourcesContent":["body {\n  background: #008000;\n}\n"],"sourceRoot":"/source/"}
