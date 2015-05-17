@@ -32,6 +32,7 @@ __Production__
 gulp build
 ```
 
+
 ##### Includes the following tools
 + Gulp
 + Jade
@@ -79,6 +80,8 @@ _Not set in stone yet, but will be soon._
     + __`_layouts`__
     + __`subPages`__
         + Any sub-directory pages go here. 
+        + Note: This directory is automatically removed on development, production, and deploy.
+            * Example: In your app directory you have a file in `subPages/magic/show.html` in the dist directory it would be `magic/show.html`
 + __Assets__
     + __`_root`__
         + All root assets go in this folder which will automatically be injected into the projects root directory on `deploy` or `build` commands. 
