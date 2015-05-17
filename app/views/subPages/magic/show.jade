@@ -1,7 +1,19 @@
 extends ../../_layouts/main.jade
 
 block title
-  title Magig Show
+  title Magic Show
 
 block content
-  h1 Magic
+  .magic_Wrapper
+    .title
+      h1 It's <span> A Magic </span> Show
+    .gulpImg
+      img(src="../assets/images/gulp.png", alt="Gulp")
+    .bigBtn
+      #asyncBtn
+        .span
+        span Click To Async!
+        .span
+
+block script
+  script(type="application/javascript", src="../assets/js/main.js")

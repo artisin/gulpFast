@@ -225,3 +225,124 @@ twoLines = createButtronClass('twoLines', {
     }
   }
 })
+
+
+//--------------------------//
+//Cornors
+//-------------------------//
+_cornorColor = $sc
+cornors = createButtronClass('cornors', {
+  border-radius: 0px
+  component:{
+    span:{
+      z-index: 2
+    }
+    spanClass: {
+      selector: ".span"
+      first-child:{
+        position: absolute
+        top: 0
+        left: 0
+        right: 0
+        bottom: 0
+        height: 100%
+        width: 50%
+        before:{
+          content: "''"
+          position: absolute
+          top: 0
+          left: 0
+          right: 0
+          height: 0%
+          width: 0%
+          background: _cornorColor
+        },
+        after:{
+          content: "''"
+          position: absolute
+          left: 0
+          right: 0
+          bottom: 0
+          height: 0%
+          width: 0%
+          background: _cornorColor
+        }
+      }
+      last-child:{
+        position: absolute
+        top: 0
+        right: 0
+        bottom: 0
+        height: 100%
+        width: 50%
+        before:{
+          content: "''"
+          position: absolute
+          top: 0
+          right: 0
+          height: 0%
+          width: 0%
+          background: _cornorColor
+        },
+        after:{
+          content: "''"
+          position: absolute
+          right: 0
+          bottom: 0
+          height: 0%
+          width: 0%
+          background: _cornorColor
+        }
+      }
+    }
+  }
+})
+
+_cornorHover5 = {
+  hover:{
+    transition:{
+      body:{
+        background: $bg
+        color: _cornorColor
+      }
+      beforeFirst:{
+        applyTo: {
+          selector: '[class*="span"]:first-child:before'
+        }
+        width: 10px !important
+        height: 100% !important
+      }
+      afterFirst:{
+        applyTo: {
+          selector: '[class*="span"]:first-child:after'
+        }
+        width: 100% !important
+        height: 10px !important
+      }
+      beforeLast:{
+        applyTo: {
+          selector: '[class*="span"]:last-child:before'
+        }
+        width: 100% !important
+        height: 10px !important
+      }
+      afterLast:{
+        applyTo: {
+          selector: '[class*="span"]:last-child:after'
+        }
+        width: 10px !important
+        height: 100% !important
+      }
+    }
+  }
+  component:{
+    spanClass: {
+      first-child:{
+        width: 100%
+      }
+      last-child:{
+        width: 100%
+      }
+    }
+  }
+}

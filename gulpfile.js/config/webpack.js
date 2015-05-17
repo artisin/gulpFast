@@ -18,6 +18,7 @@ module.exports = function(env) {
     output: {
       path: jsDest,
       filename: env === 'production' ? '[name]-[hash].js' : '[name].js',
+      chunkFilename: "[id].chunk.js",
       publicPath: publicPath
     },
 
