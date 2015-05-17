@@ -9,17 +9,52 @@ var gulp         = require('gulp'),
     filter       = require('gulp-filter'),
     typographic  = require('typographic'),
     changed      = require('gulp-changed'),
-    config       = require('../config/stylus');
+    configStylus = require('../config/stylus'),
+    autoprefixer = require('autoprefixer-core'),
+    browserSync  = require('browser-sync'),
+    configPost   = require('../config/postCss'),
+    postcss      = require('gulp-postcss'),
+    cssnext      = require('cssnext'),
+    postEasings  = require('postcss-easings'),
+    gulpif       = require('gulp-if'),
+    postSize     = require('postcss-size'),
+    argv         = require('yargs').argv,
+    devel        = argv._[0] === undefined;
 
+/*-----------------------------*/
+/// Post Css
+/*-----------------------------*/
+gulp.task('postCss', ['stylus'], function () {
+    var processors = [
+        postSize,
+        postEasings,
+        cssnext,
+        autoprefixer({ browsers: ['last 2 version'] }),
+    ];
+    return gulp.src(configPost.src)
+        .pipe(postcss(processors))
+        .on('error', handleErrors)
+        .pipe(gulp.dest(configPost.dest))
+        //If we doing production we then need to make a second copy
+        //and put that into a seperate location so rev-css has
+        //some styles to work with
+        .pipe(gulpif(!devel, gulp.dest(configPost.compiled)))
+        .pipe(browserSync.reload({stream:true}));
+});
 
+/*-----------------------------*/
+/// Stylus
+/*-----------------------------*/
 gulp.task('stylus', function () {
-  return gulp.src(config.src)
+  return gulp.src(configStylus.src)
     //filter out partials (folders and files starting with "_" )
     .pipe(filter(function (file) {
-        return !/\/_/.test(file.path) || !/^_/.test(file.relative);
+       if (!/\/_/.test(file.path) || !/^_/.test(file.relative)) {
+        return file;
+       }
     }))
     //Only complie changes
-    .pipe(changed(config.dest, {
+    .pipe(changed(configStylus.dest, {
         extension: '.css',
         hasChanged: compareLastModifiedTime
     }))
@@ -28,7 +63,7 @@ gulp.task('stylus', function () {
         'include css': true,
     }))
     .on('error', handleErrors)
-    .pipe(gulp.dest(config.dest));
+    .pipe(gulp.dest(configStylus.dest));
 });
 
 
