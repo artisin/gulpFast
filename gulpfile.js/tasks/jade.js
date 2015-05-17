@@ -35,7 +35,7 @@ gulp.task('jade', ['compileJade'], function () {
       if(devel){
         return file;
       }else{
-        if (!(/\_/g).test(file.relative)) {
+        if (!(/\_|\-/g).test(file.relative)) {
           return file;
         }
       }
@@ -81,12 +81,14 @@ gulp.task('compileJade', function() {
     .on('error', handleErrors)
     //Remove subPages dirc 
     .pipe(rename(function (path) {
-      var newDir = path.dirname.replace('subPages', '');
+      var newDir = path.dirname.replace('subPages', '').slice(1);
       //On deploy to github remove all directories and hifenate them
+      //ex: magic/show.html to magic-show.html
       if (deploy) {
-        if (/(\\|\/)$|^(\\|\/)/.test(newDir)) {
+        if (newDir) {
           newDir = newDir.replace('/', '-');
-          path.basename = path.basename + newDir;
+          console.log(newDir)
+          path.basename = newDir + "-" + path.basename;
           newDir = '.';
         }
       }
