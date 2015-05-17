@@ -3,7 +3,7 @@ Go Fast - A Gulp Build Tool
 [![Build Status](https://travis-ci.org/artisin/goFast.svg?branch=master)](https://travis-ci.org/artisin/goFast)
 [![Dependency Status](https://gemnasium.com/artisin/goFast.svg)](https://gemnasium.com/artisin/goFast)
 ###Description
-This is a tailored build tool for front end development designed for speed and efficiency.
+This is a tailored build tool for front end development designed for speed and efficiency. I am still working on these docs, so hold on a min if that is what you are looking for.
 
 ###Usage
 _Note: This should all be pretty straight forward. If your confused on you might want to take a look at a beginner friendly build tool such as [Brunch](brunch.io)_
@@ -20,6 +20,8 @@ __Deployment to Github Pages__
 ```
 gulp deploy
 ```
+[Check It Out](http://artisin.github.io/goFast/)
+
 _Note_
 
 +  When using this option any folders/files in `subPages` will be automatically converted to use a hyphenated naming convention and put in the root directory. 
@@ -56,6 +58,7 @@ gulp build
     + Css
     + Js
     + Html
++ Karma (for test)
 + Automatic Hash Name Revision
 + Error handling and Desktop Notifications
 + BrowserSync (for live reloading and a static server)
