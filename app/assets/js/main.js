@@ -1,7 +1,9 @@
 var exclaimify = require('./exclaimify');
+console.log(exclaimify('main.js loaded'));
 
-console.log(exclaimify('app.js loaded'));
+require('./pages/home');
 
+// /app/assets/js/pages/home.js
 // let button = document.getElementById('button');
 
 // let alertAsyncMessage = function() {
@@ -12,7 +14,6 @@ console.log(exclaimify('app.js loaded'));
 //   })
 // }
 
-console.log('asset references liks this one:');
-console.log('assets/images/gulp.png');
+
 
 // button.addEventListener('click', alertAsyncMessage)
