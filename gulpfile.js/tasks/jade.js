@@ -36,7 +36,6 @@ gulp.task('jade', ['compileJade'], function () {
         return file;
       }else{
         if (!(/\_/g).test(file.relative)) {
-          console.log(file)
           return file;
         }
       }
@@ -82,7 +81,6 @@ gulp.task('compileJade', function() {
     .on('error', handleErrors)
     //Remove subPages dirc 
     .pipe(rename(function (path) {
-      // console.log(arguments)
       var newDir = path.dirname.replace('subPages', '');
       //On deploy to github remove all directories and hifenate them
       if (deploy) {
