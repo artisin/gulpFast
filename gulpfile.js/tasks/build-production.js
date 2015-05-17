@@ -2,6 +2,8 @@ var gulp         = require('gulp'),
     gulpSequence = require('gulp-sequence'),
     colors       = require('colors'),
     del          = require('del'),
+    argv         = require('yargs').argv,
+    deploy       = argv._[0] === 'deploy',
     config       = require('../config');
 
 
@@ -15,7 +17,7 @@ gulp.task('build', function(cb) {
     'rev', 
     'cleanTemp', 
     'complete', 
-    cb)
+    cb);
 });
 
 gulp.task('cleanTemp', function (cb) {
@@ -29,6 +31,9 @@ gulp.task('complete', function() {
   console.log('Project Succsess.'.bold.bgRed);
   console.log('Project Succsess.'.bold.bgWhite);
   console.log('Project Succsess.'.bold.bgBlue);
-  process.exit();
+  if (!deploy) {
+    //Exit gulp
+    process.exit();
+  }
 });
 

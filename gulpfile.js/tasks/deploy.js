@@ -8,5 +8,7 @@ gulp.task('deploy', ['build'], function() {
     .pipe(ghPages())
     .on('end', function(){
       open(config.url());
+      //Exit gulp
+      process.exit();
     });
 });
