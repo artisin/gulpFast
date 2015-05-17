@@ -19,8 +19,6 @@ var browserSync     = require('browser-sync'),
 
 
 gulp.task('jade', ['compileJade'], function () {
-  console.log(argv._[0])
-  console.log(argv._[0] === undefined)
   var target = gulp.src(config.injectJade);
   // It's not necessary to read the files (will speed up things), we're only after their paths
   var global = gulp.src([
