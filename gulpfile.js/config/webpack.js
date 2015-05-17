@@ -1,7 +1,7 @@
-var path            = require('path')
-var paths           = require('./')
-var webpack         = require('webpack')
-var webpackManifest = require('../lib/webpackManifest')
+var path            = require('path'),
+    paths           = require('./'),
+    webpack         = require('webpack'),
+    webpackManifest = require('../lib/webpackManifest');
 
 module.exports = function(env) {
   var jsSrc = path.resolve(paths.sourceAssets + '/js'),
