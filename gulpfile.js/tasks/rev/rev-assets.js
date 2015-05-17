@@ -5,6 +5,7 @@ var gulp       = require('gulp'),
     concatCss  = require('gulp-concat-css'),
     del        = require('del'),
     override   = require('gulp-rev-css-url'),
+    filter     = require('gulp-filter'),
     config     = require('../../config');
 
 
@@ -26,9 +27,35 @@ gulp.task('removeOldCss', function (cb) {
   ], cb);
 });
 
-//Concat css into one file
-gulp.task('concatCss', ['removeOldCss'], function(){
+//Extracts shared css that the user want to be seperate 
+gulp.task('extractSharedCss', ['removeOldCss'], function () {
   return gulp.src(config.publicTemp + "/compiled/**/*.css")
+  .pipe(filter(function (file) {
+    var name = file.relative;
+    //Find files with shared in their name
+    if ((/(?=shared)/gi).test(name)){
+      //If the file does not have - or _ add to styles
+      if (!(/(\_|\-)/gi).test(name)){
+        return file;
+      }
+    }
+  }))
+  .pipe(gulp.dest(config.publicAssets + '/styles'));
+});
+
+//Concat specified css files into one
+gulp.task('concatCss', ['extractSharedCss'], function(){
+  return gulp.src(config.publicTemp + "/compiled/**/*.css")
+    .pipe(filter(function (file) {
+      var name = file.relative;
+      //Find files with shared in their name
+      if ((/(?=shared)/gi).test(name)){
+        //If the file does have - or _ concat
+        if ((/(\_|\-)/gi).test(name)){
+          return file;
+        }
+      }
+    }))
     .pipe(concatCss('shared.css'))
     .pipe(gulp.dest(config.publicAssets + '/styles'));
 });
