@@ -1,7 +1,7 @@
 {
-  "assets/js/app.js": "assets/js/app-7de734f6f7606ffe0cc0.js",
-  "assets/js/vendor.js": "assets/js/vendor-7de734f6f7606ffe0cc0.js",
-  "assets/js/shared.js": "assets/js/shared-7de734f6f7606ffe0cc0.js",
+  "assets/js/vendor.js": "assets/js/vendor-3ffcd5a03b59cb1227c6.js",
+  "assets/js/main.js": "assets/js/main-3ffcd5a03b59cb1227c6.js",
+  "assets/js/shared.js": "assets/js/shared-3ffcd5a03b59cb1227c6.js",
   "fonts/OpenSans-Regular-webfont.woff2": "fonts/OpenSans-Regular-webfont-d4231ba7.woff2",
   "fonts/OpenSans-Regular-webfont.woff": "fonts/OpenSans-Regular-webfont-9f97f6d5.woff",
   "fonts/OpenSans-Regular-webfont.eot": "fonts/OpenSans-Regular-webfont-227e7245.eot",
@@ -13,11 +13,11 @@
   "fonts/OpenSans-Bold-webfont.svg": "fonts/OpenSans-Bold-webfont-fc16469d.svg",
   "fonts/OpenSans-Bold-webfont.ttf": "fonts/OpenSans-Bold-webfont-a3e7019a.ttf",
   "styles/shared.css.map": "styles/shared.css-b0793e0e.map",
-  "styles/shared.css": "styles/shared-644edff9.css",
-  "fonts/icons.woff": "fonts/icons-e4d4121f.woff",
+  "styles/shared.css": "styles/shared-a4441158.css",
+  "fonts/icons.woff": "fonts/icons-f589dc90.woff",
   "images/magic.png": "images/magic-2352757e.png",
-  "fonts/icons.eot": "fonts/icons-b9af2a3d.eot",
+  "fonts/icons.eot": "fonts/icons-9fa9f0a1.eot",
   "fonts/icons.svg": "fonts/icons-847ad039.svg",
-  "fonts/icons.ttf": "fonts/icons-5629380b.ttf",
+  "fonts/icons.ttf": "fonts/icons-a21d56ef.ttf",
   "images/gulp.png": "images/gulp-743c01b8.png"
 }
