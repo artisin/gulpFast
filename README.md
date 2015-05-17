@@ -100,3 +100,6 @@ __Underscore folders/files__
 Any file of folder with an underscore prefix (`_`) will be ignored and not compiled directly into your project. For example, lets consider the `.styl` files, there is no reason to have these files and or folders compiled into your project considering we have a `shared.styl` file in which we define all our imports imports. Nevertheless, there are times when you want or need to have various `.styl` file compiled separately, and this methodology give you a convenient and easy way to do so.  
 
 
+__Asset Injection__
+Any `css` or `js` file with `shared` at the beginning of its name will be automatically injected into your project. Although, upon a `build` or `delpoy` command any `css` file with the a `-` or `_` in its name will not be injected into your project but rather concatenated with your main `shared.styl` file. For example: the file `shared_Buttons.styl` during development will be injected into your project as a seperate file, although, it will be concatenated durring production. However, a file such as `sharedColors.styl` will not be concatenated during production and injected as a seperate asset.
+
