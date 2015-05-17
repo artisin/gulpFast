@@ -28,32 +28,41 @@ gulp.task('removeOldCss', function (cb) {
 });
 
 //Extracts shared css that the user want to be seperate 
+var seperateFiles = [];
 gulp.task('extractSharedCss', ['removeOldCss'], function () {
   return gulp.src(config.publicTemp + "/compiled/**/*.css")
-  .pipe(filter(function (file) {
-    var name = file.relative;
-    //Find files with shared in their name
-    if ((/(?=shared)/gi).test(name)){
-      //If the file does not have - or _ add to styles
-      if (!(/(\_|\-)/gi).test(name)){
-        return file;
+    .pipe(filter(function (file) {
+      var name = file.relative;
+      //Filter out shared.css
+      if (file.relative !== 'shared.css'){
+        //Find files with shared in their name
+        if ((/(?=shared)/gi).test(name)){
+          //If the file does not have _ add to styles
+          if (!(/(\_)/gi).test(name)){
+            //Push file ref into array
+            seperateFiles.push(file.relative);
+            return file;
+          }
+        }
       }
-    }
-  }))
-  .pipe(gulp.dest(config.publicAssets + '/styles'));
+    }))
+    .pipe(gulp.dest(config.publicAssets + '/styles'))
 });
 
 //Concat specified css files into one
 gulp.task('concatCss', ['extractSharedCss'], function(){
   return gulp.src(config.publicTemp + "/compiled/**/*.css")
+    //Filters out files that where inject seperatly since we
+    //dont need to concat them
     .pipe(filter(function (file) {
-      var name = file.relative;
-      //Find files with shared in their name
-      if ((/(?=shared)/gi).test(name)){
-        //If the file does have - or _ concat
-        if ((/(\_|\-)/gi).test(name)){
-          return file;
+       var concat = true;
+       seperateFiles.forEach(function (sFile) {
+        if(sFile === file.relative){
+          concat = false;
         }
+      });
+      if(concat){
+        return file;
       }
     }))
     .pipe(concatCss('shared.css'))
