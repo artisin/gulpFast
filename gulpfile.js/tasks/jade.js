@@ -43,10 +43,8 @@ gulp.task('jade', ['compileJade'], function () {
           return file;
         }
       }
-    };
+    }
   }));
-  
-
   return target
     .pipe(inject(global ,{
       relative: true,
