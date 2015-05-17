@@ -1,1 +1,25 @@
-{"assets/js/vendor.js":"assets/js/vendor-e6972d8f9e7de345c271.js","assets/js/main.js":"assets/js/main-e6972d8f9e7de345c271.js","assets/js/shared.js":"assets/js/shared-e6972d8f9e7de345c271.js"}
+{
+  "assets/js/vendor.js": "assets/js/vendor-e6972d8f9e7de345c271.js",
+  "assets/js/main.js": "assets/js/main-e6972d8f9e7de345c271.js",
+  "assets/js/shared.js": "assets/js/shared-e6972d8f9e7de345c271.js",
+  "fonts/OpenSans-Regular-webfont.woff2": "fonts/OpenSans-Regular-webfont-d4231ba7.woff2",
+  "fonts/OpenSans-Regular-webfont.woff": "fonts/OpenSans-Regular-webfont-9f97f6d5.woff",
+  "fonts/OpenSans-Regular-webfont.ttf": "fonts/OpenSans-Regular-webfont-321aa799.ttf",
+  "fonts/OpenSans-Regular-webfont.svg": "fonts/OpenSans-Regular-webfont-f9859eda.svg",
+  "fonts/OpenSans-Regular-webfont.eot": "fonts/OpenSans-Regular-webfont-227e7245.eot",
+  "fonts/OpenSans-Bold-webfont.woff2": "fonts/OpenSans-Bold-webfont-8b4a0872.woff2",
+  "fonts/OpenSans-Bold-webfont.woff": "fonts/OpenSans-Bold-webfont-417f2b69.woff",
+  "fonts/OpenSans-Bold-webfont.ttf": "fonts/OpenSans-Bold-webfont-a3e7019a.ttf",
+  "fonts/OpenSans-Bold-webfont.eot": "fonts/OpenSans-Bold-webfont-71ed5feb.eot",
+  "fonts/OpenSans-Bold-webfont.svg": "fonts/OpenSans-Bold-webfont-fc16469d.svg",
+  "styles/sharedTest.css.map": "styles/sharedTest.css-a4e7187b.map",
+  "styles/shared.css.map": "styles/shared.css-cacc20e4.map",
+  "styles/sharedTest.css": "styles/sharedTest-e323ddd3.css",
+  "styles/shared.css": "styles/shared-49ceba19.css",
+  "images/magic.png": "images/magic-2352757e.png",
+  "fonts/icons.woff": "fonts/icons-e0d34c07.woff",
+  "images/gulp.png": "images/gulp-743c01b8.png",
+  "fonts/icons.eot": "fonts/icons-93484a78.eot",
+  "fonts/icons.svg": "fonts/icons-847ad039.svg",
+  "fonts/icons.ttf": "fonts/icons-4bbb0122.ttf"
+}
