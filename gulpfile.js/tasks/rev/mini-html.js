@@ -3,7 +3,7 @@ var gulp    = require('gulp'),
     config  = require('../../config');
 
 gulp.task('mini-html', function() {
-  return gulp.src(config.publicDirectory+'/*.html')
+  return gulp.src(config.publicDirectory+'/**/*.html')
     .pipe(htmlmin({
       collapseWhitespace: true,
       removeComments: true
