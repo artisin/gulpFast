@@ -1,0 +1,68 @@
+//Name Styles
+_artisinC1 = alpha(#003E4F, 0.95);
+_artisinC2 = alpha(#14B5B4, 0.95);
+_artisinC3 = alpha(#CC2649, 0.85)
+.artisin
+  // opacity: 0.75 
+  position: fixed
+  bottom: 0
+  left: 0
+  width: 200px
+  padding: 2px 4px
+  text-align: center
+  font-family: monospace
+  font-weight bold
+  border-radius: 3px  
+  border: 2px solid rgba(0, 0, 0, 0.1)
+  background-color: #F4F4F4
+  span:first-child
+    span:first-child
+      color: _artisinC1
+    span:nth-child(2)
+      color: lighten(_artisinC1, 4%)
+    span:nth-child(3)
+      color: _artisinC3
+    span:nth-child(4)
+      color: lighten(_artisinC1, 8%)
+    span:nth-child(5)
+      color: lighten(_artisinC1, 12%)
+  span:nth-child(2)
+    span:nth-child(1)
+      color: _artisinC2
+    span:nth-child(2)
+      color: lighten(_artisinC2, 2%)
+    span:nth-child(3)
+      color: lighten(_artisinC2, 4%)
+    span:nth-child(4)
+      color: lighten(_artisinC2, 6%)
+    span:nth-child(5)
+      color: lighten(_artisinC2, 8%)
+    span:nth-child(6)
+      color: lighten(_artisinC2, 10%)
+    span:nth-child(7)
+      color: lighten(_artisinC2, 12%)
+  span:last-child
+    color: lighten(_artisinC1, 16%)
+    
+//Git
+.git
+  position: fixed
+  top: 0
+  right: 0
+  font-size: 2em
+  padding: 10px
+  text-decoration: none;
+  transition: all 0.4s ease-in-out;
+  &:hover
+    transition: all 0.4s ease-in-out;
+    background: $sc
+    border-radius: 50%
+    cursor: pointer
+    a
+      transition: all 0.4s ease-in-out;
+      color: $pc
+  a
+    text-decoration: none;
+    color: $gray()
+    transition: all 0.4s ease-in-out;
+    
