@@ -1,7 +1,6 @@
-var config = require('./')
-var karmaWebpack = require('karma-webpack')
-var webpackConfig = require('./webpack')('test')
-var path            = require('path')
+var config        = require('./'),
+    webpackConfig = require('./webpack')('test'),
+    path          = require('path');
 
 module.exports = {
   frameworks: ['mocha', 'sinon-chai'],

@@ -1,6 +1,6 @@
 {
   "name": "goFast",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "A Gulp Build Tool To Help You Go Fast",
   "engines": {
     "node": "0.10.36",
@@ -57,6 +57,8 @@
     "gulp-cssnano": "^1.0.0",
     "postcss-easings": "^0.2.0",
     "postcss-size": "^0.2.0",
+    "postcss-default-unit": "^0.0.5",
+    "postcss-focus": "^0.1.1",
     "git-repo-name": "^0.3.1",
     "git-username": "^0.4.0",
     "yargs": "^3.7.2",
