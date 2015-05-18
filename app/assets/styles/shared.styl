@@ -1,5 +1,21 @@
-//Global
+//Settings/Plugins
+ks-no-conflict = true
+@import "kouto-swiss"
+@import 'lost';
+//Lost Settings
+$flexbox = true;
+$gutter = 30px
+$rtl = false
+@import 'typographic';
+//Resets
+//Corysimmons/boy reset
+//to gell with lost and typographic
+@import '_base/reset/reset.css'
+ks-box-sizing-reset()
+ks-normalize()
+//Globals
 @import '_global'
+
 //Component Styles
 @import '_components/*'
 //Page Styles
