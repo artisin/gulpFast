@@ -12,6 +12,8 @@ gulp.task('rev', function(cb) {
     //reason revReplace will not overwrite the css file and the old
     //name reffrence is used in the css rather than the new
     'rev-assets',
+    //Manually hash EOT, TTF, and WOFF icon files
+    'rev-iconfont',
     //Update asset references with reved filenames in compiled js
     'rev-update-references',
     //Update asset references in HTML

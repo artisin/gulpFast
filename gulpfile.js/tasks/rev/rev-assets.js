@@ -6,13 +6,15 @@ var gulp       = require('gulp'),
     del        = require('del'),
     override   = require('gulp-rev-css-url'),
     filter     = require('gulp-filter'),
+    fontConfig = require('../../config/iconFont'),
     config     = require('../../config');
 
 
 gulp.task('rev-assets', ['miniCss'], function(){
   var pub = config.publicAssets + '/**/*',
-      ignore = '!' + config.publicAssets+ '/**/*+(js|json|html|txt|xml)';
-  return gulp.src([pub, ignore])
+      ignore = '!' + config.publicAssets+ '/**/*+(js|json|html|txt|xml)',
+      ignoreFont = '!' + fontConfig.dest + '/' + fontConfig.options.fontName + '.{eot,woff,woff2,ttf}';
+  return gulp.src([pub, ignore, ignoreFont])
     .pipe(rev())
     .pipe(override())
     .pipe(gulp.dest(config.publicAssets))
