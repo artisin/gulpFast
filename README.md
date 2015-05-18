@@ -38,8 +38,7 @@ _Note_
 +  When using this option any folders/files in `subPages` will be automatically converted to use a hyphenated naming convention and put in the root directory. 
     +   For example if the file path is: `subPages/magic/show.html` it will be converted to `magic-show.html` and placed in the root. So for your link you would need to use the following convention `./magic-show`
 
-##### Includes the following tools
-+ [Gulp](https://github.com/gulpjs/gulp)
+##### Includes the following
 + [HTML5 Boilerplate](https://html5boilerplate.com/)
 + [Modernizr](http://modernizr.com/)
 + Conditionally loaded [Selectivizr](http://selectivizr.com/) for IE6-8 CSS3 selectors
