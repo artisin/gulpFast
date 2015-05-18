@@ -1,13 +1,23 @@
 //Production links
-- var links = {home: '/index.html', color: '/color.html', magic: '/magic/show.html' };
+- var links   = {};
+- links.home  ='/index.html';
+- links.color ='/color.html';
+- links.type  ='/type.html';
+- links.magic ='/magic/show.html';
 //Deploy links
-//- - var links = {home: './', color: './color.html', magic: './magic-show.html' };
+//- - var links   = {};
+//- - links.home  ='./';
+//- - links.color ='./color.html';
+//- - links.type  ='./type.html';
+//- - links.magic ='./magic-show.html';
 
 nav
   ul
     li.navLink
       a(href=links.home) Home
     li.navLink
-      a(href=links.color) Colors
+      a(href=links.color) Color
+    li.navLink
+      a(href=links.type) Type
     li.navLink
       a(href=links.magic) Magic
