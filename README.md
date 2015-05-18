@@ -64,7 +64,9 @@ _Note_
     * [autoprefixer](https://github.com/postcss/autoprefixer-core)
 + [WebPack](http://webpack.github.io/)
 + [Babel](babeljs.io)
-+ [Karma](http://karma-runner.github.io/0.12/index.html) (for test)
++ [Karma](http://karma-runner.github.io/0.12/index.html)
+    * [Mocha](http://mochajs.org/) 
+    * [Sinon-chai](https://github.com/domenic/sinon-chai)
 + [BrowserSync](http://www.browsersync.io/) (for live reloading and a static server)
 + Minification
     * [Images](https://www.npmjs.com/package/gulp-imagemin)
@@ -105,7 +107,8 @@ _Not set in stone yet, but will be soon._
         + For optimal results use a `unicode` prefix for the file name. For example `uE001-facbook.svg` the following generated `class` you could then use in your `html` via `.icon.-facebook`
     + __`images`__
         + Any image put in this folder will automatically be compressed
-    + __`js`__ (JavaScript goes here)
+    + __`js`__
+        * This is where your `javascript` files will be located. And as of right now I still have not decided on a finial structure, although, everything should be self explanatory.
     + __`stlyes`__
         + This is where your `stylus` files will be located. And as of right now I still have not decided on a finial structure, although, everything should be self explanatory. 
 
