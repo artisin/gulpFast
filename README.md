@@ -7,7 +7,7 @@
 This is a tailored build tool for front end development designed for speed and efficiency. I am still working on these docs, so hold on a minute if that is what you are looking for.
 
 ###Usage
-_Note: This should all be pretty straight forward. If your ultra confused on what is going on you might want to take a look at a beginner friendly option such as [Brunch](brunch.io)_
+_Note: This should all be pretty straight forward. If your confused with whats going on you might want to take a look at a beginner friendly option such as [Brunch](brunch.io)_
 ####Install Dependencies
 ```
 npm install
@@ -68,7 +68,7 @@ _Note_
 + [Karma](http://karma-runner.github.io/0.12/index.html)
     * [Mocha](http://mochajs.org/) 
     * [Sinon-chai](https://github.com/domenic/sinon-chai)
-+ [BrowserSync](http://www.browsersync.io/) (for live reloading and a static server)
++ [BrowserSync](http://www.browsersync.io/) (live reloading)
 + Minification
     * [Images](https://www.npmjs.com/package/gulp-imagemin)
     * Gzipped Assets (on production)
