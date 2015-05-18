@@ -78,7 +78,7 @@ _Note_
 + [Static asset revisioning](https://github.com/sindresorhus/gulp-rev)
 + [Error handling and Desktop Notifications](https://github.com/mikaelbr/gulp-notify)
 + Automatic [Asset Injection](https://github.com/klei/gulp-inject)
-+ Automatic Deployment to github
++ Automatic [Deployment to github](https://github.com/shinnn/gulp-gh-pages)
     * Via `gulp deploy`
 + Automatic root asset deployment on production
 + If you think I should add something else just drop me a line.
