@@ -121,7 +121,7 @@ Any `css` or `js` file with `shared` at the beginning of its name will be automa
 ##Thanks
 + [gulp](http://gulpjs.com/)
 + [gulp-starter](https://github.com/greypants/gulp-starter) for the jump start.
-+ @[corysimmons](https://github.com/corysimmons) lots of love, for all your work with girds.
++ [@corysimmons](https://github.com/corysimmons) lots of love, for all your work with girds.
 + And thanks to all the developers whos packages made this possible.
 
 ##License
