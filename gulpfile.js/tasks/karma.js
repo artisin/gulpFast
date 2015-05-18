@@ -13,6 +13,6 @@ var karmaTask = function(done) {
   });
 };
 
-gulp.task('karma', karmaTask);
+gulp.task('test', karmaTask);
 
 module.exports = karmaTask;

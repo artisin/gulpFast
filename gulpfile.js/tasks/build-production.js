@@ -10,7 +10,7 @@ var gulp         = require('gulp'),
 gulp.task('build', function(cb) {
   process.env.NODE_ENV = 'production';
   gulpSequence(
-    'karma',
+    'test',
     'clean', 
     ['fonts', 'images', 'iconFont'], 
     ['postCss', 'webpack:production'],
