@@ -153,6 +153,19 @@ _twoLinesStyle1 = {
           delay: 1s
         }
       }
+      before:{
+        hover:{
+          background: alpha($sc, 0.9)
+          root: true
+          transform: scale(1.2)
+          options:{
+            shorthand:{
+              background: 0.5s ease-in 0.5s
+              transform: 0.5s ease-in 0.5s
+            }
+          }
+        }
+      }
       after:{
         transform: scale(0.5)
         hover:{
