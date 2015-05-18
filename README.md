@@ -1,4 +1,5 @@
-##Go Fast - A Gulp Build Tool (Jade, Stylus[_with the all the goods_], PostCss, Webpack, Babel, Karma, BrowserSync)
+#Go Fast - A Gulp Build Tool
+####Jade, Stylus(_with the all the goods_), PostCss, Webpack, Babel, Karma, BrowserSync
 
 [![Build Status](https://travis-ci.org/artisin/goFast.svg?branch=master)](https://travis-ci.org/artisin/goFast)
 [![Dependency Status](https://gemnasium.com/artisin/goFast.svg)](https://gemnasium.com/artisin/goFast)
