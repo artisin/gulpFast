@@ -7,7 +7,12 @@ var browserSync = require('browser-sync'),
 gulp.task('images', function() {
   return gulp.src(config.src)
     .pipe(changed(config.dest)) // Ignore unchanged files
-    .pipe(imagemin()) // Optimize
+     // Optimize
+    .pipe(imagemin({
+      optimizationLevel: 3,
+      progressive: true,
+      interlaced: true
+    }))
     .pipe(gulp.dest(config.dest))
     .pipe(browserSync.reload({stream:true}));
 });
