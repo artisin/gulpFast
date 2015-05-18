@@ -1,16 +1,33 @@
 //Settings/Plugins
+ks-no-conflict = true
+@import "kouto-swiss"
+@import 'lost';
+//Lost Settings
+$flexbox = true;
+$gutter = 30px
+$rtl = false
 @import 'rupture';
-
-//Mixins
-@import '_base/mixins/*'
+@import 'typographic';
+//Resets
+//Corysimmons/boy reset
+//to gell with lost and typographic
+@import '_base/reset/reset.css'
+ks-box-sizing-reset()
+ks-normalize()
 //Base
 @import '_base/*'
+//Mixins
+@import '_base/mixins/*'
 //Generated Icons
 @import '_generated/*'
 
 //Defualt bg
 body
   background: $bg
+  transition: background 1s ease-in-out;
+  +below(700px)
+    transition: background 1s ease-in-out;
+    background: alpha(lighten($sc-spc[1], 70%), 0.75)
 
 //code styl
 code
