@@ -117,8 +117,13 @@ Any file of folder with an underscore prefix (`_`) will be ignored and not compi
 
 
 #####Asset Injection
-Any `css` or `js` file with `shared` at the beginning of its name will be automatically injected into your project. Although, upon a `build` or `delpoy` command any `css` file with the a `-` or `_` in its name will not be injected into your project but rather concatenated with your main `shared.styl` file. For example: the file `shared_Buttons.styl` during development will be injected into your project as a seperate file, although, it will be concatenated durring production. However, a file such as `sharedColors.styl` will not be concatenated during production and injected as a seperate asset.
+Any `css` or `js` file with `shared` at the beginning of its name will be automatically injected into your project. Although, upon a `build` or `delpoy` command any `css` file with the an underscore (`_`) in its name will not be injected into your project but rather concatenated with your main `shared.styl` file. For example: the file `shared_Buttons.styl` during development will be injected into your project as a seperate file, although, it will be concatenated durring production. However, a file such as `sharedColors.styl` will not be concatenated during production and injected as a seperate asset.
 
+##Thanks
++ [gulp](http://gulpjs.com/)
++ [gulp-starter](https://github.com/greypants/gulp-starter) for the jump start.
++ @[corysimmons](https://github.com/corysimmons) lots of love, for all your work with girds.
++ And thanks to all the developers whos packages made this possible.
 
 ##License
 The MIT License (MIT)
