@@ -1,6 +1,6 @@
 {
   "name": "gulpFast",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "A Gulp Build Tool To Help You Go Fast",
   "engines": {
     "node": "0.10.36",
