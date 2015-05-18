@@ -53,7 +53,8 @@ _Note_
     * [Rupture](http://jenius.github.io/rupture/)
     * [Typographic](https://github.com/corysimmons/typographic)
     * [Kouto-swiss](kouto-swiss.io)
-    * Buttron (_docs coming soon_)
+    * Buttron
+        - Those mystical button styles in the `shared_Buttons.styl` that created the magical buttons used in this project. Well don't you fret soon you too will be able to wield the unworldly power of Buttron. Wrighting the docs are next up on the docket. Stay tuned.
     * Various Custom Mixin's
 + [PostCss](https://github.com/postcss/postcss)
     * [cssnext](https://cssnext.github.io/)
