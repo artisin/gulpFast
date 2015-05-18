@@ -119,3 +119,26 @@ Any file of folder with an underscore prefix (`_`) will be ignored and not compi
 #####Asset Injection
 Any `css` or `js` file with `shared` at the beginning of its name will be automatically injected into your project. Although, upon a `build` or `delpoy` command any `css` file with the a `-` or `_` in its name will not be injected into your project but rather concatenated with your main `shared.styl` file. For example: the file `shared_Buttons.styl` during development will be injected into your project as a seperate file, although, it will be concatenated durring production. However, a file such as `sharedColors.styl` will not be concatenated during production and injected as a seperate asset.
 
+
+##License
+The MIT License (MIT)
+
+Copyright (c) 2015
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
