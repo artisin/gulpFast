@@ -15,7 +15,9 @@ var gulp         = require('gulp'),
     configPost   = require('../config/postCss'),
     postcss      = require('gulp-postcss'),
     cssnext      = require('cssnext'),
+    postFocus    = require('postcss-easings'),
     postEasings  = require('postcss-easings'),
+    postDefault  = require('postcss-default-unit'),
     gulpif       = require('gulp-if'),
     postSize     = require('postcss-size'),
     argv         = require('yargs').argv,
@@ -26,9 +28,11 @@ var gulp         = require('gulp'),
 /*-----------------------------*/
 gulp.task('postCss', ['stylus'], function () {
     var processors = [
+        cssnext,
+        postDefault,
         postSize,
         postEasings,
-        cssnext,
+        postFocus,
         autoprefixer({ browsers: ['last 2 version'] }),
     ];
     return gulp.src(configPost.src)
