@@ -1,15 +1,14 @@
-// var exclaimify = require('./../exclaimify');
-// // let button = document.getElementById('asyncBtn');
+var exclaimify = require('./../exclaimify');
+
+//webpack magic, with named chunks
+require.ensure([], function(require) {
+  const magic = require("./../components/magicChunk");
+  if (magic.button) {
+    let alertAsyncMessage = function() {
+      alert(exclaimify(magic.message));
+    };
+    magic.button.addEventListener('click', alertAsyncMessage);
+  }
+}, 'magic');
 
 
-// let alertAsyncMessage = function() {
-//   // CommonJS async syntax webpack magic
-//   require.ensure([], function(require) {
-//     // var message = require("./../components/asyncMessage")
-//     console.log('Reading the docs on this.')
-//     // alert(exclaimify(message))
-//   })
-// }
-
-
-// // button.addEventListener('click', alertAsyncMessage);

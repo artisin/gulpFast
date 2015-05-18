@@ -1,3 +1,5 @@
+//On deployment to git remeber this file will be in the root so your
+//assets need to reflect that
 extends ../../_layouts/main.jade
 
 block title
@@ -16,4 +18,5 @@ block content
         .span
 
 block script
+  script(type="application/javascript", src="../assets/js/magic.chunk.js")
   script(type="application/javascript", src="../assets/js/main.js")
