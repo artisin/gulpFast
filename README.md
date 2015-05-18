@@ -1,8 +1,8 @@
-#Go Fast - A Gulp Build Tool
+#Gulp Fast - A Gulp Build Tool
 ####Jade, Stylus(_with the all the goods_), PostCss, Webpack, Babel, Karma, BrowserSync
 
-[![Build Status](https://travis-ci.org/artisin/goFast.svg?branch=master)](https://travis-ci.org/artisin/goFast)
-[![Dependency Status](https://gemnasium.com/artisin/goFast.svg)](https://gemnasium.com/artisin/goFast)
+[![Build Status](https://travis-ci.org/artisin/gulpFast.svg?branch=master)](https://travis-ci.org/artisin/gulpFast)
+[![Dependency Status](https://gemnasium.com/artisin/gulpFast.svg)](https://gemnasium.com/artisin/gulpFast)
 ###Description
 This is a tailored build tool for front end development designed for speed and efficiency. I am still working on these docs, so hold on a minute if that is what you are looking for.
 
