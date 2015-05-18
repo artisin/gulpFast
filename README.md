@@ -31,7 +31,7 @@ __Deployment to Github Pages__
 ```
 gulp deploy
 ```
-[Check It Out](http://artisin.github.io/goFast/)
+[Check It Out](http://artisin.github.io/gulpFast/)
 
 _Note_
 
