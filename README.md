@@ -67,11 +67,12 @@ _Note_
 + [Karma](http://karma-runner.github.io/0.12/index.html) (for test)
 + [BrowserSync](http://www.browsersync.io/) (for live reloading and a static server)
 + Minification
-    + [Images](https://www.npmjs.com/package/gulp-imagemin)
-    + Gzipped Assets (on production)
-    + [Sourcemaps](https://www.npmjs.com/package/gulp-sourcemaps) (on production for js and css)
-    + [Html](https://github.com/jonschlinkert/gulp-htmlmin) (on production)
+    * [Images](https://www.npmjs.com/package/gulp-imagemin)
+    * Gzipped Assets (on production)
+    * [Sourcemaps](https://www.npmjs.com/package/gulp-sourcemaps) (on production for js and css)
+    * [Html](https://github.com/jonschlinkert/gulp-htmlmin) (on production)
 + [IconFont](https://github.com/nfroidure/gulp-iconfont) (Create a SVG/TTF/EOT/WOFF font from several SVG icons)
+    * With auto generation of `styl` classes 
 + [Static asset revisioning](https://github.com/sindresorhus/gulp-rev)
 + [Error handling and Desktop Notifications](https://github.com/mikaelbr/gulp-notify)
 + Automatic Asset Injection
