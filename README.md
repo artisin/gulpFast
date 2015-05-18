@@ -7,7 +7,7 @@
 This is a tailored build tool for front end development designed for speed and efficiency. I am still working on these docs, so hold on a minute if that is what you are looking for.
 
 ###Usage
-_Note: This should all be pretty straight forward. If your confused with whats going on you might want to take a look at a beginner friendly option such as [Brunch](brunch.io)_
+_Note: This should all be pretty straight forward. If your confused with whats going on you might want to take a look at a beginner friendly option such as [Brunch](http://brunch.io/)_
 ####Install Dependencies
 ```
 npm install
