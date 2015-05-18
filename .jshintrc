@@ -89,10 +89,9 @@
 
     // Custom Globals
     "globals"       : {
-        "Require": false, 
-        "Npm": false,
-        "Random": false,
+        "require": false, 
+        "npm": false,
         "_": false,
-        "$": false,
+        "$": false
     }  
 }
