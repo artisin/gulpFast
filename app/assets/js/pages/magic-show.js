@@ -9,6 +9,7 @@ require.ensure([], function(require) {
     };
     magic.button.addEventListener('click', alertAsyncMessage);
   }
-}, 'magic');
+  //This will be the filename of the generated chunk so your 
+}, 'magic.chunk');
 
 
