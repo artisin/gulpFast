@@ -71,14 +71,13 @@ _Note_
 + [BrowserSync](http://www.browsersync.io/) (live reloading)
 + Minification
     * [Images](https://www.npmjs.com/package/gulp-imagemin)
-    * Gzipped Assets (on production)
     * [Sourcemaps](https://www.npmjs.com/package/gulp-sourcemaps) (on production for js and css)
     * [Html](https://github.com/jonschlinkert/gulp-htmlmin) (on production)
 + [IconFont](https://github.com/nfroidure/gulp-iconfont) (Create a SVG/TTF/EOT/WOFF font from several SVG icons)
     * With auto generation of `styl` classes 
 + [Static asset revisioning](https://github.com/sindresorhus/gulp-rev)
 + [Error handling and Desktop Notifications](https://github.com/mikaelbr/gulp-notify)
-+ Automatic Asset Injection
++ Automatic [Asset Injection](https://github.com/klei/gulp-inject)
 + Automatic Deployment to github
     * Via `gulp deploy`
 + Automatic root asset deployment on production
