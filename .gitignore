@@ -1,14 +1,10 @@
 .DS_Store
-.dist
 .public
-.publish/
+.publish
 .directory
-publish
 dist
 public
 private
-goFast.sublime-workspace
 Desktop.ini
 node_modules
 app/assets/stylesheets/generated
-goFast.sublime-project
