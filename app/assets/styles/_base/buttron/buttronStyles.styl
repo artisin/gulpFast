@@ -1,0 +1,369 @@
+//Base
+//--------------------------//
+//brackets
+//-------------------------//
+_bracketsFadeIn = {transform: 0.3s, opacity: 0.4s}
+_bracketsFadeOut = {transform: 0.4s, opacity: 0.2s}
+
+//daPolice
+_bracketsStyle4 = {
+  color: $sc
+  font-size: 1.5em
+  font-weight: bold
+  hover: {
+    anim:{
+      name: daPolice
+      count: infinite
+      duration: 0.75s
+      timeline:{
+        "25%":{
+          color: #ECF0F1
+        }
+        "75%":{
+          color: #2C3E50
+        }
+      }
+    }
+  }
+  component:{
+    span:{
+      before:{
+        color: $sc
+        top: -5px
+        border-top: 4px solid transparent
+        border-bottom: 5px solid $sc
+        hover:{
+          anim:{
+            name: daPoliceSides
+            count: infinite
+            duration: 0.75s
+            delay: 0.25s
+            timeline:{
+              "25%":{
+                color: #ECF0F1
+                top: -5px
+              }
+              "40%":{
+                top: -14px
+                border-color: #2C3E50
+              }
+              "75%":{
+                color: #2C3E50
+                top: -5px
+
+              }
+            }
+          }
+        }
+      }
+      after: {
+        color: $sc
+        top: -5px
+        border-top: 4px solid transparent
+        border-bottom: 5px solid $sc
+        hover:{
+          anim:{
+            override: true
+            name: daPoliceSides
+            count: infinite
+            duration: 0.75s
+            delay: 0.25s
+          }
+        }
+      }
+    }
+  }
+}
+
+brackets = createButtronClass('brackets',{
+  text-decoration: none
+  text-transform: uppercase
+  letter-spacing: 1px
+  font-weight: 400
+  text-shadow: "0 0 1px rgba(255,255,255,0.3)"
+  font-size: 1.35em
+  background: transparent
+  color: #7F8C8D
+  component:{
+    span:{
+      //Pseudo Elms
+      before:{
+        content: "'['"
+        position: absolute
+        left: 10%
+        top: -3px
+        opacity: 0
+        margin-right: 10px
+        font-size: 1.4em
+        transition: {
+          options:{
+            shorthand: _bracketsFadeOut
+          }
+        }
+        hover:{
+          transform: translateX(-20px)
+          opacity: 1
+          options:{
+            shorthand: _bracketsFadeIn
+          }
+        }
+      }
+      after:{
+        content: "']'"
+        position: absolute
+        right: 10%
+        top: -3px
+        opacity: 0
+        margin-left: 10px
+        font-size: 1.4em
+        transition: {
+          options:{
+            shorthand: _bracketsFadeOut
+          }
+        }
+        hover:{
+          transform: translateX(20px)
+          opacity: 1
+          options:{
+            shorthand: _bracketsFadeIn
+          }
+        }
+      }
+    }
+  }
+})
+
+
+
+
+
+//--------------------------//
+//Two Lines
+//-------------------------//
+
+_twoLinesStyle1 = {
+  globalOptions:{
+    delay: 0s
+  }
+  component:{
+    a: {
+      hover:{
+        color: $bg
+        options:{
+          delay: 1s
+        }
+      }
+      before:{
+        transition:{
+          options:{
+            shorthand:{
+              background: 0.5s ease-in 0s
+              transform: 0.5s ease-in 0s
+            }
+          }
+        }
+        hover:{
+          background: alpha($sc, 0.9)
+          root: true
+          transform: scale(1.2)
+          options:{
+            shorthand:{
+              background: 0.5s ease-in 0.5s
+              transform: 0.5s ease-in 0.5s
+            }
+          }
+        }
+      }
+      after:{
+        transform: scale(0.5)
+        hover:{
+          background: $pc
+          height: 40px
+          transform: "scale(1.2) translateY(30px)"
+          options:{
+            shorthand: {              
+              height: 0.5s ease-in-out 0.5s
+              bottom: 0.5s ease-in
+              transform: 0.5s ease-in 0.5s
+              opacity: 0.4s ease-in
+              background: 0.4s ease-in
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+
+twoLines = createButtronClass('twoLines', {
+  background: transparent
+  height: 40px
+  margin: 0
+  padding: 0
+  component:{
+    a:{
+      color: #666
+      position: absolute
+      top: 100%
+      width: 100%
+      top: 0
+      left: 0
+      before: {
+        content: "''"
+        position: absolute
+        background: rgba(0, 0, 0, 0.2)
+        height: 5px
+        width: 60%
+        left: 20%
+        bottom: 0
+        border-radius: 2px
+        hover:{
+          background: rgba(0, 0, 0, 0.3)
+          root: true
+          transform: scale(1.2)
+        }
+      }
+      after:{
+        content: "''"
+        position: absolute
+        background: rgba(0, 0, 0, 0.2)
+        width: 60%
+        left: 20%
+        height: 5px
+        bottom: 0
+        border-radius: 2px
+        z-index: -1
+        opacity: 0
+        hover:{
+          root: true
+          opacity: 1
+          bottom: 35px
+          background: rgba(0, 0, 0, 0.3)
+          transform: scale(1.2)
+        }
+      }
+    }
+  }
+})
+
+
+//--------------------------//
+//Cornors
+//-------------------------//
+_cornorColor = $sc
+cornors = createButtronClass('cornors', {
+  border-radius: 0px
+  component:{
+    span:{
+      z-index: 2
+    }
+    spanClass: {
+      selector: ".span"
+      first-child:{
+        position: absolute
+        top: 0
+        left: 0
+        right: 0
+        bottom: 0
+        height: 100%
+        width: 50%
+        before:{
+          content: "''"
+          position: absolute
+          top: 0
+          left: 0
+          right: 0
+          height: 0%
+          width: 0%
+          background: _cornorColor
+        },
+        after:{
+          content: "''"
+          position: absolute
+          left: 0
+          right: 0
+          bottom: 0
+          height: 0%
+          width: 0%
+          background: _cornorColor
+        }
+      }
+      last-child:{
+        position: absolute
+        top: 0
+        right: 0
+        bottom: 0
+        height: 100%
+        width: 50%
+        before:{
+          content: "''"
+          position: absolute
+          top: 0
+          right: 0
+          height: 0%
+          width: 0%
+          background: _cornorColor
+        },
+        after:{
+          content: "''"
+          position: absolute
+          right: 0
+          bottom: 0
+          height: 0%
+          width: 0%
+          background: _cornorColor
+        }
+      }
+    }
+  }
+})
+
+_cornorHover5 = {
+  hover:{
+    transition:{
+      body:{
+        background: $bg
+        color: _cornorColor
+      }
+      beforeFirst:{
+        applyTo: {
+          selector: '[class*="span"]:first-child:before'
+        }
+        width: 10px !important
+        height: 100% !important
+      }
+      afterFirst:{
+        applyTo: {
+          selector: '[class*="span"]:first-child:after'
+        }
+        width: 100% !important
+        height: 10px !important
+      }
+      beforeLast:{
+        applyTo: {
+          selector: '[class*="span"]:last-child:before'
+        }
+        width: 100% !important
+        height: 10px !important
+      }
+      afterLast:{
+        applyTo: {
+          selector: '[class*="span"]:last-child:after'
+        }
+        width: 10px !important
+        height: 100% !important
+      }
+    }
+  }
+  component:{
+    spanClass: {
+      first-child:{
+        width: 100%
+      }
+      last-child:{
+        width: 100%
+      }
+    }
+  }
+}

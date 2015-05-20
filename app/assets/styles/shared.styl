@@ -1,39 +1,14 @@
-//Resets
-meyer-reset()
-box-sizing-reset()
-normalize()
-//lost - reset recomendation
-@import '_reset/reset.css';
-
-  
-
-//Plugins
-ks-no-conflict = true
-@import "kouto-swiss"
-@import 'rupture';
-@import 'lost';
-$flexbox = true;
-$gutter = 30px
-$rtl = false
-@import 'typographic';
-//Type init
-typographic()
-//Base
-@import '_base/*'
-//Generated
-@import '_generated/*'
-
-//Vendor
-// @import '_vendor/animate.css'
-
+//Global Assets
+@import '_global'
 //Component Styles
 @import '_components/*'
-
 //Page Styles
 @import '_pages/*'
 
 //Helper Overlays
+//Lost Grid
 // edit()
+//Typographic
 // grid-overlay(blue, 2)
 
 

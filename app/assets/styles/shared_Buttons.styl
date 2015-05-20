@@ -1,0 +1,50 @@
+//NOTE: this styl asset is compiled seperatly during development
+//and then concatenated with shared.styl during production.
+//This is so buttron is not recompiled every change
+
+
+//Globals
+@import '_global'
+//Import Buttron
+@import '_base/buttron/buttron'
+//Import Style
+@import '_base/buttron/buttronStyles'
+//production
+_Buttron['production'] = true
+
+//--------------------------//
+//Nav Links
+//-------------------------//
+.navLink
+  twoLines({
+    import:{
+      style: _twoLinesStyle1
+    }
+  });
+
+//--------------------------//
+//Home
+//-------------------------//
+//SubTitle
+.subTitle
+  brackets({
+    import:{
+      style: _bracketsStyle4
+    }
+  })
+  
+
+//--------------------------//
+//Magic
+//-------------------------//
+#asyncBtn
+  cornors({
+    background: $pc
+    width: 400px
+    height: 200px
+    font-size: 2em
+    border-radius: 5px
+    import:{
+      style: _cornorHover5
+    }
+  })

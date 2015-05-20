@@ -1,0 +1,1332 @@
+
+//Global obj
+_Buttron = {};
+// _Buttron['production'] = true
+//--------------------------//
+//Create Button Mixin
+//-------------------------//
+createButtronClass($name = null, $options = {})
+  _errorMessage = "[Buttron]:",
+                  "To create a class your first argument must be the name",
+                  "of the variable your assigning the class to in string format.",
+                  "Still Confused? Read the docs."
+  //Basic Check
+  if !$name
+    warn(join(' ', _errorMessage));
+  else if typeof($name) != 'string'
+    warn(join(' ', _errorMessage));
+  //since we cannot pass an argument directly
+  //it has to be stored and picked up
+  //Create global class prop
+  if !_Buttron['class']
+    _Buttron['class'] = {};
+  //Assign class 
+  $class = _Buttron['class']
+  if !$class[$name]
+    $class[$name] = $options; 
+  //Create
+  return @() {
+    buttron(arguments)
+  }
+
+//--------------------------//
+//Button Mixin
+//-------------------------//
+buttron($selector = null)
+  button($selector, $args)
+    //String helper
+    isString($val)
+      if $val is a 'string' or $val is a 'ident'
+        return true
+      else
+        return false;
+    
+
+    // //Assign main vars 
+    // $selector = null;
+    // $args = null;
+    // _id = null;
+    // if isString(arguments[0])
+    //   _id = $selector
+    // else
+    //   _id = selector();
+    
+    
+
+    //Helpers
+    value(x, obj)
+      return obj[x]
+    type(x)
+      return typeof(x)
+    
+        
+    getValues($args)
+      _values = null;
+      _args = $args if length($args) >= 1
+      for $i in _args
+        if length(_values) == 1
+          if _values == null
+            pop(_values)
+        push(_values, $i)
+      return _values;
+    
+    //Checks for arguments, kinda useless
+    hasArgs($args)
+      return length($args) == 1 ? false : true;
+
+    //Check if null, cuz null is not always null it might be a call
+    isNull($val)
+      if typeof($val) == call
+        $val = 'call'
+      return $val == null ? true : false;
+
+    
+
+
+    //Sets value(da $key) if specified otherwise defaults.
+    set(_args, $key, $default)
+      $val = $key in _args ? _args[$key] : $default
+      //Remove prop so if needed user can apply custome props
+      //without duplicates, like a blur filter. 
+      if isString($key) && isObj($args)
+        remove($args, $key)
+      return $val
+    
+    //Join Props
+    joinProps($props, $separate = true)
+      _tempProp = null;
+      _cleanProp = null;
+      //properties
+      for $i in $props
+        if isString($i)
+          _i = unquote($i)
+        else
+          _i = $i
+        //Push
+        if $i
+          push(_tempProp, _i)
+      
+      //Property
+      if length(_tempProp) > 2 && $separate
+        for $j in 0..length(_tempProp) - 1 
+          if _tempProp[$j] != null
+            push(_cleanProp, _tempProp[$j])
+            if $j != length(_tempProp) - 1
+              push(_cleanProp, '!')
+
+        //Check for nulls
+        for $n in 0..length(_cleanProp) - 1
+          if _cleanProp[$n] == null
+            _cleanProp[$n] = ""
+        //This mind-melt is becuase stylus'es fucked phraser which won't let me escape commas
+        return s(replace('!', ',', join(' ', _cleanProp)))
+      else
+        //Single Prop
+        //shift off null
+        shift(_tempProp)
+        return _tempProp
+    
+    //Applies properties, to said selector. Prbly best to look
+    //at the stlyus docs for an explnation here.
+    apply($props)
+      $props = arguments if length(arguments) > 1
+      for prop in $props
+        //For multiple values, such as box shadow
+        if length($props[prop]) > 1
+          _prop = joinProps($props[prop], false);
+          {prop} _prop
+        else if isString($props[prop])
+          //Strings
+          _prop = s($props[prop]) 
+          {prop} _prop
+        else
+          {prop} $props[prop]
+    
+    //Gets the value in a arg
+    get($args, $key)
+      return $key in $args ? $args[$key] : null
+    
+    //See if obj has key
+    has($args, $key)
+      return $key in $args ? true : false
+    
+    //Finds out if obj, has other objs or just strings
+    //do i even use this
+    objOrString(props)
+      _typeArray = null;
+      _type = null;
+      for $i in arguments
+        push(_typeArray, type(value($i, props)))
+      //check for obj
+      for $j in 1..length(_typeArray) - 1
+        if _typeArray[$j] == 'object'
+          _type = 'object'
+      //else default as string
+      if _type == null
+        _type = 'string'
+      return _type
+    
+    //My main main, gets me my attibutes
+    getAttributes($props)
+      _removeList = 'before', 'after', 'applyTo', 'selector',
+                    'hover', 'active', 'visited', 'focus', 
+                    'anim', 'animation', 'transition', 'override',
+                    'duration', 'delay', 'ease', 'property', 'root',
+                    'options', 'globalOptions', 'addClass', 'component';
+      _values = null;
+      _keys = null;
+      $strings = {};
+      for $i in $props
+        push(_values, value($i, $props))
+        push(_keys, $i)
+      //check for obj
+      for $j in 1..length(_values) - 1
+        if typeof(_values[$j]) != 'object'
+          if _keys[$j] in _removeList
+            //reject
+          else
+            $strings[_keys[$j]] = _values[$j]
+      return $strings
+        
+    //Removes any duplicates styles if user 
+    //specificed global production var
+    pushGlobal($type, $objRef)
+      if !_Buttron['production']
+        return false
+      else
+        if isObj(_Buttron)
+          // If no prop obj array create one
+          $global = _Buttron[$type];
+          if !$global
+            _Buttron[$type] = $objRef;
+            return false;
+          else
+            //Check for duplicates
+            _key = keys($objRef);
+            _value = values($objRef);
+            if _key in keys($global)
+              if _value in values($global)
+                //If dup return true
+                return true
+              else
+                _Buttron[$type] = merge($global, $objRef, true);
+                return false;
+            else
+              _Buttron[$type] = merge($global, $objRef, true);
+              return false;
+        else
+          //If no _Buttron obj present
+          return false;
+        
+
+    //It does what it says
+    createObj($key, $val)
+      $obj = {};
+      $obj[$key] = $val;
+      return $obj
+
+
+    
+
+    $id = set($args, 'id', $selector);
+    $customAnimId = set($args, 'customId', false);
+    $random = floor( math(0, "random") * 999);
+    
+    // //Need set anim if for specific animation class
+    // if typeof($args['animClass']) == 'string' || $customAnimId
+    //   if $materialEffect && !$hasAnimClass
+    //   //Material Effect ID
+    //     if $customAnimId
+    //       _id = "_" + 'material' + "_" + $random;
+    //     else
+    //       _id = "_" + 'material';
+    //   else if $customAnimId && !$hasAnimClass
+    //   //Set first although, there really should be a class not just a radno
+    //     _id = "_" + $random;
+    //   else if $hasAnimClass
+    //   //Anim class
+    //     if $customAnimId
+    //       _id = "_" + $args['animClass'] + "_" + $random;
+    //     else
+    //       _id = "_" + $args['animClass'];
+    // else
+    //   //No amin id
+    //   _id = '';
+        
+    
+
+    //Set defualt props
+    $background = set($args, 'background', #2196f3);
+    $color = set($args, 'color', white);
+    $margin = set($args, 'margin', 0em);
+    $padding = set($args, 'padding', 0em);
+    $width = set($args, 'width', 200px);
+    $height = set($args, 'height', 60px);
+    $border = set($args, 'border', inherit);
+    $borderRadius = set($args, 'border-radius', 3px);
+    $overflow = set($args, 'overflow', hidden);
+    $cursor = set($args, 'cursor', pointer);
+    $boxShadow = set($args, 'box-shadow', initial);
+    $position = set($args, 'position', relative);
+    $top = set($args, 'top', initial);
+    $bottom = set($args, 'bottom', initial);
+    $left = set($args, 'left', initial);
+    $right = set($args, 'right', initial);
+    $fontSize = set($args, 'font-size', inherit);
+    $fontWeight = set($args, 'font-weight', inherit);
+    $fontFamily = set($args, 'font-family', inherit);
+    $lineHeight = set($args, 'line-height', $height);
+    $textDecoration = set($args, 'text-decoration', none);
+    $textAlign = set($args, 'text-align', center);
+    $zButton = set($args, 'z-index', 0);
+    $zInput = set($args, 'z-indexInput', 0);
+    $vAlign = set($args, 'vertical-align', middle);
+    $fontSmooth = set($args, 'font-smoothing', true);
+    $transformAcc = set($args, 'transform', translateZ(0));
+
+
+
+    //--------------------------//
+    //Defaults Effect
+    //-------------------------//
+    $defaultArgs = $args['default']
+    //Default
+    $defaultDuration = set($defaultArgs, 'duration', 0.5s);
+    $defaultEase = set($defaultArgs, 'ease', $easeInOut);
+    $defaultDelay = set($defaultArgs, 'delay', 0s);
+    //eases
+    $easeOutQuad = cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    $easeInQuad = cubic-bezier(0.550, 0.085, 0.680, 0.530);
+    $easeInOut = cubic-bezier(0.420, 0.000, 0.580, 1.000);
+    
+
+    //--------------------------//
+    //Transition defaults
+    //-------------------------//
+    //Set Defaults
+    $defaultTrans = {
+      transition: {
+        duration: $defaultDuration,
+        ease: $defaultEase,
+        delay: $defaultDelay
+      },
+      hover: {
+        duration: $defaultDuration,
+        ease: $defaultEase,
+        delay: $defaultDelay
+      },
+      active: {
+        duration: $defaultDuration,
+        ease: $defaultEase,
+        delay: $defaultDelay
+      },
+      focus: {
+        duration: $defaultDuration,
+        ease: $defaultEase,
+        delay: $defaultDelay
+      },
+      pseudo: {
+        duration: $defaultDuration,
+        ease: $defaultEase,
+        delay: $defaultDelay
+      },
+      visited: {
+        duration: 0s,
+        ease: $defaultEase,
+        delay: $defaultDelay
+      }
+    }
+    //If user has set custom defualts cycle through them and apply
+    if !isNull($defaultArgs)
+      for $state in $defaultTrans
+        for $prop in $defaultTrans[$state]
+          _current = $defaultTrans[$state]
+          _currentArg = $defaultArgs[$state]
+          if _currentArg[$prop]
+            //If defined in args
+            _current[$prop] = _currentArg[$prop]
+            //Set all to defualt transition if trans set
+            if $state == 'transition'
+              for $s in $defaultTrans
+                _key = $defaultTrans[$s] 
+                _key[$prop] = _currentArg[$prop]
+    //--------------------------//
+    //Defaults Animation
+    //-------------------------//
+    $defaultAminArgs = $defaultArgs['animation'];
+    $adefaultDur = set($defaultAminArgs, 'duration', $defaultDuration);
+    $adefaultEase = set($defaultAminArgs, 'ease', $defaultEase);
+    $adefaultDelay = set($defaultAminArgs, 'delay', $defaultDelay);
+    $adefaultCount = set($defaultAminArgs, 'count', 1);
+    $adefaultDir = set($defaultAminArgs, 'direction', normal);
+    $adefaultMod = set($defaultAminArgs, 'mode', initial);
+    $adefaultState = set($defaultAminArgs, 'state', initial);
+    //Default
+    $defaultAnim = {
+      duration: $adefaultDur,
+      ease: $adefaultEase,
+      delay: $adefaultDelay,
+      count: $adefaultCount,
+      direction: $adefaultDir,
+      mode: $adefaultMod,
+      state: $adefaultState
+    }
+    //If user has set custom defualts cycle through them and apply
+    if !isNull($defaultAminArgs)
+      _animArgs = $defaultArgs['animation'];
+      for $prop in _animArgs
+        $defaultAnim[$prop] = _animArgs[$prop];
+
+
+
+
+
+    //--------------------------//
+    //Main Mixin
+    //-------------------------//
+    if !pushGlobal('selector', createObj($selector, apply(getAttributes($args))))
+      {$selector}
+        position: $position
+        margin: $margin
+        border: $border
+        padding: $padding
+        width: $width
+        height: $height
+        border-radius: $borderRadius
+        overflow: $overflow
+        cursor: $cursor
+        background: $background
+        box-shadow: $boxShadow
+        z-index: $zButton
+        color: $color
+        font-weight: $fontWeight
+        text-align: $textAlign
+        font-size: $fontSize
+        font-family: $fontFamily
+        vertical-align: $vAlign
+        text-decoration: $textDecoration
+        line-height: $lineHeight
+        transform: $transformAcc
+        //Custom Args
+        apply(getAttributes($args))
+        if $fontSmooth
+          -webkit-backface-visibility: hidden;
+          backface-visibility: hidden;
+          -moz-osx-font-smoothing: grayscale;
+
+    ////////////////////////////////////////////////////////////////////////////////
+    //Mixin Helpers
+    ////////////////////////////////////////////////////////////////////////////////
+    createStyle($dataObj, $state, $props, $options = {})
+      _default = {selector: null, applyTo: null}
+      $options = merge(_default, $options);
+      //Create Style
+      $globalProps = $props['global'];
+      $targetProps = $props['target'];
+      $applyTo = $options['applyTo'];
+      _root = $options['rootState'] ? "&:" : "";
+      _selector = $options['selector'] ? $options['selector'] : $selector
+      // p($options)
+      $selectorId = isString($selector) ? $selector : _id;
+      if isNull($applyTo)
+        $gExists = pushGlobal('selector', createObj($selectorId, $globalProps));
+        // if $state
+        //   $selectorId = isString($selector) ? $selector : _id;
+        //   _lVal = $selectorId + $state
+        //   $lExists = pushGlobal('selector', createObj(_lVal, $targetProps));
+
+        //Default
+        if isString(_selector)
+          {_root}{_selector}
+            if !$gExists
+              {$globalProps}
+              if !$state
+                apply(getAttributes($dataObj))
+            if $state
+              &:{$state}
+                {$targetProps}
+                apply(getAttributes($dataObj))
+        else
+          log('LOOOOOOOOOOOOOK')
+          //This is the same code block as above with one spacing change
+          //to allow to selector to inherit class
+          {_root}{_selector}
+            if !$gExists
+              {$globalProps}
+              if !$state
+                apply(getAttributes($dataObj))
+          if $state
+            //Outdent
+            &:{$state}
+              {$targetProps}
+              apply(getAttributes($dataObj))
+      else
+        //Apply To
+        applyTo($applySelectors)
+          _gVal = $selectorId + $applySelectors
+          $gExists = pushGlobal('selector', createObj(_gVal, $globalProps));
+          // if $state
+          //   _lVal = $selectorId + $state + $applySelectors
+          //   $lExists = pushGlobal('selector', createObj(_lVal, $targetProps))
+          
+          //Apply
+          if isString(_selector)
+            {_root}{_selector}{$applySelectors}
+              if !$gExists
+                {$globalProps}
+                if !$state
+                  apply(getAttributes($dataObj))
+            if $state
+              {_selector}:{$state}{$applySelectors}
+                {$targetProps}
+                apply(getAttributes($dataObj))
+          else
+            //This is the same code block as above with one spacing change
+            //to allow to selector to inherit class
+            {_root}{_selector}{$applySelectors}
+              if !$gExists
+                {$globalProps}
+                if !$state
+                  apply(getAttributes($dataObj))
+            if $state
+              //outdent
+              &:{$state}{$applySelectors}
+                {$targetProps}
+                apply(getAttributes($dataObj))
+
+        //Creates applyTo string selector, for multiple applyTo
+        _space = $applyTo[pseudo] ? "" : " ";
+        $applySelectors = _space;
+        //check for object
+        if !isObj($applyTo)
+          //Default, no object
+          for $i in $applyTo
+            $applySelectors = $applySelectors + $i + _space;
+          applyTo($applySelectors)
+        else
+          //applyTo elements always to first key
+          if !$applyTo['selector']
+            warn('No selector key found in your applyTo Object. Please add one so I know what to apply.')
+          else
+            for $i in $applyTo['selector']
+              $applySelectors = $applySelectors + $i + _space;
+            applyTo($applySelectors)
+
+    //--------------------------//
+    //Get/Join Props
+    //-------------------------//
+    //Extract Props
+    getProps($dataObj)
+      $props = null;
+      $dataObj = getAttributes($dataObj)
+      if length($dataObj)
+        for $i in $dataObj
+          push($props, $i)
+        //Shift off Null
+        shift($props)
+      else
+        //Default as all
+        $props = 'all';
+      return $props;
+    
+    
+    //--------------------------//
+    //Configur Transition
+    //-------------------------//
+    configTrans($type, $options = {})
+      //If shorthand specified return as is
+      if $options['shorthand']
+        $shorthand = $options['shorthand'];
+        if isObj($shorthand)
+          $propList = null;
+          for $i in $shorthand
+            _prop = $i + " " + $shorthand[$i]
+            push($propList, _prop)
+          //shift off null
+          shift($propList)
+          //Join and return
+          return {
+            shorthand: joinProps($propList)
+          }
+        else if isString($shorthand)
+          //Join and return
+          return {
+            shorthand: joinProps($shorthand)
+          }
+        else
+          _error = 'For transition shorthand, please use a strings or an object.' 
+          warn(_error);
+      //Default Set
+      $default = {};
+      //Populate default obj with set defualts
+      if $type == null
+        $default['duration'] = $defaultDuration;
+        $default['ease'] = $defaultEase;
+        $default['delay'] = $defaultDelay;
+      else
+        //Look up props set durring init
+        _defaultOpts = $defaultTrans[$type]
+        $default['duration'] = _defaultOpts[duration];
+        $default['ease'] = _defaultOpts[ease];
+        $default['delay'] = _defaultOpts[delay];
+      //Set specified options, if present
+      if length($options)
+        _default = clone($default);
+        $default = merge(_default, $options);
+      return $default;
+    //--------------------------//
+    //assign transition
+    //-------------------------//
+    assignTrans($props, $options = {})
+      //Check for shorthand, if so return
+      if $options['shorthand']
+        return {
+          transition: $options['shorthand']
+        }
+      else
+        //Transition obj to be populated
+        $trans = {};
+        //Properties
+        //Overrider props, if options has props
+        if $options['property']
+          $props = $options['property']
+        if length($props)
+          $trans['transition-property'] = joinProps($props)
+        else
+          $trans['transition-property'] = all;
+        //Duration
+        $trans['transition-duration'] = $options.duration;
+        //Ease
+        $trans['transition-timing-function'] = $options.ease;
+        //delay
+        $trans['transition-delay'] = $options.delay;
+        return $trans
+      
+    //--------------------------//
+    //Config Animation
+    //-------------------------//
+    checkAnim($name, $timeline, _override = false)
+      //override warning
+      if _override
+        return true;
+      if !$name
+        warn('You need a name on your animation!')
+        return false;
+      else if !$timeline
+        warn('You need a timeline object on your ' + $name + ' animation!')
+        return false
+      else
+        return true;
+
+
+    configAnim($options)
+      _options = clone($options)
+      $options = merge($defaultAnim, _options)
+      //if multiple we need to join before we apply
+      if $options[multiple]
+        for $i in $options
+          $options[$i] = joinProps($options[$i])
+
+      $config = {};
+      $config['animation-name'] = $options.name;
+      $config['animation-duration'] = $options.duration;
+      $config['animation-timing-function'] = $options.ease;
+      $config['animation-iteration-count'] = $options.count;
+      $config['animation-delay'] = $options.delay;
+      $config['animation-direction'] = $options.direction;
+      $config['animation-fill-mode'] = $options.mode;
+      $config['animation-play-state'] = $options.state;
+      
+      return $config;
+
+    //--------------------------//
+    //Create Timeline
+    //-------------------------//
+    createTimeline($name, $timeline, _override = false)
+      if !pushGlobal('animation', createObj($name, $name)) && !_override
+        @keyframes {$name}
+          for $i in $timeline
+            {$i}
+              apply($timeline[$i])
+              
+
+    ////////////////////////////////////////////////////////////////////////////////
+    //Apply Transition
+    ////////////////////////////////////////////////////////////////////////////////
+    applyEffect($DataObj, _Selector, $State = null, $Options = {})
+
+
+      //--------------------------//
+      //Transition
+      //-------------------------//
+      transition($type, $dataObj, $options = {})
+        _default = {applyTo: false, globalOptions: {}};
+        $options = merge(_default, $options);
+      
+        //Option Vars
+        $globalOptions = $options['globalOptions'] || {};
+        $dataOptions = $dataObj['options'];
+        
+        //Added gloabl property if specificed
+        if $globalOptions
+          $propArgs = $globalOptions['property'];
+          if $propArgs
+            $props = null;
+            for $i in $propArgs
+              push($props, $i)
+          //set to new prop
+          $globalOptions['property'] = $props;
+          
+        //Merege options
+        $dataOptions = merge($globalOptions, $dataObj['options'])
+
+        return assignTrans(getProps($dataObj), configTrans($type, $dataOptions));
+
+      //--------------------------//
+      //Apply Props
+      //-------------------------//
+      applyProps($stateSelector, $dataObj, _selector, $options = {})
+        // p(arguments)
+        _default = {globalOptions: null, applyTrans: true};
+        $options = merge(_default, $options);
+        $applyTrans = $options['applyTrans'];
+        $globalOptions = $options['globalOptions'] ? $options['globalOptions'] :  {};
+        $animProps = $options['animProps'];
+        $globalProps = {};
+        //obj that will contain all the transion properties without attibutes
+        $targetProps = null;
+        //Default
+        // p($globalOptions)
+        if $applyTrans
+          //Need to clone to break ref
+          _globalOptions = clone($globalOptions)
+          $targetProps = transition($stateSelector, $dataObj, {globalOptions: _globalOptions})
+
+          //Config globalProps
+          //Check for global options
+          if length($globalOptions)
+            //config formating of props
+            $globalProps = assignTrans({}, $globalOptions)
+            //Remove Null props
+            for $p in $globalProps
+              if isNull($globalProps[$p])
+                remove($globalProps, $p)
+            _targetProps = clone($targetProps);
+            $globalProps = merge(_targetProps, $globalProps)
+          else
+            //If no global options, inherit first props
+            _targetProps = clone($targetProps);
+            $globalProps = merge(_targetProps, $globalProps)
+            if $State
+              //If we have a state, defualt to all. User can manually change
+              //this via the globalOptions
+              $globalProps['transition-property'] = all;
+        
+
+        $props = {
+          global: $globalProps,
+          target: $targetProps
+        }
+        $selectorOptions = {
+          applyTo: $dataObj['applyTo']
+          selector: _selector
+        }
+        
+        //If root we need to attach state to root
+        if $options[root]
+          if $inheritSelector
+            _rootState = $State + _selector;
+            $selectorOptions['selector'] = _rootState
+            $selectorOptions['rootState'] = true 
+            //Remove state that was applied to selector 
+            _stateSelector = clone($stateSelector);
+            $stateSelector = replace($State, '', _stateSelector)
+          else
+            _rootState = _id + ":" + $State;
+            _rootSelector = replace(_id, _rootState, _selector);
+            $selectorOptions['selector'] = _rootSelector
+            //Remove state that was applied to selector
+            _stateSelector = clone($stateSelector);
+            $stateSelector = replace($State, '', _stateSelector)
+          
+        //Check for pseudo
+        if $Options.pseudo
+          $stateSelector = $stateSelector + ":" + $Options.pseudoElm;
+          //Do not apply globaly since pseudo elm
+          $props[global] = {};
+
+
+        //Create Trans
+        createStyle($dataObj, $stateSelector, $props, $selectorOptions)
+        //Apply Animation Props if Any
+        if $animProps
+          $selectorOptions['applyTo'] = $animProps['applyTo'];
+          if $stateSelector
+            $props['target'] = $animProps
+            $props['global'] = {};
+          else
+            $props['target'] = {};
+            $props['global'] = $animProps
+          createStyle($dataObj, $stateSelector, $props, $selectorOptions)
+
+      //--------------------------//
+      //If Controllers
+      //-------------------------//
+      if !isObj($DataObj)
+        warn('You have specified a ' + $State + ' state, but there is no '+$State+ ' object! ' + 'Its a ' + typeof($DataObj)+"!")
+      else if length($DataObj) == 0
+        warn('You have specified a ' + $State + ' state, but your '+$State+ ' object is empty!')
+      else
+        $options = {};
+        $config = {
+          transition: false,
+          globalOptions: false,
+          animation: false,
+          anim: false
+        }
+        //See what options we working with, within the dataObj
+        for $o in $config
+          if $DataObj[$o]
+            $config[$o] = $DataObj[$o]
+        
+        //Check for root, to attach
+        if $DataObj[root]
+          $options['root'] = $DataObj[root];
+
+        //Check gloabl scope for globalOptions
+        if !$config.globalOptions
+          if $args.globalOptions
+            $config.globalOptions = $args.globalOptions
+        //Assign globals
+        if $config.globalOptions
+          $options['globalOptions'] = $config.globalOptions;
+
+        //Animation shorthand
+        if $config.anim
+          $config['animation'] = $DataObj.anim
+        
+        //Config Animation
+        if $config.animation
+          $anim = $config.animation
+          //Basic checks
+          if checkAnim($anim['name'], $anim['timeline'], $anim['override'])
+            //Timeline
+            //Check for multiple timelines
+            $timelines = $anim['timeline']
+            if $timelines['multiple']
+              $anim['multiple'] = true;
+              for $t in $timelines
+                //Cycle and apply
+                if isObj($timelines[$t])
+                  _timeline = $timelines[$t]
+                  _name = _timeline['name'];
+                  remove(_timeline, 'name');
+                  createTimeline(_name, _timeline, _timeline['override']);
+            else
+              //Single, defualt
+              createTimeline($anim['name'], $anim['timeline'], $anim['override']);
+            //Remove timeline
+            remove($anim, 'timeline');
+            //Config
+            $animProps = configAnim($anim);
+            if $anim['applyTo']
+              $animProps['applyTo'] = $anim['applyTo'] 
+            $options['animProps'] = $animProps
+
+        // p($config)
+        //Trans Options
+        if $config.transition
+          //specified trans options
+          $transObj = $DataObj['transition']
+          $globalOptions = {};
+          //Check for global options
+          if $transObj['globalOptions']
+            _cloneOptions = clone($options['globalOptions'])
+            $options['globalOptions'] = merge(_cloneOptions, $transObj['globalOptions'])
+            //Remove options
+            remove($transObj, 'globalOptions')
+          _notApplied = true; 
+          //Cycle through args, and apply
+          for $i in $transObj
+            _indvTransObj = $transObj[$i]
+            if isObj(_indvTransObj) && $i != 'options'
+              _notApplied = false;
+              //Assign if global opts
+              if $options['globalOptions']
+                _indvTransObj['globalOptions'] = $options['globalOptions']
+              //Apply gloabl options if any
+              applyProps($State, _indvTransObj, _Selector, $options);
+          
+          //If user wished to use transition obj and not have sub objs and one gloabl
+          if _notApplied
+            applyProps($State, $transObj, _Selector, $options);
+        else if isNull($State) && $config.animation
+          //No state, and anim applied gloabl
+          $options['applyTrans'] = false;
+          applyProps($State, $DataObj, _Selector, $options)
+        else if $config.animation && length($DataObj) == 1
+          //User only specificied a animimation and no trans
+          $options['applyTrans'] = false;
+          applyProps($State, $DataObj, _Selector, $options)
+        else
+          //No Trans Options - default
+          applyProps($State, $DataObj, _Selector, $options)
+
+
+    ////////////////////////////////////////////////////////////////////////////////
+    //applyElement
+    ////////////////////////////////////////////////////////////////////////////////
+    applyElement($dataObj, _Selector, $element = null, $options = {})
+      _default = {pseudo: true, pseudoElm: $element}
+      _dataObj = clone($dataObj);
+      //Need to make sure we dont carry of ref on merge
+      _options = clone($options)
+      $options = merge(_options, _default,)
+
+      $styleOptions = {
+        selector: null,
+        applyTo: null
+      }
+      //Props to be applied
+      $props = {
+        global: {}
+        target: {}
+      }
+      
+      //check if component
+      if $options['component']
+        //spefify selector
+        $styleOptions['selector'] = _Selector;
+        
+
+      //Check for applyTo
+      if $dataObj['applyTo']
+        $styleOptions['applyTo'] = $dataObj['applyTo']
+        remove($dataObj, 'applyTo');
+
+      //Gets and sets defualt of transition props
+      getTransProps($transObj = {})
+        $transProps = null;
+        $transObj = getAttributes($transObj);
+        if length($transObj)
+          for $i in $transObj
+            push($transProps, $i)
+          //Shift off null
+          shift($transProps)
+        else
+          //Default
+          $transProps = 'all'
+        return $transProps;
+          
+
+      $trans = {
+        Default: {}
+        //Transition arg properties
+        Props: {}
+        //For global trans
+        Applied: {}
+      }
+      
+
+      //Check for global opts, and overwright defualt
+      if $dataObj['globalOptions']
+        $gOptions = $dataObj['globalOptions']
+        //Set Defaults
+        $trans[Default] = configTrans('pseudo', $gOptions)
+        //Check for props
+        if $gOptions['property']
+          $trans[Props] = getProps($gOptions['property']);
+        //Adds global options to each state, so when the state is created,
+        //via the extracter the global opts are reflected
+        $states = 'hover', 'active', 'focus';
+        _count = 0
+        for $s in $states
+          if $s in _dataObj
+            if !_count
+              _count = 1;
+              p($dataObj['globalOptions'])
+              $trans[Default] = configTrans($s, $dataObj['globalOptions'])
+              p($trans[Default])
+            //Add globalOptions
+            $state = _dataObj[$s]
+            $state['globalOptions'] =  $dataObj['globalOptions']
+        
+        
+
+      //Current scope transition check
+      if $dataObj['transition']
+        $transObj = $dataObj['transition']
+        //Local Options
+        $lOptions = $transObj['options'];
+        //Set Defaults
+        $trans[Default] = configTrans('pseudo', $lOptions)
+        //Check for props specified
+        if $lOptions['property']
+          $trans[Props] = getProps($lOptions['property']);
+        //Add trans props to applied
+        $trans[Applied] = getAttributes($transObj);
+      else
+        //Check for states to set defualt
+        $states = 'hover', 'active', 'focus';
+        _count = 0
+        for $s in $states
+          if $s in $dataObj
+            if !_count
+              _count = 1;
+              _stateObj = $dataObj[$s];
+              // p(_stateObj)
+              //Get/Set props
+              $trans[Props] = getProps(_stateObj)
+              //Check for options
+              if _stateObj['options']
+                $trans[Default] = configTrans($s, _stateObj['options']);
+              //Only set if no gloabl
+              else if !$dataObj['globalOptions']
+                //get and set defualt for said state
+                $trans[Default] = configTrans($s, _stateObj);
+
+
+      //Animation check
+      $anim = null;
+      for $i in $dataObj
+        if $i == 'animation' || $i == 'anim'
+          if isObj($dataObj[$i])
+            $anim = $dataObj[$i]
+            remove(_dataObj, $i)
+      if $anim
+        if checkAnim($anim['name'], $anim['timeline'], $anim['override'])
+          //Check for multiple timelines 
+          $timelines = $anim[timeline] 
+          if $timelines['multiple']
+            $anim['multiple'] = true;
+            for $t in $timelines
+              //Cycle and apply
+              if isObj($timelines[$t])
+                _timeline = $timelines[$t]
+                _name = _timeline['name'];
+                remove(_timeline, 'name');
+                createTimeline(_name, _timeline, _timeline['override']);
+          else
+            //Single, defualt
+            createTimeline($anim['name'], $anim['timeline'], $anim['override']);
+          //Remove Timeline
+          remove($anim, 'timeline');
+          $animProps = configAnim($anim);
+          //Add props
+          $dataObj = merge($animProps, $dataObj)
+          if $anim['applyTo']
+            $styleOptions['applyTo'] = $anim['applyTo'] 
+      
+
+      //add onto selector if child to combine. To handle if there
+      //is a after inside a child
+      if $options['pseudoElm']
+        if match('child|Child|\S*_(?:\[[^\]]+\]|\S+)', $options['pseudoElm'])
+          _Selector = _Selector + ":"+ $element
+          //Dont carry pseudoElm since applied to selector
+          $options[pseudo] = false
+      
+      //Merge trans props to be applied
+      if length($trans[Props]) || length($trans[Default])
+        merge($props[target], assignTrans($trans[Props], $trans[Default]));
+
+      //Remove transition
+      _dataObj = remove(_dataObj, 'transition')
+      //Extracs any states, or global animations
+      extract(_dataObj, _Selector, $options)
+      //Create
+      createStyle($dataObj, $element, $props, $styleOptions)
+      //Apply trans props for trans global scope
+      if length($trans[Applied])
+        createStyle($trans[Applied], $element, $props, $styleOptions)
+        
+
+
+    ////////////////////////////////////////////////////////////////////////////////
+    //Add Class
+    ////////////////////////////////////////////////////////////////////////////////
+    addClass($className, $classObj, _Selector, $options = {})
+      $origSelector = clone(_Selector)
+      //Check for class name specified in obj
+      if $classObj['selector']
+        $className = $classObj['selector']
+      //check if component, and root
+      //Root will attach the class selector to the root parent
+      if $options['component'] && $classObj['root']
+        //spefify selector
+        _Selector = _id
+        // $origSelector = 'span'
+        //If selector has grater than
+        _alagator = match('\S+[^a-z]+', $origSelector) ? " " : " > "
+        if $inheritSelector
+          $className = $className + _alagator + $origSelector;
+        else
+          $origSelector = replace(_Selector, "", $origSelector)
+          _className = clone($className)
+          $className = _className + _alagator + $origSelector;
+
+     
+      //Check for elms
+      if $options['pseudo']
+        $pseudoElm = $options[pseudoElm];
+        $origClassName = clone($className)
+        $className = $className + ":" + $pseudoElm;
+        $pseudoObj = $classObj[$pseudoElm]
+
+
+      //Check for applyTO
+      $applySelectors = ''
+      if $classObj['applyTo']
+        for $i in $classObj['applyTo']
+          $applySelectors = $applySelectors + $i + " ";
+      
+      //Config selector
+      if $inheritSelector
+        _Selector = $classObj['root'] ? " + " : _Selector
+        _Selector = isObj(_Selector) ? " " : _Selector
+        _dot = $classObj['selector'] ? "" : ".";
+        _combine = $options['compSelector'] ? "" : " + ";
+        $appliedSelector = _Selector + _combine + _dot + $className;
+      else
+        _Selector = isObj(_Selector) ? " " : _Selector
+        _dot = $classObj['selector'] ? "" : ".";
+        _combine = $options['compSelector'] ? " + " : "";
+        $appliedSelector = _Selector + _combine + _dot + $className;
+      
+      // p(_Selector)
+      // p($className)
+      // p($appliedSelector)
+
+      //Create pseudoElm selector
+      if $options[pseudo]
+        _pseudoSelector = _Selector + _dot + $origClassName;
+      {$appliedSelector} {$applySelectors}
+        apply(getAttributes($classObj))
+
+
+      // else if match('\S*\.(?:\[[^\]]+\]|\S+)', _Selector)
+      //   _dot = $classObj['selector'] ? "" : ".";
+      //   //Class - remove prefix
+      //   //if you selector is over 100 chrs, figure out your life
+      //   $appliedSelector = "[class*=" + _selectorName + "]" + _dot + $className;
+      //   //Create pseudoElm selector
+      //   if $options[pseudo]
+      //     _pseudoSelector = "[class*=" + _selectorName + "]" + _dot + $origClassName;
+      //   {$appliedSelector} {$applySelectors}
+      //     apply(getAttributes($classObj))
+      // else if match('\S*#(?:\[[^\]]+\]|\S+)', _Selector)
+      //   _dot = $classObj['selector'] ? "" : "#";
+      //   //Id
+      //   $appliedSelector = "[id*=" + _selectorName + "]" + _dot + $className;
+      //   //Create peudoElm selector
+      //   if $options[pseudo]
+      //     _pseudoSelector = "[id*=" + _selectorName + "]" + _dot + $origClassName;
+      //   {$appliedSelector} {$applySelectors}
+      //     apply(getAttributes($classObj))
+      // else
+      //   warn('Could not find class or id, try spefifying a selector')
+
+
+      //Extract
+      if !$options['component'] && !$options['pseudo']
+        //Default
+        extract($classObj, $appliedSelector)
+      
+      //pseudo elm
+      if $options['pseudo']
+        //If pseudoElm//////////////////////////////////////////////////////////
+        extract($classObj, _pseudoSelector, $options)
+      
+      if $options['component']
+        // p(_selector)
+        if $options['pseudoElm']
+          $options['pseudo'] = true 
+        //If component
+        extract($classObj, $appliedSelector, $options)
+    
+    ////////////////////////////////////////////////////////////////////////////////
+    //Add Component
+    ////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////
+    addComponent($compObj, $compKey, _Selector, $options = {})
+      //Config selector
+      if $compObj['selector']
+        $compSelector = $compObj['selector'];
+      else
+        //If none specified, defualt to key
+        $compSelector = $compKey;
+      //Check for applyTO
+      $applySelectors = ''
+      if $compObj['applyTo']
+        for $i in $compObj['applyTo']
+          $applySelectors = $applySelectors + $i + " ";
+          
+      //Config selector
+      _Selector = _Selector == {} ? '' : _Selector;
+
+      //Apply elms
+      _Selector = _Selector + " > " + $compSelector;
+      if !pushGlobal('selector', createObj(_Selector, apply(getAttributes($compObj))))
+        {_Selector} {$applySelectors} 
+          apply(getAttributes($compObj))
+      
+      //Extract
+      extract($compObj, _Selector, {component: true, compSelector: $compSelector})
+        
+
+    ////////////////////////////////////////////////////////////////////////////////
+    //Extract Content
+    ////////////////////////////////////////////////////////////////////////////////
+    extract($dataObj, selector, $options = {})
+      _default = {pseudo: false, pseudoElm: null, component: false, compSelector: null}
+      $options = merge(_default, $options)
+      // p(selector)
+      effects(_selector)
+        $globalArgs = {}
+        for $i in $dataObj
+          //Global Effects
+          if $i ==  'anim' || $i == 'animation'
+            $globalArgs['animation'] = $dataObj[$i];
+          if $i ==  'transition'
+            $globalArgs['transition'] = $dataObj[$i];
+        if length($globalArgs)
+          applyEffect($globalArgs, _selector)
+        
+        //State Effects
+        for $i in $dataObj
+          //Hover
+          if $i == 'hover'
+            // p($options)
+            applyEffect($dataObj['hover'], _selector, 'hover', $options)
+          //Active
+          if $i == 'active'
+            applyEffect($dataObj['active'], _selector, 'active', $options)
+          //Focus
+          if $i == 'focus'
+            applyEffect($dataObj['focus'], _selector, 'focus', $options)
+          //visited
+          if $i == 'visited'
+            //Check for non trans apply
+            applyEffect($dataObj['visited'], _selector, 'visited', $options)
+        
+      elements(_selector)
+        for $i in $dataObj
+          //Child
+          if match('child|Child|\S*_(?:\[[^\]]+\]|\S+)', $i)
+            //Get selector
+            $childElm = $dataObj[$i];
+            $childSelector = null;
+            if $childElm['selector']
+              $childSelector = $childElm['selector'];
+              if typeof($childSelector) == 'call'
+                warn('Sorry you need to formate your '+$childSelector+' selector as a string.')
+              remove($childElm, 'selector')
+            else
+              //selector will be key in none specified
+              $childSelector = $i;
+            applyElement($childElm, _selector, $childSelector, $options)
+          //Before
+          if $i == 'before'
+            applyElement($dataObj['before'], _selector, 'before', $options)
+          //After
+          if $i == 'after'
+            applyElement($dataObj['after'], _selector, 'after', $options)
+
+
+      //Add Classes
+      classes(_selector)
+        for $i in $dataObj
+          if $i == 'addClass'
+            for $className in $dataObj['addClass']
+              $classObj = $dataObj.addClass[$className]
+              addClass($className, $classObj, _selector, $options)
+      
+      //Component, extract
+      components(_selector)
+        for $i in $dataObj
+          if $i == 'component'
+            $compObj = $dataObj['component']
+            for $comp in $compObj
+              addComponent($compObj[$comp], $comp, _selector, $options)
+              
+      //CAller
+      effects(selector)
+      elements(selector)
+      classes(selector)
+      components(selector)
+              
+    //Extract Main obj
+    extract($args, $selector)
+
+
+  ////////////////////////////////////////////////////////////////////////////////
+  //Call 
+  ////////////////////////////////////////////////////////////////////////////////
+  //Due to how stylus handles the cache, if the user wished to use buttron
+  //in a imperative fashion in which buttron does not inherit a selector
+  //and it is given cache will not work. And I had to resort to solving that
+  //issue in this somewhat ugly fashion.
+  
+  //String helper
+  isString($val)
+    if $val is a 'string' or $val is a 'ident'
+      return true
+    else
+      return false;
+  isObj($val)
+    return typeof($val) == 'object'
+
+
+  //Assign main vars 
+  $selector = null;
+  $args = null;
+  _id = null;
+  if isString(arguments[0])
+    $selector = arguments[0];
+    _id = $selector
+    $args = arguments[1];
+  else
+    $args = arguments[0];
+    $selector = {};
+    _id = selector();
+  //Reassing Args if null
+  $args = $args != null ? $args : {};
+  //Overide on class merge
+  $override = set($args, 'override', false);
+  
+  //Check for class, and create if so
+  if called-from
+    $class = called-from
+    _args = clone($args)
+    _class = clone(_Buttron.class[$class])
+    //Apply if class exists
+    $args = merge(_class, _args, true)
+
+  //Check for imports
+  //Imports are for convinence for basic properties and such
+  //although you coulud prbly push the limit on this
+  //Note, they will overwright class props
+  if $args[import]
+    if !isObj($args[import])
+      warn('Your imports must be in object formate.')
+    else
+      //If imports cycle through and apply
+      $imports = clone($args[import]);
+      remove($args, 'import')
+      for $i in $imports
+        $importObj = $imports[$i];
+        _cloneArgs = clone($args)
+        $args = merge(_cloneArgs, $importObj, true);
+
+  //stylus cache has hissy-fit if you pass the selector in as string
+  if selector() != '&'
+    $inheritSelector = true;
+    //Only cache on production
+    if _Buttron['production'] && $override
+      +cache($args)
+        button($selector, $args)
+    else
+        button($selector, $args)
+  else
+    $inheritSelector = false;
+    button($selector, $args)

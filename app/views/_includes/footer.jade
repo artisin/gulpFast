@@ -6,14 +6,9 @@ script(type="application/javascript", src='https://ajax.googleapis.com/ajax/libs
 <![endif]-->
 <!--[if gt IE 8]><!-->
 script(type="application/javascript", src='https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js')
+script.
+    window.jQuery || document.write('<script src="js/vendor/jquery-2.1.3.min.js"><\\/script>')
 <!--<![endif]-->
-
-//Animation
-script(type="application/javascript", src="//cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenLite.min.js")
-script(type="application/javascript", src="//cdnjs.cloudflare.com/ajax/libs/gsap/1.16.1/TimelineLite.min.js")
-script(type="application/javascript", src="//cdnjs.cloudflare.com/ajax/libs/gsap/latest/plugins/CSSPlugin.min.js")
-script(type="application/javascript", src="//cdnjs.cloudflare.com/ajax/libs/gsap/1.16.1/plugins/ScrollToPlugin.min.js")
-
 
 //Shared Inject
 <!-- global:js -->
@@ -21,8 +16,6 @@ script(type="application/javascript", src="//cdnjs.cloudflare.com/ajax/libs/gsap
 
 //Page specific scripts
 block script
-
-script(type="application/javascript", src='../assets/js/main.js')
 
 //JQuery
 script(type="application/javascript", src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js')
