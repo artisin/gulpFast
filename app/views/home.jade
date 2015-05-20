@@ -1,0 +1,288 @@
+
+extends _layouts/mainLayout.jade
+script(type="application/javascript", src="js/script.js")
+block title
+  title Home
+
+block content
+  .home_Wrapper
+    .splash_Container
+      #home_Background
+      .logo_Container
+        svg.introTitle.introOne(height='200')
+          text(
+            y='150',
+            font-family="'Leckerli One', cursive") My
+        svg.introTitle.introTwo(height='200')
+          text(
+            y='150',
+            font-family="'Leckerli One', cursive") Name
+        svg.introTitle.introThree(height='200')
+          text(
+            y='150',
+            font-family="'Leckerli One', cursive") Is
+        svg.introTitle.introFour(height='200')
+          text(
+            y='150',
+            font-family="'Leckerli One', cursive") Tyler
+        svg.titleText.inF1(height='200')
+          text(
+            y='150',
+            font-family="'Leckerli One', cursive") I
+        svg.titleText.inF2(height='200')
+          text(
+            y='150',
+            font-family="'Leckerli One', cursive") Do
+        svg.titleText.inF3(height='200')
+          text(
+            y='150',
+            font-family="'Leckerli One', cursive") Web
+        svg.titleText.inF4(height='200')
+          text(
+            y='150',
+            font-family="'Leckerli One', cursive") Development
+        .mainLogo
+          span
+  .about_Wrapper
+    .styleBreak
+      h1 About
+      h1 Me
+    .mainBG
+    section.aboutMe
+      //entrepreneur
+      .hex.entrepreneur
+        .entHex.hexAdj
+          .hexTop
+          .hexBottom
+        .icon_Container
+          .icon.-lightbulb
+      //problem solving
+      .hex.problem
+        .problemHex.hexAdj
+          .hexTop
+          .hexBottom
+        .icon_Container
+          .icon.-puzzle
+      //Code
+      .hex.code
+        .codeHex.hexAdj
+          .hexTop
+          .hexBottom
+        .icon_Container
+          .icon.-code
+      .hexContent
+        .title
+          h3 Entrepreneur
+          p  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptates consequatur sequi dolore inventore perferendis nobis possimus aspernatur atque distinctio, vero ea maxime quos tenetur autem, iusto. Quasi eaque error porro.
+        .title
+          h3 Problem Solver
+          p  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptates consequatur sequi dolore inventore perferendis nobis possimus aspernatur atque distinctio, vero ea maxime quos tenetur autem, iusto. Quasi eaque error porro.
+        .title
+          h3 Code Extraordinaire
+          p  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptates consequatur sequi dolore inventore perferendis nobis possimus aspernatur atque distinctio, vero ea maxime quos tenetur autem, iusto. Quasi eaque error porro.
+    //
+    //Porjects
+    //
+  .project_Wrapper
+    .styleBreak
+      h1 My
+      h1 Projects
+    section.myProjects
+      .projectBoxs
+        .box_Wrapper
+          //Hacky, but time is ticking
+          .goFast.box.active(style='background-color: rgba(52, 152, 219, 0.8);')
+            h3 Go Fast
+          .pageHappy.box
+            h3 Page Happy
+          .materialBtn.box
+            h3 Material Btn
+          .buttron.box
+            h3 Buttron
+      .projectDes
+        #goFast.active
+          h1 GoFast
+          p  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellendus eum maiores, enim porro asperiores nobis, fuga. Asperiores sint voluptatum magni laudantium, voluptas aliquam placeat molestias est accusamus earum velit praesentium?
+          .link
+            a(href="#" class="icon -git")  Project Code
+        #pageHappy
+          h1 Page Happy
+          p  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellendus eum maiores, enim porro asperiores nobis, fuga. Asperiores sint voluptatum magni laudantium, voluptas aliquam placeat molestias est accusamus earum velit praesentium?
+          .link
+            a(href="#" class="icon -git")  Project Code
+        #materialBtn
+          h1 Material
+          p  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellendus eum maiores, enim porro asperiores nobis, fuga. Asperiores sint voluptatum magni laudantium, voluptas aliquam placeat molestias est accusamus earum velit praesentium?
+          .link
+            a(href="#" class="icon -git")  Project Code
+        #buttron
+          h1 Buttron
+          p  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellendus eum maiores, enim porro asperiores nobis, fuga. Asperiores sint voluptatum magni laudantium, voluptas aliquam placeat molestias est accusamus earum velit praesentium?
+          .link
+            a(href="#" class="icon -git")  Project Code
+    //
+    //Skills
+    //
+  .skills_Wrapper
+    .styleBreak
+      h1 My
+      h1 Skills
+    section.mySkills
+      .frontList
+        ul.list
+          li
+            a(href='#' class="listTitle") Front End
+            ul
+              li
+                a(href='#') Code
+                ul
+                  li
+                    a(href='#') Html
+                    ul
+                      li
+                        a(href='#') Html5
+                      li
+                        a(href='#') Jade
+                      li
+                        a(href='#') Handlebars
+                  li
+                    a(href='#') Css
+                    ul
+                      li
+                        a(href='#') Css3
+                      li
+                        a(href='#') Stylus
+                      li
+                        a(href='#') Sass
+                  li
+                    a(href='#') Javascript
+                    ul
+                      li
+                        a(href='#') Jquery
+                      li
+                        a(href='#') GSAP
+                      li
+                        a(href='#') Various Packages
+              li
+                a(href='#') Frameworks
+                ul
+                  li
+                    a(href='#') Meteor
+                  li
+                    a(href='#') Angular
+                  li
+                    a(href='#') WordPress
+
+      .backList
+        ul.list
+          li
+            a(href='#' class="listTitle") Back End
+            ul
+              li
+                a(href='#') Database
+                ul
+                  li
+                    a(href='#') NoSQL
+                    ul
+                      li
+                        a(href='#') Mongo
+                      li
+                        a(href='#') Redis
+                  li
+                    a(href='#') SQL
+                    ul
+                      li
+                        a(href='#') mysql
+              li
+                a(href='#') Nodejs 
+                ul
+                  li
+                    a(href='#') Express js
+              li
+                a(href='#') PHP
+      
+      .misList
+        ul.list
+          li
+            a(href='#' class="listTitle") Related Software
+            ul
+              li
+                a(href='#') Adobe
+                ul
+                  li
+                    a(href='#') Photoshop
+                  li
+                    a(href='#') Illustrator
+              li
+                a(href='#') 3D Rendering
+                ul
+                  li
+                    a(href='#') CAD
+                    ul
+                      li
+                        a(href='#') Vectorworks
+                    a(href='#') Animation
+                    ul
+                      li
+                        a(href='#') Modo
+
+    //
+    //Resume
+    //
+  .resume_Wrapper
+    .styleBreak
+      h1 My
+      h1 Resume
+    section.myResume
+      h1 Education
+      .edu.resumeFormat
+        h3 Gustavus Adolphus College
+        h4 Bachelor of Arts in Management
+        ul
+          li Graduated:  May 2013
+          li Major:  Management
+          li Minor:  Political Science
+          li Emphasis: CAD - Computer Aided Design
+          li Actives
+            ul
+              li Student Senate: 2011-2013
+              li Entrepreneur Club: 2011-2013
+              li Gustavus KGSM Radio: 2011-2013
+              li Investments Club: 2012-2013 
+      h1 Professional Experience
+      .exp.resumeFormat
+        h3 International Profit Solutions- Delafield, WI
+        h4 Mortgage Lead Verification: September 2007 - October 2008 
+        ul
+          li Verified mortgage leads
+          li Database organization and management
+          li Cold Calls for new leads
+        h3 T-Designs- St. Peter, MN
+        h4 Owner: July 2010 - April 2013
+        ul
+          li Web development and consulting
+          li Graphic design and animation
+          li Web form development with conditional logic and interactive functions
+          li PC service and repair
+        h3 Schultz Appraisal Agency- Oconomowoc, WI
+        h4 Assessor Technician: September 2009 - July 2013
+        ul
+          li Passed the Wisconsin Assessor Technician Exam in May 2010
+          li Worked on statistical analysis relating to mass appraisal to determine property values 
+          li Prepared and maintained data and records
+          li Created digital blueprints of properties
+          li Provided photography and on-site data support for tax reporting
+          li Monitored phone calls and worked with Excel spreadsheets to record data
+        h3 Mukwonago Community Library
+        h4 Reference Librarian & Technology Guide: February 2015 - Present
+        ul
+          li Taught Technology related classes
+          li Analyzed patrons' requests to determine needed information
+          li Review and evaluate resource material
+          li Locate unusual or unique information in response to specific requests
+          li Developed library policies and procedures
+          li Graphic-Art for posters and events
+
+  .styleBreak.phone
+    h1 Phone
+    h1#gradient <span>262  443  4015</span>

@@ -1,23 +1,29 @@
-//Production links
-- var links   = {};
-- links.home  ='/index.html';
-- links.color ='/color.html';
-- links.type  ='/type.html';
-- links.magic ='/magic/show.html';
-//Deploy links
-//- - var links   = {};
-//- - links.home  ='./';
-//- - links.color ='./color.html';
-//- - links.type  ='./type.html';
-//- - links.magic ='./magic-show.html';
 
-nav
-  ul
-    li.navLink
-      a(href=links.home) Home
-    li.navLink
-      a(href=links.color) Color
-    li.navLink
-      a(href=links.type) Type
-    li.navLink
-      a(href=links.magic) Magic
+.nav_Wrapper
+  .headerLogo
+    svg.headerLogoTitle(width='620', height='100')
+      text(
+        x='100', 
+        y='60', 
+        font-size='60',
+        textLength='130',
+        font-family="'Leckerli One', cursive") Tyler
+    svg.headerLogoTag(width='620', height='100')
+      text(
+        x='163', 
+        y='80', 
+        font-size='20',
+        textLength='180',
+        font-family="'Osefin Slab', serif'") Web Development
+
+
+  nav
+    ul
+      li.navLink.navAbout
+        a(href="#") About
+      li.navLink.navProjects
+        a(href="#") Projects
+      li.navLink.navSkills
+        a(href="#") Skills
+      li.navLink.navResume
+        a(href="#") Contact
