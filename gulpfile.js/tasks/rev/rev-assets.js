@@ -75,7 +75,10 @@ gulp.task('concatCss', ['extractSharedCss'], function(){
 gulp.task('miniCss', ['concatCss'], function(){
   return gulp.src(config.publicAssets + '/styles/**/*.css')
     .pipe(sourcemaps.init())
-    .pipe(nano())
+    //Disabled merge of css, since it tends to do more harm than good
+    .pipe(nano({
+      merge: false
+    }))
     .pipe(sourcemaps.write('.'))
     .pipe(gulp.dest(config.publicAssets + '/styles'));
 });
