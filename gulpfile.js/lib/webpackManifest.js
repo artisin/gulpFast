@@ -6,13 +6,12 @@ module.exports = function(publicPath, dest, filename) {
 
   return function() {
     this.plugin("done", function(stats) {
-      var stats = stats.toJson();
-      var chunks = stats.assetsByChunkName;
-      var manifest = {};
+      var stats = stats.toJson(),
+          chunks = stats.assetsByChunkName,
+          manifest = {};
       for (var key in chunks) {
-        manifest[publicPath + key + '.js'] = publicPath + chunks[key]
+        manifest[publicPath + key + '.js'] = publicPath + chunks[key];
       }
-
       fs.writeFileSync(
         path.join(process.cwd(), dest, filename),
         JSON.stringify(manifest)
