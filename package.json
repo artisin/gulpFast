@@ -14,7 +14,7 @@
     "gulp": "^3.8.11",
     "gulp-changed": "^1.2.1",
     "gulp-filter": "^2.0.2",
-    "gulp-iconfont": "^3.0.2",
+    "gulp-iconfont": "^1.0.0",
     "gulp-imagemin": "^2.2.1",
     "gulp-notify": "^2.2.0",
     "gulp-rename": "^1.2.2",
