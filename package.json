@@ -14,7 +14,7 @@
     "gulp": "^3.8.11",
     "gulp-changed": "^1.2.1",
     "gulp-filter": "^2.0.2",
-    "gulp-iconfont": "^1.0.0",
+    "gulp-iconfont": "^3.0.2",
     "gulp-imagemin": "^2.2.1",
     "gulp-notify": "^2.2.0",
     "gulp-rename": "^1.2.2",
@@ -73,7 +73,7 @@
     "karma-sourcemap-loader": "^0.3.4",
     "karma-styluspreprocessor": "0.0.2",
     "raw-loader": "^0.5.1",
-    "css-loader": "^0.12.1",
+    "css-loader": "^0.15.1",
     "jade": "1.9.2",
     "karma-phantomjs-launcher": "^0.2.0",
     "karma-webpack": "^1.5.0"
