@@ -10,7 +10,6 @@
     "type": "git",
     "url": "https://github.com/artisin/gulpFast"
   },
-  },
   "dependencies": {
     "gulp": "^3.8.11",
     "gulp-changed": "^1.2.1",
