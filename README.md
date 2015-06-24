@@ -80,7 +80,7 @@ _Note_
 + Automatic [Deployment to github](https://github.com/shinnn/gulp-gh-pages)
     * Via `gulp deploy`
 + Automatic root asset deployment on production
-+ If you think I should add something else just drop me a line.
++ If you think I should add something else just drop me a pull.
 
 ####Notes
 #####Folder Structure
