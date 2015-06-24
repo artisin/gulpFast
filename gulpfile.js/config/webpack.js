@@ -33,6 +33,14 @@ module.exports = function(env) {
         {
           test: /\.js?$/,
           loader: 'babel',
+          exclude: /(node_modules|bower_components)/,
+          query: {
+            loose: 'all'
+          }
+        },
+        {
+          test: /\.txt$/,
+          loader: 'raw-loader',
           exclude: /(node_modules|bower_components)/
         }
       ]
