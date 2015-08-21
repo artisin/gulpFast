@@ -26,7 +26,7 @@ var gulp         = require('gulp'),
 /*-----------------------------*/
 /// Post Css
 /*-----------------------------*/
-gulp.task('postCss', ['stylus'], function () {
+gulp.task('post-css', ['stylus'], function () {
     var processors = [
         cssnext,
         postDefault,
