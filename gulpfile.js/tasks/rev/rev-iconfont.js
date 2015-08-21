@@ -3,8 +3,7 @@ var gulp         = require('gulp'),
     iconConfig   = require('../../config/iconFont'),
     handleErrors = require('../../lib/handleErrors'),
     fs           = require('fs'),
-    _            = require('underscore'),
-    rename       = require("gulp-rename");
+    rename       = require('gulp-rename');
 
 // .ttf fonts have an embedded timestamp, which cause the contents
 // of the file to change ever-so-slightly. This was a problem for
