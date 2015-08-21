@@ -1,6 +1,5 @@
-var assign       = require('object-assign'),
+var gulp         = require('gulp'),
     config       = require('../config/webpack')('development'),
-    gulp         = require('gulp'),
     logger       = require('../lib/compileLogger'),
     webpack      = require('webpack'),
     browserSync  = require('browser-sync');
