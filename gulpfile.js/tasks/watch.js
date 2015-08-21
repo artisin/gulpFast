@@ -3,14 +3,16 @@ var gulp     = require('gulp'),
     jade     = require('../config/jade'),
     images   = require('../config/images'),
     stylus   = require('../config/stylus'),
-    karma    = require('../config/karma'),
-    fonts    = require('../config/fonts');
+    fonts    = require('../config/fonts'),
+    iconFont  = require('../config/iconFont'),
+    svgSprite = require('../config/svg-sprite');
 
 //Watch said files
-gulp.task('watch', ['browserSync'], function() {
+gulp.task('watch', ['browser-sync'], function() {
   watch(images.src, function() { gulp.start('images'); });
   watch(stylus.src, function() { gulp.start('postCss'); });
   watch(fonts.src, function() { gulp.start('fonts'); });
   watch(jade.watch, function() { gulp.start('jade'); });
-  watch(karma.watch, function() { gulp.start('test'); });
+  watch(iconFont.src, function() { gulp.start('iconFont'); });
+  watch(svgSprite.src, function() { gulp.start('svg-sprite'); });
 });
