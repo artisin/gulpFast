@@ -4,17 +4,16 @@ var gulp         = require('gulp'),
     rename       = require('gulp-rename'),
     handleErrors = require('../../lib/handleErrors');
 
-module.exports = function(codepoints, options) {
+module.exports = function(glyphs, options) {
   gulp.src(config.template)
     .pipe(swig({
       data: {
-        icons: codepoints.map(function(icon) {
+        icons: glyphs.map(function(glyph) {
           return {
-            name: icon.name,
-            code: icon.codepoint.toString(16)
+          name: glyph.name,
+          code: glyph.unicode[0].charCodeAt(0).toString(16).toUpperCase()
           };
         }),
-
         fontName: config.options.fontName,
         fontPath: config.fontPath,
         className: config.className,
