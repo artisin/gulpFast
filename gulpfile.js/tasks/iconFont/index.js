@@ -7,7 +7,7 @@ var gulp               = require('gulp'),
 gulp.task('iconFont', function() {
   return gulp.src(config.src)
     .pipe(iconfont(config.options))
+    .on('glyphs', generateIconStylus)
     .on('error', handleErrors)
-    .on('codepoints', generateIconStylus)
     .pipe(gulp.dest(config.dest));
 });
