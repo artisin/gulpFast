@@ -10,7 +10,7 @@ var gulp     = require('gulp'),
 //Watch said files
 gulp.task('watch', ['browser-sync'], function() {
   watch(images.src, function() { gulp.start('images'); });
-  watch(stylus.src, function() { gulp.start('postCss'); });
+  watch(stylus.src, function() { gulp.start('post-css'); });
   watch(fonts.src, function() { gulp.start('fonts'); });
   watch(jade.watch, function() { gulp.start('jade'); });
   watch(iconFont.src, function() { gulp.start('iconFont'); });
