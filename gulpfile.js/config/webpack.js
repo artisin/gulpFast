@@ -39,7 +39,17 @@ module.exports = function(env) {
           }
         },
         {
+          test: /\.css$/,
+          loader: 'css-loader',
+          exclude: /(node_modules|bower_components)/
+        },
+        {
           test: /\.txt$/,
+          loader: 'raw-loader',
+          exclude: /(node_modules|bower_components)/
+        },
+        {
+          test: /\.styl$/, 
           loader: 'raw-loader',
           exclude: /(node_modules|bower_components)/
         }
