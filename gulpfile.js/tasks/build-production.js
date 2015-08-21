@@ -12,8 +12,8 @@ gulp.task('build', function(cb) {
   gulpSequence(
     'test',
     'clean', 
-    ['fonts', 'images', 'iconFont'], 
-    ['postCss', 'webpack:production'],
+    ['fonts', 'images', 'iconFont', 'svg-sprite'], 
+    ['post-css', 'webpack:production'],
     'jade', 
     'rev', 
     'cleanTemp', 
