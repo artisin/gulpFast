@@ -1,8 +1,10 @@
-var browserSync = require('browser-sync'),
-    changed     = require('gulp-changed'),
-    config      = require('../config/images'),
-    gulp        = require('gulp'),
-    imagemin    = require('gulp-imagemin');
+var gulp         = require('gulp'),
+    browserSync  = require('browser-sync'),
+    changed      = require('gulp-changed'),
+    config       = require('../config/images'),
+    pngquant     = require('imagemin-pngquant'),
+    handleErrors = require('../lib/handleErrors'),
+    imagemin     = require('gulp-imagemin');
 
 gulp.task('images', function() {
   return gulp.src(config.src)
@@ -11,8 +13,9 @@ gulp.task('images', function() {
     .pipe(imagemin({
       optimizationLevel: 3,
       progressive: true,
-      interlaced: true
+      use: [pngquant({quality: '65-80', speed: 4})]
     }))
+    .on('error', handleErrors)
     .pipe(gulp.dest(config.dest))
     .pipe(browserSync.reload({stream:true}));
 });

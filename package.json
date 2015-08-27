@@ -38,6 +38,7 @@
     "gulp-bump": "^0.3.1",
     "gulp-git": "^1.2.4",
     "gulp-svgstore": "^5.0.4",
+    "imagemin-pngquant": "4.1.2",
     "babel-core": "^5.8.22",
     "babel-loader": "^5.3.2",
     "colors": "^1.1.2",
