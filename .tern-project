@@ -2,10 +2,13 @@
   "libs": [
     "browser",
     "requirejs",
-    "jquery"
+    "jquery",
+    "ecma5",
+    "ecma6",
+    "node"
   ],
-  "loadEagerly": [
-  ],
+  "exclude": ["wordpress/**", "node_modules/**"],
+  "loadEagerly": [],
   "plugins": {
     "requirejs": {
       "baseURL": "./",
