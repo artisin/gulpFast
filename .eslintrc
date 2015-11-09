@@ -7,6 +7,96 @@
         "jsx": true
     },
     "globals": {
+        //J
+        "$": true,
+        //custom
+        "_G": true,
+        "_L": true,
+        "_C": true,
+        "_S": true,
+        //meteor
+        "Meteor": true,
+        "Template": true,
+        "FlowRouter": true,
+        "BlazeLayout": true,
+        "Session": true,
+        //meteor custom
+        "_subManager": true,
+        //underscore
+        "_": true,
+
+        "Meteor": false,
+        "DDP": false,
+        "Mongo": false, //Meteor.Collection renamed to Mongo.Collection
+        "Session": false,
+        "Accounts": false,
+        "Template": false,
+        "Blaze": false,  //UI is being renamed Blaze
+        "UI": false,
+        "Match": false,
+        "check": false,
+        "Tracker": false, //Deps renamed to Tracker
+        "Deps": false,
+        "ReactiveVar": false,
+        "EJSON": false,
+        "HTTP": false,
+        "Email": false,
+        "Assets": false,
+        "Handlebars": false,      // https://github.com/meteor/meteor/wiki/Handlebars
+        "Package": false,
+
+        // Meteor internals
+        "DDPServer": false,
+        "global": false,
+        "Log": false,
+        "MongoInternals": false,
+        "process": false,
+        "WebApp": false,
+        "WebAppInternals": false,
+
+        // globals useful when creating Meteor packages
+        "Npm": false,
+        "Tinytest": false,
+
+        // common Meteor packages
+        "Random": false,
+        "_": false,               // Underscore.js
+        "Router": false,           // iron-router
+        "_s":false,               // Underscore string
+
+        // Global Collections
+        "Messages":false,
+        "Rooms":false,
+        "Notifications":false,
+        "Emojis":false,
+        "Memes":false,
+        "RoomInvitations":false,
+        "Schemas":false,
+        "Changelogs":false,
+        "Images":false,
+
+        // Helpers
+        "UserHelpers": false,
+        "MessageHelpers": false,
+        "RoomHelpers": false,
+        "Client": false,
+        "MessageLib": false,
+
+        // packages
+        "SimpleSchema":false,
+        "Sortable":false,
+        "moment": false,
+        "Autolinker": false,
+        "tinycolor": false,
+        "ServiceConfiguration": false,
+        "UploadServer": false,
+        "AccountsTemplates": false,
+        "emojione": false,
+        "FS": false,
+        "notify": false,
+        "buzz": false,
+        "lunr": false,
+        "Burt": flase
     },
     "plugins": [
     ],
@@ -64,7 +154,7 @@
         "no-labels": 2,
         "no-lone-blocks": 2,
         "no-loop-func": 2,
-        "no-multi-spaces": 2,
+        "no-multi-spaces": 0,
         "no-multi-str": 0,
         "no-native-reassign": 2,
         "no-new": 2,
@@ -81,15 +171,13 @@
         "no-sequences": 2,
         "no-unused-expressions": 2,
         "no-void": 0,
-        "no-warning-comments": 2,
         "no-with": 2,
-        "no-debugger": 0,
         "radix": 2,
         "vars-on-top": 0,
         "wrap-iife": 2,
         "yoda": 2,
         // Strict Mode
-        "strict": [2, "global"],
+        "strict": [0, "global"],
         // Variables
         "no-catch-shadow": 2,
         "no-delete-var": 2,
@@ -98,14 +186,15 @@
         "no-shadow-restricted-names": 2,
         "no-undef": 2,
         "no-undef-init": 2,
-        "no-undefined": 2,
+        "no-undefined": 1,
         "no-unused-vars": 2,
         "no-use-before-define": 2,
         // Stylistic Issues
-        "indent": [2, 2, {
-          "SwitchCase": 1
+        "indent": [1, 2, {
+          "SwitchCase": 2,
+          "VariableDeclarator": { "var": 2, "let": 2, "const": 3}
         }],
-        "brace-style": 2,
+        brace-style: [2, "1tbs", { "allowSingleLine": true }],
         "camelcase": 0,
         "comma-spacing": 2,
         "comma-style": 2,
@@ -141,7 +230,7 @@
         "quotes": [2, "single"],
         "quote-props": [2, "as-needed"],
         "semi": [2, "always"],
-        "sort-vars": [2, {"ignoreCase": true}],
+        "sort-vars": [0, {"ignoreCase": true}],
         "space-after-keywords": 2,
         "space-before-blocks": 2,
         "object-curly-spacing": [2, "never"],

@@ -1,0 +1,93 @@
+{
+  "root": {
+    "src": "./src",
+    "srcAssets": "./src/assets",
+    "dest": "./dist",
+    "destTemp": "./dist/.temp",
+    "destAssets": "./dist/assets"
+  },
+
+  "tasks": {
+    "browserSync": {
+      "server": {
+        "baseDir": "dist"
+      },
+      "files": ["dist/**/*.html"]
+    },
+
+    "js": {
+      "src": "assets/js",
+      "dest": "assets/js",
+      "extractSharedJs": true,
+      "entries": {
+        "app": ["./app.js"],
+        "vendor": ["./vendor.js"]
+      },
+      "extensions": ["js"]
+    },
+
+    "css": {
+      "src": "styles",
+      "post": "styles",
+      "dest": "styles",
+      "autoprefixer": {
+        "browsers": ["last 3 version"]
+      },
+      "stylus": {
+        "plugins": ["kouto-swiss", "rupture", "lost-grid", "typographic"]
+      },
+      "postCss": {
+        "plugins": [
+          "cssnext",
+          "postcss-default-unit",
+          "postcss-focus",
+          "postcss-easings",
+          "postcss-size"
+        ]
+      },
+      "filterPartials": true,
+      "extensions": ["styl", "css"]
+    },
+
+    "html": {
+      "src": "views",
+      "dest": "./",
+      "dataFile": "data/global.json",
+      "htmlmin": {
+        "collapseWhitespace": true
+      },
+      "extensions": ["html", "json"],
+      "excludeFolders": ["layouts", "shared", "macros", "data"]
+    },
+
+    "images": {
+      "src": "assets/images",
+      "dest": "assets/images",
+      "extensions": ["jpg", "png", "svg", "gif"]
+    },
+
+    "fonts": {
+      "src": "assets/fonts",
+      "dest": "assets/fonts",
+      "extensions": ["woff2", "woff", "eot", "ttf", "svg"]
+    },
+
+    "iconFont": {
+      "src": "assets/icons",
+      "dest": "assets/fonts",
+      "stylusDest": "_generated",
+      "extensions": ["woff2", "woff", "eot", "ttf", "svg"]
+    },
+
+    "svgSprite": {
+      "src": "assets/sprites",
+      "dest": "assets/images",
+      "extensions": ["svg"]
+    },
+
+    "rootAssets": {
+      "src": "assets/_root",
+      "dest": "./"
+    }
+  }
+}

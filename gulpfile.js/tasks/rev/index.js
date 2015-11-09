@@ -1,26 +1,23 @@
-//Final production step, update, minify, and report
-var gulp = require('gulp'),
-    gulpSequence = require('gulp-sequence');
+var gulp         = require('gulp')
+var gulpSequence = require('gulp-sequence')
 
-
-gulp.task('rev', function(cb) {
+// If you are familiar with Rails, this task the equivalent of `rake assets:precompile`
+var revTask = function(cb) {
   gulpSequence(
-    //Import root-assest, such as 404, favicon, ect
-    'root-assets',
-    //Add md5 hashes to reffrenced assests and compress CSS files
-    //This should technically be done in seperate steps, but for some
-    //reason revReplace will not overwrite the css file and the old
-    //name reffrence is used in the css rather than the new
+    // 1) Add md5 hashes to assets referenced by CSS and JS files
     'rev-assets',
-    //Manually hash EOT, TTF, and WOFF icon files
-    'rev-iconfont',
-    //Update asset references with reved filenames in compiled js
+    // 2) Update asset references (images, fonts, etc) with reved filenames in compiled css + js
     'rev-update-references',
-    //Update asset references in HTML
+    // 3) Rev and compress CSS and JS files (this is done after assets, so that if a referenced asset hash changes, the parent hash will change as well
+    'rev-css',
+    // 4) Update asset references in HTML
     'update-html',
-    //Minify html
-    'mini-html',
-    //Report Size
+    // 5) inject root assets
+    'root-assets',
+    // 5) Report filesizes
     'size-report',
   cb);
-});
+};
+
+gulp.task('rev', revTask)
+module.exports = revTask
