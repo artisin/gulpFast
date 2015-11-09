@@ -1,5 +1,6 @@
 #Gulp Fast - A Gulp Build Tool
-####Jade, Stylus(_with the all the goods_), PostCss, Webpack, Babel, Karma, BrowserSync
+#### Update: I'm in the process of updating and restructuring this build. The biggest change is I have decided to dich jade in favor of nunjucks.
+#### Jade, Stylus(_with the all the goods_), PostCss, Webpack, Babel, Karma, BrowserSync
 
 [![Build Status](https://travis-ci.org/artisin/gulpFast.svg?branch=master)](https://travis-ci.org/artisin/gulpFast)
 [![Dependency Status](https://gemnasium.com/artisin/gulpFast.svg)](https://gemnasium.com/artisin/gulpFast)
