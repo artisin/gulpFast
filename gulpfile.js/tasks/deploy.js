@@ -1,26 +1,28 @@
-var config  = require('../config')
-var ghPages = require('gulp-gh-pages')
-var gulp    = require('gulp')
-var open    = require('open')
-var os      = require('os')
-var package = require('../../package.json')
-var path    = require('path')
+var config  = require('../config'),
+    ghPages = require('gulp-gh-pages'),
+    gulp    = require('gulp'),
+    open    = require('open'),
+    packJ   = require('../../package.json'),
+    os      = require('os'),
+    path    = require('path');
 
 var settings = {
-  url: package.homepage,
-  src: path.join(config.root.dest, '/**/*'),
+  url: packJ.homepage || function () {
+    var username = require('git-username')(),
+        repo = require('git-repo-name')(),
+        slug = username + '.github.io/' + repo;
+    return 'http://' + slug;
+  },
+  src: config.dest + '/**/*',
   ghPages: {
-    cacheDir: path.join(os.tmpdir(), package.name)
+    cacheDir: path.join(os.tmpdir(), packJ.name)
   }
-}
+};
 
-var deployTask = function() {
+gulp.task('deploy', ['build'], function() {
   return gulp.src(settings.src)
     .pipe(ghPages(settings.ghPages))
-    .on('end', function(){
-      open(settings.url)
-    })
-}
-
-gulp.task('deploy', ['build'], deployTask)
-module.exports = deployTask
+    .on('end', function() {
+      open(settings.url);
+    });
+});

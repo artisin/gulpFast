@@ -1,10 +1,8 @@
 {
   "root": {
     "src": "./src",
-    "srcAssets": "./src/assets",
     "dest": "./dist",
-    "destTemp": "./dist/.temp",
-    "destAssets": "./dist/assets"
+    "destTemp": "./dist/.temp"
   },
 
   "tasks": {
@@ -27,9 +25,9 @@
     },
 
     "css": {
-      "src": "styles",
-      "post": "styles",
-      "dest": "styles",
+      "src": "assets/styles",
+      "post": "assets/styles",
+      "dest": "assets/styles",
       "autoprefixer": {
         "browsers": ["last 3 version"]
       },

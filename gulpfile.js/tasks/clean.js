@@ -3,7 +3,7 @@ var gulp   = require('gulp'),
     config = require('../config'),
     path   = require('path');
 
-var cleanTask = function (cb) {
+gulp.task('clean', function (cb) {
   var files = [path.join(config.root.dest, 'rev-manifest.json')];
   //cycle files
   for (var key in config.tasks) {
@@ -21,7 +21,5 @@ var cleanTask = function (cb) {
   del(files).then(function () {
     cb();
   });
-};
+});
 
-gulp.task('clean', cleanTask);
-module.exports = cleanTask;

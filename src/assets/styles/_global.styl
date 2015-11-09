@@ -19,14 +19,14 @@ ks-normalize()
 //Mixins
 @import '_base/mixins/*'
 //Generated Icons
-// @import '_generated/*'
+@import '_generated/*'
 
 //Defualt bg
 body
   background: $bg
-  transition: background 1s ease-in-out;
+  transition: background 1s ease-in-out
   +below(700px)
-    transition: background 1s ease-in-out;
+    transition: background 1s ease-in-out
     background: alpha(lighten($sc-spc[1], 70%), 0.75)
 
 //code styl

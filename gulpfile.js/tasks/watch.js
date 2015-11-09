@@ -1,21 +1,19 @@
-var config = require('../config')
-var gulp   = require('gulp')
-var path   = require('path')
-var watch  = require('gulp-watch')
+var config = require('../config'),
+    gulp   = require('gulp'),
+    path   = require('path'),
+    watch  = require('gulp-watch');
 
-var watchTask = function() {
-  var watchableTasks = ['fonts', 'iconFont', 'images', 'svgSprite','html', 'css']
-
+gulp.task('watch', ['browserSync'], function() {
+  var watchableTasks = ['fonts', 'iconFont', 'images', 'svgSprite', 'html', 'css'];
+  //cycle to watch and start
   watchableTasks.forEach(function(taskName) {
-    var task = config.tasks[taskName]
-    if(task) {
-      var glob = path.join(config.root.src, task.src, '**/*.{' + task.extensions.join(',') + '}')
+    var task = config.tasks[taskName];
+    if (task) {
+      var glob = path.join(config.root.src, task.src, '**/*.{' + task.extensions.join(',') + '}');
       watch(glob, function() {
-       require('./' + taskName)()
-      })
+        gulp.start(taskName);
+      });
     }
-  })
-}
+  });
+});
 
-gulp.task('watch', ['browserSync'], watchTask)
-module.exports = watchTask

@@ -4,7 +4,7 @@ var gulp         = require('gulp'),
     postcss      = require('gulp-postcss'),
     sourcemaps   = require('gulp-sourcemaps'),
     path         = require('path'),
-    autoprefixer = require('gulp-autoprefixer'),
+    autoprefixer = require('autoprefixer'),
     fs           = require('fs'),
     gutil        = require('gulp-util'),
     stylus       = require('gulp-stylus'),
@@ -13,10 +13,10 @@ var gulp         = require('gulp'),
     browserSync  = require('browser-sync');
 
 var paths = {
-  src: path.join(config.root.srcAssets,  config.tasks.css.src, '/**/*.{' + config.tasks.css.extensions + '}'),
+  src: path.join(config.root.src,  config.tasks.css.src, '/**/*.{' + config.tasks.css.extensions + '}'),
   postSrc: path.join(config.root.destTemp,  config.tasks.css.post, '/**/*.css'),
   postDest: path.join(config.root.destTemp,  config.tasks.css.post),
-  dest: path.join(config.root.destAssets,  config.tasks.css.dest)
+  dest: path.join(config.root.dest,  config.tasks.css.dest)
 };
 
 /*-----------------------------*/
@@ -34,7 +34,7 @@ gulp.task('css', ['stylus'], function () {
   return gulp.src(paths.postSrc)
       .pipe(sourcemaps.init())
       .pipe(postcss(postCssPlugins))
-      .pipe(autoprefixer(config.tasks.css.autoprefixer))
+      .pipe(postcss([autoprefixer(config.tasks.css.autoprefixer)]))
       .on('error', handleErrors)
       .pipe(sourcemaps.write())
       .pipe(gulp.dest(paths.dest))
@@ -99,7 +99,7 @@ function compareLastModifiedTime(stream, cb, sourceFile, targetPath) {
   fs.stat(targetPath, function (err, targetStat) {
     if (!fsOperationFailed(stream, sourceFile, err)) {
       //Push share.styl regardless
-      if (sourceFile.relative === 'shared.styl'){
+      if (sourceFile.relative === 'shared.styl') {
         stream.push(sourceFile);
       }else if (sourceFile.stat.mtime > targetStat.mtime) {
         stream.push(sourceFile);
@@ -108,4 +108,3 @@ function compareLastModifiedTime(stream, cb, sourceFile, targetPath) {
     cb();
   });
 }
-

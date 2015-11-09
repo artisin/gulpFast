@@ -1,21 +1,19 @@
-var config      = require('../../config')
-if(!config.tasks.iconFont) return
+var config             = require('../../config'),
+    gulp               = require('gulp'),
+    iconfont           = require('gulp-iconfont'),
+    generateIconStylus = require('./generateIconStylus'),
+    handleErrors       = require('../../lib/handleErrors'),
+    packJ              = require('../../../package.json'),
+    path               = require('path');
 
-var gulp               = require('gulp')
-var iconfont           = require('gulp-iconfont')
-var generateIconStylus = require('./generateIconStylus')
-var handleErrors       = require('../../lib/handleErrors')
-var package            = require('../../../package.json')
-var path               = require('path')
-
-var fontPath = path.join(config.root.dest, config.tasks.iconFont.dest)
-var cssPath = path.join(config.root.dest, config.tasks.css.dest)
+var fontPath = path.join(config.root.dest, config.tasks.iconFont.dest);
+var cssPath = path.join(config.root.dest, config.tasks.css.dest);
 
 var settings = {
-  name: package.name + ' icons',
+  name: packJ.name + ' icons',
   src: path.join(config.root.src, config.tasks.iconFont.src, '/*.svg'),
   dest: path.join(config.root.dest, config.tasks.iconFont.dest),
-  stylusDest: path.join(config.root.srcAssets, config.tasks.css.src, config.tasks.iconFont.stylusDest),
+  stylusDest: path.join(config.root.src, config.tasks.css.src, config.tasks.iconFont.stylusDest),
   template: path.normalize('./gulpfile.js/tasks/iconFont/template.styl'),
   stylusOutputName: '_icons.styl',
   fontPath: path.relative(cssPath, fontPath),
@@ -28,15 +26,12 @@ var settings = {
     normalize: false,
     formats: config.tasks.iconFont.extensions
   }
-}
+};
 
-var iconFontTask = function() {
+gulp.task('iconFont', function() {
   return gulp.src(settings.src)
     .pipe(iconfont(settings.options))
     .on('glyphs', generateIconStylus(settings))
     .on('error', handleErrors)
-    .pipe(gulp.dest(settings.dest))
-}
-
-gulp.task('iconFont', iconFontTask)
-module.exports = iconFontTask
+    .pipe(gulp.dest(settings.dest));
+});
