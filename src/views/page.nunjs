@@ -1,4 +1,4 @@
-{% extends 'layouts/application.html' %}
+{% extends 'layouts/application.nunjs' %}
 
 {% block content %}
   I am page 2, and have different javascript.

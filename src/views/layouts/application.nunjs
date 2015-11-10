@@ -1,4 +1,4 @@
-{% from 'macros/helpers.html' import sprite %}
+{% from 'macros/helpers.nunjs' import sprite %}
 
 <!doctype html>
 <html>
@@ -25,7 +25,7 @@
 
   <!-- Add your site or application content here -->
   <h1>Gulp All The Things!</h1>
-  {% include "shared/page-nav.html" %}
+  {% include "shared/page-nav.nunjs" %}
   {% block content %}{% endblock %}
   <footer>
     <p>Made with ♥ at <br><a href="http://viget.com">{{sprite('viget', '0 0 500 182')}}</a></p>
