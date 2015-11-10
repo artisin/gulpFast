@@ -13,6 +13,8 @@ gulp.task('clean', function (cb) {
       files.push(path.join(config.root.dest, task.dest, glob));
     }
   }
+  //add .temp
+  files.push(config.root.destTemp);
 
   // Don't touch node_modules or source files!
   files.push('!node_modules/**/*');

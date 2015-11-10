@@ -9,6 +9,8 @@ module.exports = function(env) {
   var jsDest = path.resolve(config.root.dest, config.tasks.js.dest);
   var publicPath = path.join(config.tasks.js.dest, '/');
   var filenamePattern = env === 'production' ? '[name]-[hash].js' : '[name].js';
+  var chunkFilePattern = env === 'production' ? '[name]-[hash].js' : '[name].js';
+
   var extensions = config.tasks.js.extensions.map(function(extension) {
     return '.' + extension;
   });
@@ -40,21 +42,18 @@ module.exports = function(env) {
         }
       }]
     },
-    node: {
-      __dirname: true,
-      __filename: true
-    },
     externals: nodeModules
   };
 
   if (env !== 'test') {
     // Karma doesn't need entry points or output settings
-    webpackConfig.entry = config.tasks.js.entries
+    webpackConfig.entry = config.tasks.js.entries;
 
     webpackConfig.output = {
       path: path.normalize(jsDest),
       filename: filenamePattern,
-      publicPath: publicPath
+      publicPath: publicPath,
+      chunkFilename: chunkFilePattern
     };
 
     if (config.tasks.js.extractSharedJs) {
@@ -62,7 +61,9 @@ module.exports = function(env) {
       webpackConfig.plugins.push(
         new webpack.optimize.CommonsChunkPlugin({
           name: 'shared',
-          filename: filenamePattern
+          filename: filenamePattern,
+          chunkFilename: chunkFilePattern,
+          async: true
         })
       );
     }
@@ -75,7 +76,7 @@ module.exports = function(env) {
 
   if (env === 'production') {
     webpackConfig.plugins.push(
-      new webpackManifest(publicPath, config.root.dest),
+      new webpackManifest(publicPath, config.root.destAssets),
       new webpack.DefinePlugin({
         'process.env': {
           'NODE_ENV': JSON.stringify('production')

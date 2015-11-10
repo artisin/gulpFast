@@ -2,6 +2,7 @@
   "root": {
     "src": "./src",
     "dest": "./dist",
+    "destAssets": "./dist/assets",
     "destTemp": "./dist/.temp"
   },
 
@@ -19,7 +20,8 @@
       "extractSharedJs": true,
       "entries": {
         "app": ["./app.js"],
-        "vendor": ["./vendor.js"]
+        "vendor": ["./vendor.js"],
+        "fallback": ["./vendor/fallback.js"]
       },
       "extensions": ["js"]
     },
@@ -32,7 +34,7 @@
         "browsers": ["last 3 version"]
       },
       "stylus": {
-        "plugins": ["kouto-swiss", "rupture", "lost-grid", "typographic"]
+        "plugins": ["ctr", "kouto-swiss", "rupture", "lost-grid", "typographic"]
       },
       "postCss": {
         "plugins": [

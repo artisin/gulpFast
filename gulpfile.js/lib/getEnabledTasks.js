@@ -1,5 +1,5 @@
-var config = require('../config')
-var compact = require('lodash/array/compact')
+var config = require('../config'),
+    _      = require('lodash');
 
 // Grouped by what can run in parallel
 var assetTasks = ['fonts', 'iconFont', 'images', 'svgSprite'];
@@ -10,19 +10,19 @@ module.exports = function(env) {
     watch: 'webpack:watch',
     development: 'webpack:watch',
     production: 'webpack:production'
-  }
+  };
 
   var matchFilter = function(task) {
-    if(config.tasks[task]) {
-      if(task === 'js') {
-        task = jsTasks[env] || jsTask.watch
+    if (config.tasks[task]) {
+      if (task === 'js') {
+        task = jsTasks[env] || jsTasks.watch;
       }
-      return task
+      return task;
     }
-  }
+  };
 
   return {
-    assetTasks: compact(assetTasks.map(matchFilter)),
-    codeTasks: compact(codeTasks.map(matchFilter))
-  }
-}
+    assetTasks: _.compact(assetTasks.map(matchFilter)),
+    codeTasks: _.compact(codeTasks.map(matchFilter))
+  };
+};
