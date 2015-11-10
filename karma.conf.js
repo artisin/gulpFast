@@ -13,10 +13,10 @@ var karmaConfig = {
   singleRun: process.env.TRAVIS_CI === 'true',
   reporters: ['nyan'],
   browsers: [(process.env.TRAVIS_CI === 'true'? 'Firefox' : 'Chrome')]
-}
+};
 
 karmaConfig.preprocessors[testSrc] = ['webpack']
 
 module.exports = function(config) {
-  config.set(karmaConfig)
-}
+  config.set(karmaConfig);
+};

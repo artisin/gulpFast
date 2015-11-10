@@ -23,7 +23,8 @@
         "vendor": ["./vendor.js"],
         "fallback": ["./vendor/fallback.js"]
       },
-      "extensions": ["js"]
+      "extensions": ["js"],
+      "loaders": []
     },
 
     "css": {
@@ -56,7 +57,7 @@
       "htmlmin": {
         "collapseWhitespace": true
       },
-      "extensions": ["html", "json"],
+      "extensions": ["html", "json", "nunjs"],
       "excludeFolders": ["layouts", "shared", "macros", "data"]
     },
 

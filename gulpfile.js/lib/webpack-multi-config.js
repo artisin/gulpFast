@@ -2,7 +2,8 @@ var config          = require('../config'),
     path            = require('path'),
     webpack         = require('webpack'),
     webpackManifest = require('./webpackManifest'),
-    fs              = require('fs');
+    fs              = require('fs'),
+    _               = require('lodash');
 
 module.exports = function(env) {
   var jsSrc = path.resolve(config.root.src, config.tasks.js.src);
@@ -24,23 +25,34 @@ module.exports = function(env) {
       nodeModules[mod] = 'commonjs ' + mod;
     });
 
+  //loaders
+  var loaders = [{
+    test: /\.js$/,
+    loader: 'babel',
+    query: {
+      // https://github.com/babel/babel-loader#options
+      cacheDirectory: true,
+      presets: ['es2015']
+    }
+  }, {
+    test: /\.(nunj|nunjucks)$/,
+    loader: 'nunjucks-loader'
+  }];
+
+  //add loaders from config
+  loaders = _.union(loaders, config.tasks.js.loaders || []);
+
   var webpackConfig = {
     context: jsSrc,
     plugins: [],
+    //to suppress superfluous whitespace characters and line terminators on input sizes >100KB
+    compact: false,
     resolve: {
       root: jsSrc,
       extensions: [''].concat(extensions)
     },
     module: {
-      loaders: [{
-        test: /\.js$/,
-        loader: 'babel',
-        query: {
-          // https://github.com/babel/babel-loader#options
-          cacheDirectory: true,
-          presets: ['es2015']
-        }
-      }]
+      loaders: loaders
     },
     externals: nodeModules
   };
