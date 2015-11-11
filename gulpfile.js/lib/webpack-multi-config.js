@@ -16,27 +16,39 @@ module.exports = function(env) {
     return '.' + extension;
   });
 
-  var nodeModules = {};
+  var externals = {};
   fs.readdirSync('node_modules')
     .filter(function(x) {
       return ['.bin'].indexOf(x) === -1;
     })
     .forEach(function(mod) {
-      nodeModules[mod] = 'commonjs ' + mod;
+      externals[mod] = 'commonjs ' + mod;
     });
+
+  //merge from config
+  externals = _.merge(config.tasks.js.externals, externals);
+
 
   //loaders
   var loaders = [{
     test: /\.js$/,
     loader: 'babel',
+    exclude: /(node_modules|bower_components)/,
     query: {
       // https://github.com/babel/babel-loader#options
       cacheDirectory: true,
+      loose: 'all',
       presets: ['es2015']
     }
   }, {
     test: /\.(nunj|nunjucks)$/,
     loader: 'nunjucks-loader'
+  }, {
+    test: '\.jpg$',
+    loader: 'file-loader'
+  }, {
+    test: '\.png$',
+    loader: 'url-loader?mimetype=image/png'
   }];
 
   //add loaders from config
@@ -49,12 +61,15 @@ module.exports = function(env) {
     compact: false,
     resolve: {
       root: jsSrc,
+      modulesDirectories: ['src', 'node_modules', 'bower_components'],
       extensions: [''].concat(extensions)
     },
     module: {
+      noParse: [],
       loaders: loaders
     },
-    externals: nodeModules
+    externals: externals,
+    target: 'web'
   };
 
   if (env !== 'test') {

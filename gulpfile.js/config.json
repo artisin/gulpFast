@@ -19,11 +19,12 @@
       "dest": "assets/js",
       "extractSharedJs": true,
       "entries": {
-        "app": ["./app.js"],
-        "vendor": ["./vendor.js"],
-        "fallback": ["./vendor/fallback.js"]
+        "app": ["./app.js"]
       },
-      "extensions": ["js"],
+      "externals": {
+        "jquery": "jQuery"
+      },
+      "extensions": ["", ".jsx", ".js"],
       "loaders": []
     },
 
