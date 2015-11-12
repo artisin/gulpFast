@@ -7,8 +7,8 @@ var config       = require('../config'),
     htmlmin      = require('gulp-htmlmin'),
     path         = require('path'),
     render       = require('gulp-nunjucks-render'),
-    filter       = require('gulp-filter'),
-    fs           = require('fs');
+    fs           = require('fs'),
+    _            = require('lodash');
 
 var exclude = path.normalize('!**/{' + config.tasks.html.excludeFolders.join(',') + '}/**');
 
@@ -17,9 +17,26 @@ var paths = {
   dest: path.join(config.root.dest, config.tasks.html.dest)
 };
 
-var getData = function(file) {
-  var dataPath = path.resolve(config.root.src, config.tasks.html.src, config.tasks.html.dataFile);
-  return JSON.parse(fs.readFileSync(dataPath, 'utf8'));
+var getData = function() {
+  //get folder
+  var dataFolder = path.resolve(config.root.src, config.tasks.html.src, config.tasks.html.dataFolder);
+  //get files in folder
+  var dataFiles = fs.readdirSync(dataFolder);
+  //map out files and phrase content
+  var dataMap = _.map(dataFiles, function (val) {
+    var valPath = path.join(dataFolder, val);
+    var valData = fs.readFileSync(valPath, 'utf8');
+    //basic saftey check for empty files
+    if (valData.length) {
+      return JSON.parse(valData);
+    }
+  });
+  //reduce data into on obj
+  var dataObj = _.reduce(dataMap, function (prv, cur) {
+    prv = _.merge(cur, prv);
+    return prv;
+  }, {});
+  return dataObj;
 };
 
 gulp.task('html', function() {
