@@ -22,9 +22,16 @@
         "app": ["./app.js"]
       },
       "externals": {
-        "jquery": "jQuery"
+        "asq": "asynquence"
       },
-      "extensions": ["", ".jsx", ".js"],
+      "alias": {
+        "asq": "asynquence"
+
+        },
+      "providePlugin": {
+        "asq": "asynquence"
+      },
+      "extensions": ["", ".js"],
       "loaders": []
     },
 

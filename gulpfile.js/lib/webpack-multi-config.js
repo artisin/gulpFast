@@ -16,18 +16,14 @@ module.exports = function(env) {
     return '.' + extension;
   });
 
+  //externals
   var externals = {};
-  fs.readdirSync('node_modules')
-    .filter(function(x) {
-      return ['.bin'].indexOf(x) === -1;
-    })
-    .forEach(function(mod) {
-      externals[mod] = 'commonjs ' + mod;
-    });
-
   //merge from config
-  externals = _.merge(config.tasks.js.externals, externals);
+  externals = _.merge(config.tasks.js.externals || {}, externals);
 
+  var alias = {};
+  //merge form config
+  alias = _.merge(config.tasks.js.alias || {}, alias);
 
   //loaders
   var loaders = [{
@@ -37,7 +33,6 @@ module.exports = function(env) {
     query: {
       // https://github.com/babel/babel-loader#options
       cacheDirectory: true,
-      loose: 'all',
       presets: ['es2015']
     }
   }, {
@@ -52,24 +47,25 @@ module.exports = function(env) {
   }];
 
   //add loaders from config
-  loaders = _.union(loaders, config.tasks.js.loaders || []);
+  loaders = _.union(config.tasks.js.loaders || [], loaders);
 
   var webpackConfig = {
+    target: 'web',
     context: jsSrc,
     plugins: [],
     //to suppress superfluous whitespace characters and line terminators on input sizes >100KB
     compact: false,
     resolve: {
       root: jsSrc,
-      modulesDirectories: ['src', 'node_modules', 'bower_components'],
-      extensions: [''].concat(extensions)
+      modulesDirectories: ['node_modules', 'bower_components'],
+      extensions: [''].concat(extensions),
+      alias: alias
     },
     module: {
       noParse: [],
       loaders: loaders
     },
-    externals: externals,
-    target: 'web'
+    externals: externals
   };
 
   if (env !== 'test') {
@@ -97,21 +93,25 @@ module.exports = function(env) {
   }
 
   if (env === 'development') {
-    webpackConfig.devtool = 'source-map';
+    webpackConfig.devtool = '#source-map';
     webpack.debug = true;
   }
+
+  var providePlugin = {};
+  providePlugin = _.merge(config.tasks.js.providePlugin || {}, providePlugin);
 
   if (env === 'production') {
     webpackConfig.plugins.push(
       new webpackManifest(publicPath, config.root.destAssets),
       new webpack.DefinePlugin({
         'process.env': {
-          'NODE_ENV': JSON.stringify('production')
+          NODE_ENV: JSON.stringify('production')
         }
       }),
       new webpack.optimize.DedupePlugin(),
       new webpack.optimize.UglifyJsPlugin(),
-      new webpack.NoErrorsPlugin()
+      new webpack.NoErrorsPlugin(),
+      new webpack.ProvidePlugin(providePlugin)
     );
   }
 

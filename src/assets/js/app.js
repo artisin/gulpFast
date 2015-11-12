@@ -1,12 +1,12 @@
 //main app
-// require.ensure(['./vendor.js'], function(require) {
-//   require('./vendor.js');
-// });
+require('./vendor.js');
 
+debugger
+// var hmm = function  () {
+//   setTimeout(function  () {
+//     console.log($)
+//     hmm()
+//   }, 50)
+// }
 
-require('scriptjs');
-
-
-// require('./vendor-scripts.js')
-
-// debugger
+// hmm()
