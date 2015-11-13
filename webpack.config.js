@@ -1,2 +1,3 @@
 //Initalize for diffrent work enviroments
-module.exports = require('./gulpfile.js/config/webpack')('development');
+// module.exports = require('./gulpfile.js/lib/webpack-multi-config')('production');
+module.exports = require('./gulpfile.js/lib/webpack-multi-config.js')('development');

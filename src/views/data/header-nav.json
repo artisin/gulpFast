@@ -1,0 +1,19 @@
+{
+  "headerNav": [
+    {
+      "title": "Home",
+      "class": "home",
+      "url": "#"
+    },
+    {
+      "title": "About",
+      "class": "about",
+      "url": "#"
+    },
+    {
+      "title": "Contact",
+      "class": "contact",
+      "url": "#"
+    }
+  ]
+}

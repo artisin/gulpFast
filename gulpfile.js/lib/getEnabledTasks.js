@@ -13,7 +13,7 @@ module.exports = function(env) {
   };
 
   var matchFilter = function(task) {
-    if (config.tasks[task]) {
+    if (config.tasks[task] && config.tasks[task].active !== false) {
       if (task === 'js') {
         task = jsTasks[env] || jsTasks.watch;
       }

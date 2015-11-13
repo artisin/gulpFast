@@ -1,1 +1,5 @@
-console.log('App js loaded');
+
+module.exports = function () {
+  debugger
+};
+

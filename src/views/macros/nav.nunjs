@@ -1,0 +1,8 @@
+{#
+  Active 
+#}
+{% macro active(activePage = 'Home', urlLink, titleName, class) %}
+  <a class="{{ class }} {%if activePage %} active {% endif %}" href="{{ urlLink }}">
+    {{ titleName }}
+  </a>
+{% endmacro %}

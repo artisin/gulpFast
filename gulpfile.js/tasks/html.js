@@ -8,12 +8,13 @@ var config       = require('../config'),
     path         = require('path'),
     render       = require('gulp-nunjucks-render'),
     fs           = require('fs'),
+    gulpif       = require('gulp-if'),
     _            = require('lodash');
 
 var exclude = path.normalize('!**/{' + config.tasks.html.excludeFolders.join(',') + '}/**');
 
 var paths = {
-  src: [path.join(config.root.src, config.tasks.html.src, '/**/*.{html,nunjs}'), exclude],
+  src: [path.join(config.root.src, config.tasks.html.src, '/**/*.{html,nunj,nunjs,nunjucks}'), exclude],
   dest: path.join(config.root.dest, config.tasks.html.dest)
 };
 
@@ -39,6 +40,7 @@ var getData = function() {
   return dataObj;
 };
 
+//@todo - cache files?
 gulp.task('html', function() {
   render.nunjucks.configure([path.join(config.root.src, config.tasks.html.src)], {watch: false });
   return gulp.src(paths.src)
@@ -50,4 +52,3 @@ gulp.task('html', function() {
     .pipe(gulp.dest(paths.dest))
     .pipe(browserSync.stream());
 });
-

@@ -1,0 +1,20 @@
+{#
+  Script tags
+#}
+{% macro js(urlLink) %}
+  <script src="{{urlLink}}" type="text/javascript" charset="utf-8"></script>
+{% endmacro %}
+
+{#
+  Cnd Script
+#}
+{% macro cdn(urlLink) %}
+  <script src="{{urlLink}}" type="text/javascript" charset="utf-8" async defer></script>
+{% endmacro %}
+
+{#
+  CSS
+#}
+{% macro css(cssLink = '') %}
+  <link rel="stylesheet" href="{{cssLink}}">
+{% endmacro %}

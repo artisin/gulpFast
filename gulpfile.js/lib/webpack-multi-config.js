@@ -2,13 +2,13 @@ var config          = require('../config'),
     path            = require('path'),
     webpack         = require('webpack'),
     webpackManifest = require('./webpackManifest'),
-    fs              = require('fs'),
     _               = require('lodash');
 
 module.exports = function(env) {
-  var jsSrc = path.resolve(config.root.src, config.tasks.js.src);
-  var jsDest = path.resolve(config.root.dest, config.tasks.js.dest);
-  var publicPath = path.join(config.tasks.js.dest, '/');
+  // debugger
+  var jsSrc = path.resolve(process.env.PWD, config.root.src, config.tasks.js.src);
+  var jsDest = path.resolve(process.env.PWD, config.root.dest, config.tasks.js.dest);
+  var publicPath = path.join(process.env.PWD, config.tasks.js.dest, '/');
   var filenamePattern = env === 'production' ? '[name]-[hash].js' : '[name].js';
   var chunkFilePattern = env === 'production' ? '[name]-[hash].js' : '[name].js';
 
@@ -25,6 +25,10 @@ module.exports = function(env) {
   //merge form config
   alias = _.merge(config.tasks.js.alias || {}, alias);
 
+  //auto load modules
+  var providePlugin = {};
+  providePlugin = _.merge(config.tasks.js.providePlugin || {}, providePlugin);
+
   //loaders
   var loaders = [{
     test: /\.js$/,
@@ -32,12 +36,15 @@ module.exports = function(env) {
     exclude: /(node_modules|bower_components)/,
     query: {
       // https://github.com/babel/babel-loader#options
-      cacheDirectory: true,
+      // cacheDirectory: true
       presets: ['es2015']
     }
   }, {
-    test: /\.(nunj|nunjucks)$/,
-    loader: 'nunjucks-loader'
+    test: /\.(nunjs|nunjucks)$/,
+    loader: 'nunjucks-loader',
+    query: {
+      root: process.env.PWD + '/fucker/to/templates'
+    }
   }, {
     test: '\.jpg$',
     loader: 'file-loader'
@@ -49,9 +56,13 @@ module.exports = function(env) {
   //add loaders from config
   loaders = _.union(config.tasks.js.loaders || [], loaders);
 
+  //Absolute path to the project root
+  var projectRoot = process.env.PWD;
+  var resolveRoot = path.join(projectRoot, 'node_modules');
+
   var webpackConfig = {
     target: 'web',
-    context: jsSrc,
+    context: path.join(process.env.PWD, 'src'),
     plugins: [],
     //to suppress superfluous whitespace characters and line terminators on input sizes >100KB
     compact: false,
@@ -61,8 +72,10 @@ module.exports = function(env) {
       extensions: [''].concat(extensions),
       alias: alias
     },
+    resolveLoader: {
+      root: resolveRoot
+    },
     module: {
-      noParse: [],
       loaders: loaders
     },
     externals: externals
@@ -70,7 +83,11 @@ module.exports = function(env) {
 
   if (env !== 'test') {
     // Karma doesn't need entry points or output settings
-    webpackConfig.entry = config.tasks.js.entries;
+    // reduce and join path for abs path
+    webpackConfig.entry = _.reduce(config.tasks.js.entries, function (prv, val, key) {
+      prv[key] = path.resolve(config.root.src, config.tasks.js.src, val);
+      return prv;
+    }, {});
 
     webpackConfig.output = {
       path: path.normalize(jsDest),
@@ -78,6 +95,9 @@ module.exports = function(env) {
       publicPath: publicPath,
       chunkFilename: chunkFilePattern
     };
+
+    //push regardless
+    webpackConfig.plugins.push(new webpack.ProvidePlugin(providePlugin));
 
     if (config.tasks.js.extractSharedJs) {
       // Factor out common dependencies into a shared.js
@@ -97,8 +117,6 @@ module.exports = function(env) {
     webpack.debug = true;
   }
 
-  var providePlugin = {};
-  providePlugin = _.merge(config.tasks.js.providePlugin || {}, providePlugin);
 
   if (env === 'production') {
     webpackConfig.plugins.push(

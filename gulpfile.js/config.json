@@ -19,17 +19,16 @@
       "dest": "assets/js",
       "extractSharedJs": true,
       "entries": {
-        "app": ["./app.js"]
+        "app": "app.js"
       },
       "externals": {
-        "asq": "asynquence"
+        "jquery": "jQuery"
       },
       "alias": {
-        "asq": "asynquence"
-
-        },
+        "TweenMax": "gsap"
+      },
       "providePlugin": {
-        "asq": "asynquence"
+        "ASQ": "asynquence"
       },
       "extensions": ["", ".js"],
       "loaders": []
@@ -61,36 +60,37 @@
     "html": {
       "src": "views",
       "dest": "./",
-      "dataFile": "data/global.json",
+      "dataFolder": "data",
       "htmlmin": {
         "collapseWhitespace": true
       },
       "extensions": ["html", "json", "nunjs"],
-      "excludeFolders": ["layouts", "shared", "macros", "data"]
+      "excludeFolders": ["layouts", "shared", "macros", "data", "partials"]
     },
 
+
     "images": {
-      "src": "assets/images",
-      "dest": "assets/images",
+      "src": "public/images",
+      "dest": "public/images",
       "extensions": ["jpg", "png", "svg", "gif"]
     },
 
     "fonts": {
-      "src": "assets/fonts",
-      "dest": "assets/fonts",
+      "src": "public/fonts",
+      "dest": "public/fonts",
       "extensions": ["woff2", "woff", "eot", "ttf", "svg"]
     },
 
     "iconFont": {
-      "src": "assets/icons",
-      "dest": "assets/fonts",
+      "src": "public/icons",
+      "dest": "public/fonts",
       "stylusDest": "_generated",
       "extensions": ["woff2", "woff", "eot", "ttf", "svg"]
     },
 
     "svgSprite": {
-      "src": "assets/sprites",
-      "dest": "assets/images",
+      "src": "public/sprites",
+      "dest": "public/images",
       "extensions": ["svg"]
     },
 

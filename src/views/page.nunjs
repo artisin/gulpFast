@@ -1,9 +1,15 @@
-{% extends 'layouts/application.nunjs' %}
+{#
+  {% set activePage = "About" %}
+  {% extends 'layouts/application.nunjs' %}
+  
+#}
+
 
 {% block content %}
-  I am page 2, and have different javascript.
+  <div class="content">
+    I am page 2, and have different javascript and shit.
+  </div>
 {% endblock %}
 
 {% block javascript %}
-<!-- <script src="assets/js/page.js"></script> -->
 {% endblock %}

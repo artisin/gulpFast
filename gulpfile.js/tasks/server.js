@@ -27,6 +27,6 @@ gulp.task('server', function() {
     .listen(settings.port);
 
   gutil.log('production server started on ' + gutil.colors.green(url));
-  open(url);
+  // open(url);
 });
 
