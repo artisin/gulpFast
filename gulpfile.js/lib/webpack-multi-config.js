@@ -40,8 +40,9 @@ module.exports = function(env) {
       presets: ['es2015']
     }
   }, {
-    test: /\.(nunjs|nunjucks)$/,
-    loader: 'nunjucks-loader',
+    test: /\.(html|nunjs|nunjucks)?$/,
+    loader: 'nunjucks',
+    exclude: /node_modules/,
     query: {
       root: process.env.PWD + '/fucker/to/templates'
     }
@@ -62,18 +63,16 @@ module.exports = function(env) {
 
   var webpackConfig = {
     target: 'web',
-    context: path.join(process.env.PWD, 'src'),
     plugins: [],
-    //to suppress superfluous whitespace characters and line terminators on input sizes >100KB
-    compact: false,
     resolve: {
       root: jsSrc,
-      modulesDirectories: ['node_modules', 'bower_components'],
+      modulesDirectories: ['src', 'node_modules', 'bower_components'],
       extensions: [''].concat(extensions),
       alias: alias
     },
     resolveLoader: {
-      root: resolveRoot
+      root: resolveRoot,
+      modulesDirectories: ['node_modules']
     },
     module: {
       loaders: loaders
@@ -88,6 +87,10 @@ module.exports = function(env) {
       prv[key] = path.resolve(config.root.src, config.tasks.js.src, val);
       return prv;
     }, {});
+
+    webpackConfig.entry.vendor = [
+            'nunjucks-loader/runtime-shim'        
+    ]
 
     webpackConfig.output = {
       path: path.normalize(jsDest),
