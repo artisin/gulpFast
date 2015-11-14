@@ -18,8 +18,13 @@
       "src": "assets/js",
       "dest": "assets/js",
       "extractSharedJs": true,
+      "explicitVendorChunk": false,
       "entries": {
-        "app": "app.js"
+        "app": "app.js",
+        "vendor": [
+          "nunjucks-loader/runtime-shim",
+          "nunjucks/browser/nunjucks-slim"
+        ]
       },
       "externals": {
         "jquery": "jQuery"
@@ -30,7 +35,7 @@
       "providePlugin": {
         "ASQ": "asynquence"
       },
-      "extensions": ["", ".js"],
+      "extensions": ["", "js", "es6", "json"],
       "loaders": []
     },
 

@@ -6,9 +6,9 @@ var config          = require('../config'),
 
 module.exports = function(env) {
   // debugger
-  var jsSrc = path.resolve(process.env.PWD, config.root.src, config.tasks.js.src);
-  var jsDest = path.resolve(process.env.PWD, config.root.dest, config.tasks.js.dest);
-  var publicPath = path.join(process.env.PWD, config.tasks.js.dest, '/');
+  var jsSrc = path.resolve(config.root.src, config.tasks.js.src);
+  var jsDest = path.resolve(config.root.dest, config.tasks.js.dest);
+  var publicPath = path.join(config.tasks.js.dest, '/');
   var filenamePattern = env === 'production' ? '[name]-[hash].js' : '[name].js';
   var chunkFilePattern = env === 'production' ? '[name]-[hash].js' : '[name].js';
 
@@ -41,10 +41,10 @@ module.exports = function(env) {
     }
   }, {
     test: /\.(html|nunjs|nunjucks)?$/,
-    loader: 'nunjucks',
+    loader: 'nunjucks-loader',
     exclude: /node_modules/,
     query: {
-      root: process.env.PWD + '/fucker/to/templates'
+      root: path.resolve(config.root.src, config.tasks.html.src)
     }
   }, {
     test: '\.jpg$',
@@ -57,13 +57,12 @@ module.exports = function(env) {
   //add loaders from config
   loaders = _.union(config.tasks.js.loaders || [], loaders);
 
-  //Absolute path to the project root
-  var projectRoot = process.env.PWD;
-  var resolveRoot = path.join(projectRoot, 'node_modules');
-
   var webpackConfig = {
     target: 'web',
     plugins: [],
+    // Reduce compilation time by telling webpack to not parse these libraries.
+    // Only add libraries that have no dependencies eg. no require, define or similar calls.
+    noParse: [/nunjucks\-slim/],
     resolve: {
       root: jsSrc,
       modulesDirectories: ['src', 'node_modules', 'bower_components'],
@@ -71,8 +70,7 @@ module.exports = function(env) {
       alias: alias
     },
     resolveLoader: {
-      root: resolveRoot,
-      modulesDirectories: ['node_modules']
+      root: path.join(process.env.PWD, 'node_modules')
     },
     module: {
       loaders: loaders
@@ -84,13 +82,13 @@ module.exports = function(env) {
     // Karma doesn't need entry points or output settings
     // reduce and join path for abs path
     webpackConfig.entry = _.reduce(config.tasks.js.entries, function (prv, val, key) {
-      prv[key] = path.resolve(config.root.src, config.tasks.js.src, val);
+      if (_.isString(val)) {
+        prv[key] = path.resolve(config.root.src, config.tasks.js.src, val);
+      }else {
+        prv[key] = val;
+      }
       return prv;
     }, {});
-
-    webpackConfig.entry.vendor = [
-            'nunjucks-loader/runtime-shim'        
-    ]
 
     webpackConfig.output = {
       path: path.normalize(jsDest),
@@ -112,6 +110,14 @@ module.exports = function(env) {
           async: true
         })
       );
+    }
+
+    if (config.tasks.js.explicitVendorChunk) {
+      // Create an explicit vendor commons chunk
+      new webpack.optimize.CommonsChunkPlugin({
+        name: 'vendor',
+        minChunks: Infinity
+      });
     }
   }
 

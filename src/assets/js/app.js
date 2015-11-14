@@ -1,13 +1,14 @@
 // //main app
 // const vendor = require('./vendor.js');
 console.log('test')
-
+debugger
+var tpl = require('views/page.nunjs');
+debugger
 // const siteNameSpace  = {
 //   home: {
 //     onload: function() {
 //       console.log(require('./pages/home.js'))
 //       let hmm = require.ensure([], function (require) {
-//         let tmpl = require('nunjucks!./page.nunj');
 //         return page;
 //       })
 //       debugger
