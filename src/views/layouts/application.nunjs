@@ -37,12 +37,12 @@
   </head>
 
   {# Body #}
-  <body id="{{activePage}}">
+  <body id="{{activePage}}" class="app_container">
     {# Conditionals #}
     {% include "partials/conditionals.nunjs" %}
 
     {# Header #}
-    {% include "partials/header-nav.nunjs" %}
+    {% include "partials/header/primary-nav.nunjs" %}
 
     {# Content #}
     {% block content %}{% endblock %}

@@ -1,9 +1,9 @@
 {#
-  {% set activePage = "About" %}
-  {% extends 'layouts/application.nunjs' %}
-  
+  About page
 #}
-
+{% set activePage = "About" %}
+{# Layout #}
+{% extends 'layouts/application.nunjs' %}
 
 {% block content %}
   <div class="content">

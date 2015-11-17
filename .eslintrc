@@ -7,8 +7,10 @@
         "jsx": true
     },
     "globals": {
-        //J
+        //vendor
         "$": true,
+        "_": true,
+        "ASQ": true,
         //custom
         "_G": true,
         "_L": true,
@@ -20,11 +22,7 @@
         "FlowRouter": true,
         "BlazeLayout": true,
         "Session": true,
-        //meteor custom
         "_subManager": true,
-        //underscore
-        "_": true,
-
         "Meteor": false,
         "DDP": false,
         "Mongo": false, //Meteor.Collection renamed to Mongo.Collection
@@ -96,7 +94,7 @@
         "notify": false,
         "buzz": false,
         "lunr": false,
-        "Burt": flase
+        "Burt": false
     },
     "plugins": [
     ],

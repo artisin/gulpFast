@@ -1,0 +1,15 @@
+{#
+  About page
+#}
+{% set activePage = "projects" %}
+{# Layout #}
+{% extends 'layouts/application.nunjs' %}
+
+{% block content %}
+  <div class="content">
+    Project page
+  </div>
+{% endblock %}
+
+{% block javascript %}
+{% endblock %}

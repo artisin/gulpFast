@@ -1,26 +1,38 @@
-// //main app
-// const vendor = require('./vendor.js');
+//main app
+const vendorCDN = require('./vendor/vendor-cdn.js');
 
-// const siteNameSpace  = {
-//   home: {
-//     onload: function() {
-//       console.log(require('./pages/home.js'))
-//       let hmm = require.ensure([], function (require) {
-//         return page;
-//       })
-//       debugger
-//       // do this stuff.
-//     }
-//   },
-//   contact: {
-//     onload: function() {
-//      // onload stuff for contact us page
-//     }
-//   }
-// };
+//name space loading
+const siteNameSpace  = {
+  common: {
+    onload: function () {
+      require('./component/common.js');
+    }
+  },
+  home: {
+    onload: function() {
+      require.ensure(['./vendor/vendor-index.js'], function (require) {
+        require('./page/home.js');
+      });
+    }
+  },
+  contact: {
+    onload: function() {
+     // onload stuff for contact us page
+    }
+  }
+};
 
-// ASQ()
-//   .seq(vendor.cdnLoader(['jQuery', 'TweenMax']))
-//   .then(function (done) {
-//     done($(document).ready(siteNameSpace[ document.body.id.toLowerCase() ].onload));
-//   });
+//This will check vendor scripts loaded from a cdn since they are
+//being loaded async. If the scripts is not present after 4s it
+//pulls in the local script dynamically
+const cdnVendorScripts = ['jQuery', 'TweenMax'];
+ASQ()
+  .seq(vendorCDN.cdnLoader(cdnVendorScripts))
+  .then(function (done) {
+    done($(document).ready(function () {
+      //load common
+      siteNameSpace.common.onload();
+      //load page
+      siteNameSpace[ document.body.id.toLowerCase() ].onload();
+    }));
+  });

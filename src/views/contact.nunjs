@@ -1,0 +1,15 @@
+{#
+  About page
+#}
+{% set activePage = "contact" %}
+{# Layout #}
+{% extends 'layouts/application.nunjs' %}
+
+{% block content %}
+  <div class="content">
+    Contact page
+  </div>
+{% endblock %}
+
+{% block javascript %}
+{% endblock %}

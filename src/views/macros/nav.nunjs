@@ -6,3 +6,12 @@
     {{ titleName }}
   </a>
 {% endmacro %}
+
+{#
+  Pjax Active, just adds a data attribue, nothing special
+#}
+{% macro activePjax(activePage = 'Home', urlLink, titleName, class) %}
+  <a class="{{ class }} {%if activePage %} active {% endif %}" href="{{ urlLink }}" data-pjax>
+    {{ titleName }}
+  </a>
+{% endmacro %}

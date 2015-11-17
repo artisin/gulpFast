@@ -7,8 +7,10 @@
 {% import 'macros/nav.nunjs' as nav %}
 
 {# Body #}
-<nav class="header-nav">
+<nav class="primary-nav">
   {% for item in headerNav %}
-    {{nav.active(activePage = activePage == item.title, item.url, item.title, item.class)}}
+    <div class="{{item.class}}_wrapper">
+      {{nav.activePjax(activePage = activePage == item.title, item.url, item.title, item.class)}}
+    </div>
   {% endfor %}
 </nav>
