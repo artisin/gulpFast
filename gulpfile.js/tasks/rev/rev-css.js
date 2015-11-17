@@ -20,7 +20,7 @@ gulp.task('rev-css', ['clean-temp'], function() {
     .pipe(gulp.dest(config.root.destAssets))
     .pipe(revNapkin({verbose: true}))
     .pipe(rev.manifest(path.join(config.root.destAssets, 'rev-manifest.json'), {merge: true}))
-    .pipe(gulp.dest(''));
+    .pipe(gulp.dest(config.root.destAssets));
 });
 
 gulp.task('clean-temp', function (cb) {

@@ -6,13 +6,14 @@ gulp.task('build', ['production-build'], function() {
   console.log('Project Succsess.'.bold.bgRed);
   console.log('Project Succsess.'.bold.bgWhite);
   console.log('Project Succsess.'.bold.bgBlue);
-  if (!deploy) {
-    //Exit gulp
-    process.exit();
-  }
+  // process.exit();
+  // if (!deploy) {
+  //   //Exit gulp
+  // }
 });
 
 gulp.task('production-build', function(cb) {
   var tasks = getEnabledTasks('production');
-  gulpSequence('clean', tasks.assetTasks, tasks.codeTasks, 'rev', cb);
+  debugger
+  gulpSequence('clean', tasks.assetTasks, tasks.codeTasks, cb);
 });

@@ -13,5 +13,5 @@ gulp.task('rev-assets', function() {
     .pipe(gulp.dest(config.root.destAssets))
     .pipe(revNapkin({verbose: false}))
     .pipe(rev.manifest(path.join(config.root.destAssets, 'rev-manifest.json'), {merge: true}))
-    .pipe(gulp.dest(''));
+    .pipe(gulp.dest(config.root.destAssets));
 });
