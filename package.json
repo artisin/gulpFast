@@ -10,6 +10,13 @@
     "type": "git",
     "url": "https://github.com/artisin/gulpFast"
   },
+  "scripts": {
+    "development": "gulp --gulpfile app/gulpfile.js",
+    "deploy": "gulp deploy --gulpfile app/gulpfile.js",
+    "production": "gulp production --gulpfile app/gulpfile.js",
+    "demo": "gulp production --gulpfile app/gulpfile.js && gulp server --gulpfile app/gulpfile.js",
+    "test": "gulp production --gulpfile app/gulpfile.js && gulp test --gulpfile app/gulpfile.js"
+  },
   "dependencies": {
     "babel-loader": "^6.0.0",
     "nunjucks-loader": "^2.2.1",

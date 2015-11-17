@@ -1,9 +1,6 @@
 // //main app
 // const vendor = require('./vendor.js');
-console.log('test')
-debugger
-var tpl = require('views/page.nunjs');
-debugger
+
 // const siteNameSpace  = {
 //   home: {
 //     onload: function() {
