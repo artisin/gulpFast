@@ -9,7 +9,7 @@
 {# Body #}
 <nav class="primary-nav">
   {% for item in headerNav %}
-    <div class="{{item.class}}_wrapper">
+    <div class="navlink_wrapper">
       {{nav.activePjax(activePage = activePage == item.title, item.url, item.title, item.class)}}
     </div>
   {% endfor %}

@@ -6,7 +6,7 @@
 {% extends 'layouts/application.nunjs' %}
 
 {% block content %}
-  <div class="content">
+  <div class="content" data-pjax-container>
     I am page 2, and have different javascript and shit.
   </div>
 {% endblock %}

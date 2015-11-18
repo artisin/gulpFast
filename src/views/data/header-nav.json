@@ -3,22 +3,22 @@
     {
       "title": "Home",
       "class": "home",
-      "url": "/index.html"
+      "url": "/index"
     },
     {
       "title": "About",
       "class": "about",
-      "url": "/about.html"
+      "url": "/about"
     },
     {
       "title": "Projects",
       "class": "projects",
-      "url": "/projects.html"
+      "url": "/projects"
     },
     {
       "title": "Contact",
       "class": "contact",
-      "url": "/contact.html"
+      "url": "/contact"
     }
   ]
 }

@@ -1,12 +1,12 @@
 {#
   About page
 #}
-{% set activePage = "contact" %}
+{% set activePage = "Contact" %}
 {# Layout #}
 {% extends 'layouts/application.nunjs' %}
 
 {% block content %}
-  <div class="content">
+  <div class="content" data-pjax-container>
     Contact page
   </div>
 {% endblock %}

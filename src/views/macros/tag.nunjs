@@ -16,5 +16,5 @@
   CSS
 #}
 {% macro css(cssLink = '') %}
-  <link rel="stylesheet" href="{{cssLink}}">
+  <link rel="stylesheet" href="{{cssLink}}" type="text/css">
 {% endmacro %}

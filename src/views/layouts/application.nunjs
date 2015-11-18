@@ -24,6 +24,11 @@
     {# Icon #}
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
 
+    {# Font #}
+    {% for link in googleFont %}
+      {{tag.css(link.url)}}
+    {% endfor %}
+
     {# Css #}
     {{tag.css("assets/styles/shared.css")}}
 
@@ -45,7 +50,9 @@
     {% include "partials/header/primary-nav.nunjs" %}
 
     {# Content #}
-    {% block content %}{% endblock %}
+    <div class="content_container">
+      {% block content %}{% endblock %}
+    </div>
 
     {# Js foot cdn scripts #}
     {# 

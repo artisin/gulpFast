@@ -1,0 +1,110 @@
+
+.primary-nav
+  ctr({
+    display: flex
+    float: left
+    flex-flow: column wrap
+    height: 100vh
+    width: 10vw
+    min-width: 175px
+    //media small
+    media:{
+      mixin: {
+        below: 'sm'
+      }
+      flex-flow: row wrap
+      width: 100vw
+      height: 20vh
+    }
+  })
+  // align-items: center
+  // justify-content: space-around
+  .navlink_wrapper
+    // height: 25vh
+    ctr({
+      display: flex
+      align-items: center
+      flex: auto
+      //media
+      media:{
+        mixin: {
+          below: 'sm'
+        }
+        width: 50%
+        justify-content: center
+      }
+      'nth-child(1)': {
+        background: $c-home
+      }
+      'nth-child(2)': {
+        background: $c-about
+      }
+      'nth-child(3)': {
+        background: $c-projects
+      }
+      'nth-child(4)': {
+        background: $c-contact
+      }
+    })
+    .active
+      background: alpha($gray(2), 0.1)
+      // padding-left: 10px
+    a
+      ctr({
+        position: relative
+        flex: auto
+        align-self: stretch
+        padding-left: 1vw
+        font-family: $header-font
+        font-weight: bold
+        text-decoration: none
+        font-size: 1.5em
+        color: $white
+        text-shadow: 2px 4px 3px rgba(0,0,0,0.3)
+        //text align
+        display: flex
+        align-items: center
+        hover: {
+          trans: {
+            // text: {
+            //   text-shadow: "1px 2px 2px rgba(0,0,0,0.3)"
+            //   option: {
+            //     willChange: true
+            //     duration: 0.25s
+            //   }
+            // }
+            // beforeTn: {
+            //   after: {
+            //     common: {
+            //       content: ''
+            //       position: absolute
+            //       top: 0
+            //       left: 0px
+            //       bottom: 0
+            //       background: green
+            //       z-index: 100
+            //     }
+            //     on: {
+            //       right: 80%
+            //     }
+            //     non: {
+            //       right: 90%
+            //     }
+            //   }
+            // }
+          }
+        }
+        media: {
+          mixin: {
+            below: 'sm'
+          }
+          text-align: center
+        }
+      })
+      
+// background-color: #666666;
+// -webkit-background-clip: text;
+// -moz-background-clip: text;
+// background-clip: text;
+// color: transparent;
+// text-shadow: rgba(255,255,255,0.5) 0px 3px 3px;

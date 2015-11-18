@@ -1,12 +1,12 @@
 {#
   About page
 #}
-{% set activePage = "projects" %}
+{% set activePage = "Projects" %}
 {# Layout #}
 {% extends 'layouts/application.nunjs' %}
 
 {% block content %}
-  <div class="content">
+  <div class="content" data-pjax-container>
     Project page
   </div>
 {% endblock %}

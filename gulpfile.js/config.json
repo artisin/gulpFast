@@ -43,7 +43,7 @@
         "browsers": ["last 3 version"]
       },
       "stylus": {
-        "plugins": ["ctr", "kouto-swiss", "rupture", "lost-grid", "typographic"]
+        "plugins": ["ctr",  "rupture", "typographic"]
       },
       "postCss": {
         "plugins": [
