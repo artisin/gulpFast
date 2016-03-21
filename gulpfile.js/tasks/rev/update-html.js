@@ -1,10 +1,12 @@
-var gulp        = require('gulp'),
-    revReplace  = require('gulp-rev-replace'),
-    config      = require('../../config');
+var gulp       = require('gulp'),
+    config     = require('../../config'),
+    revReplace = require('gulp-rev-replace'),
+    path       = require('path');
 
-gulp.task('update-html', function(){
-  var manifest = gulp.src(config.publicDirectory + "/rev-manifest.json");
-  return gulp.src(config.publicDirectory + '/**/*.html')
+// 5) Update asset references in HTML
+gulp.task('update-html', function() {
+  var manifest = gulp.src(path.join(config.root.dest, "/rev-manifest.json"));
+  return gulp.src(path.join(config.root.dest, '/**/*.html'))
     .pipe(revReplace({manifest: manifest}))
-    .pipe(gulp.dest(config.publicDirectory));
+    .pipe(gulp.dest(path.join(config.root.dest, config.tasks.html.dest)));
 });

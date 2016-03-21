@@ -1,0 +1,248 @@
+
+//Primary
+$primary-color = #14B5B4
+$pc = $primary-color
+//Secondary
+$secondary-color = #EB4A4B
+$sc = $secondary-color
+
+//Grays
+$gray-seed = #CCCCCC
+
+$white = #F7FBFB
+//Backgound
+$bg = $white
+
+$c-home = #C04130;
+$c-about = #D15C23;
+$c-projects = #D38928;
+$c-contact = #9CCBCA;
+
+//--------------------------//
+//Mixin
+//-------------------------//
+$colorLightness(val = 50%, _color = #eee)
+  //Check for unit
+  if unit(val) == ''
+    //No unit
+    if val <= 10
+      _valPercent = val  * 10;
+      val = unit(_valPercent, '%');
+      return lightness(_color, val)
+    else
+      warn('Your gray-ness value must be under ten or a precent value.')
+  else
+    return lightness(_color, val)
+
+
+//--------------------------//
+//Primary
+//-------------------------//
+//Analogous
+$pc-ag = ks-analogous($primary-color)
+.agPC_0
+  background: $primary-color
+  color: $primary-color
+.agPC_1
+  background: $pc-ag[0]
+  color: $pc-ag[0]
+.agPC_2
+  background: $pc-ag[1]
+  color: $pc-ag[1] 
+
+//extended-analogous
+$pc-age = ks-extended-analogous($primary-color)
+.agePC_0
+  background: $primary-color
+  color: $primary-color
+.agePC_1
+  background: $pc-age[1]
+  color: $pc-age[1]
+.agePC_2
+  background: $pc-age[2]
+  color: $pc-age[2]
+.agePC_3
+  background: $pc-age[3]
+  color: $pc-age[3]
+
+//Monochrome
+$pc-mc = ks-monochrome($primary-color)
+.mcPC_0
+  background: $primary-color
+  color: $primary-color
+.mcPC_1
+  background: $pc-mc[0]
+  color: $pc-mc[0]
+.mcPC_2
+  background: $pc-mc[1]
+  color: $pc-mc[1]
+  
+//split-complements
+$pc-spc = ks-split-complements($primary-color)
+.spcPC_0
+  background: $primary-color
+  color: $primary-color
+.spcPC_1
+  background: $pc-spc[0]
+  color: $pc-spc[0]
+.spcPC_2
+  background: $pc-spc[1]
+  color: $pc-spc[1]
+
+//triad
+$pc-tri = ks-triad($primary-color)
+.triPC_0
+  background: $primary-color
+  color: $primary-color
+.triPC_1
+  background: $pc-tri[0]
+  color: $pc-tri[0]
+.triPC_2
+  background: $pc-tri[1]
+  color: $pc-tri[1]
+
+//quad
+$pc-qd = ks-quad($primary-color)
+.qdPC_0
+  background: $primary-color
+  color: $primary-color
+.qdPC_1
+  background: $pc-qd[0]
+  color: $pc-qd[0]
+.qdPC_2
+  background: $pc-qd[1]
+  color: $pc-qd[1]
+.qdPC_3
+  background: $pc-qd[2]
+  color: $pc-qd[2]
+.qdPC_4
+  background: $pc-qd[3]
+  color: $pc-qd[3]
+
+
+//--------------------------//
+//Secondary
+//-------------------------//
+//Analogous
+$sc-ag = ks-analogous($secondary-color)
+.agSC_0
+  background: $secondary-color
+  color: $secondary-color
+.agSC_1
+  background: $sc-ag[0]
+  color: $sc-ag[0]
+.agSC_2
+  background: $sc-ag[1]
+  color: $sc-ag[1] 
+
+//extended-analogous
+$sc-age = ks-extended-analogous($secondary-color)
+.ageSC_0
+  background: $secondary-color
+  color: $secondary-color
+.ageSC_1
+  background: $sc-age[1]
+  color: $sc-age[1]
+.ageSC_2
+  background: $sc-age[2]
+  color: $sc-age[2]
+.ageSC_3
+  background: $sc-age[3]
+  color: $sc-age[3]
+
+//Monochrome
+$sc-mc = ks-monochrome($secondary-color)
+.mcSC_0
+  background: $secondary-color
+  color: $secondary-color
+.mcSC_1
+  background: $sc-mc[0]
+  color: $sc-mc[0]
+.mcSC_2
+  background: $sc-mc[1]
+  color: $sc-mc[1]
+  
+//split-complements
+$sc-spc = ks-split-complements($secondary-color)
+.spcSC_0
+  background: $secondary-color
+  color: $secondary-color
+.spcSC_1
+  background: $sc-spc[0]
+  color: $sc-spc[0]
+.spcSC_2
+  background: $sc-spc[1]
+  color: $sc-spc[1]
+
+//triad
+$sc-tri = ks-triad($secondary-color)
+.triSC_0
+  background: $secondary-color
+  color: $secondary-color
+.triSC_1
+  background: $sc-tri[0]
+  color: $sc-tri[0]
+.triSC_2
+  background: $sc-tri[1]
+  color: $sc-tri[1]
+
+//quad
+$sc-qd = ks-quad($secondary-color)
+.qdSC_0
+  background: $secondary-color
+  color: $secondary-color
+.qdSC_1
+  background: $sc-qd[0]
+  color: $sc-qd[0]
+.qdSC_2
+  background: $sc-qd[1]
+  color: $sc-qd[1]
+.qdSC_3
+  background: $sc-qd[2]
+  color: $sc-qd[2]
+.qdSC_4
+  background: $sc-qd[3]
+  color: $sc-qd[3]
+
+
+//--------------------------//
+//Gray Lightness Mixin
+//-------------------------//
+$gray(val = 50%, _gray = $gray-seed)
+  return $colorLightness(val, _gray)
+    
+
+//Shades
+.gray_0
+  background: $gray(0)
+  color: $gray(0)
+.gray_1
+  background: $gray(1)
+  color: $gray(1)
+.gray_2
+  background: $gray(2)
+  color: $gray(2)
+.gray_3
+  background: $gray(3)
+  color: $gray(3)
+.gray_4
+  background: $gray(4)
+  color: $gray(4)
+.gray_5
+  background: $gray(5)
+  color: $gray(5)
+.gray_6
+  background: $gray(6)
+  color: $gray(6)
+.gray_7
+  background: $gray(7)
+  color: $gray(7)
+.gray_8
+  background: $gray(8)
+  color: $gray(8)
+.gray_9
+  background: $gray(9)
+  color: $gray(9)
+.gray_10
+  background: $gray(10)
+  color: $gray(10)

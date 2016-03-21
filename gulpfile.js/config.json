@@ -1,0 +1,103 @@
+{
+  "root": {
+    "src": "./src",
+    "dest": "./dist",
+    "destAssets": "./dist/assets",
+    "destTemp": "./dist/.temp"
+  },
+
+  "tasks": {
+    "browserSync": {
+      "server": {
+        "baseDir": "dist"
+      },
+      "files": ["dist/**/*.html"]
+    },
+
+    "js": {
+      "src": "assets/js",
+      "dest": "assets/js",
+      "extractSharedJs": true,
+      "explicitVendorChunk": false,
+      "entries": {
+        "app": "app.js"
+      },
+      "externals": {
+        "jquery": "jQuery"
+      },
+      "alias": {
+        "TweenMax": "gsap"
+      },
+      "providePlugin": {
+        "ASQ": "asynquence"
+      },
+      "extensions": ["", "js", "es6", "json"],
+      "loaders": []
+    },
+
+    "css": {
+      "src": "assets/styles",
+      "post": "assets/styles",
+      "dest": "assets/styles",
+      "autoprefixer": {
+        "browsers": ["last 3 version"]
+      },
+      "stylus": {
+        "plugins": ["ctr", "typographic"]
+      },
+      "postCss": {
+        "plugins": [
+          "cssnext",
+          "postcss-default-unit",
+          "postcss-focus",
+          "postcss-easings",
+          "postcss-size"
+        ]
+      },
+      "filterPartials": true,
+      "extensions": ["styl", "css"]
+    },
+
+    "html": {
+      "src": "views",
+      "dest": "./",
+      "dataFolder": "data",
+      "htmlmin": {
+        "collapseWhitespace": true
+      },
+      "extensions": ["html", "json", "nunjs"],
+      "excludeFolders": ["layouts", "shared", "macros", "data", "partials"]
+    },
+
+
+    "images": {
+      "src": "public/images",
+      "dest": "public/images",
+      "extensions": ["jpg", "png", "svg", "gif"]
+    },
+
+    "fonts": {
+      "src": "public/fonts",
+      "dest": "public/fonts",
+      "extensions": ["woff2", "woff", "eot", "ttf", "svg"]
+    },
+
+    "iconFont": {
+      "src": "public/icons",
+      "dest": "public/fonts",
+      "stylusDest": "_generated",
+      "extensions": ["woff2", "woff", "eot", "ttf", "svg"]
+    },
+
+    "svgSprite": {
+      "src": "public/sprites",
+      "dest": "public/images",
+      "extensions": ["svg"]
+    },
+
+    "rootAssets": {
+      "src": "public/_root",
+      "dest": "./"
+    }
+  }
+}

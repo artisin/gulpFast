@@ -1,18 +1,21 @@
 {
   "libs": [
     "browser",
-    "requirejs",
     "jquery",
-    "ecma5",
+    "underscore",
     "ecma6",
-    "node"
+    "ecma5"
   ],
-  "exclude": ["wordpress/**", "node_modules/**"],
-  "loadEagerly": [],
+  "loadEagerly": [ "*.js", "*/*.js", "*/*/*.js", "*/*/*/*.js" ],
+  "async": true, 
+  "dontLoad": [ ".meteor", "node_modules/**" ],
   "plugins": {
+    "meteor": {},
     "requirejs": {
       "baseURL": "./",
       "paths": {}
-    }
+    },
+    "node": {},
+    "complete_strings": {}
   }
 }

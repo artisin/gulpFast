@@ -1,5 +1,5 @@
-var gulp  = require('gulp'),
-    Server = require('karma').Server,
+var gulp         = require('gulp'),
+    Server       = require('karma').Server,
     gulpSequence = require('gulp-sequence'),
     colors       = require('colors');
 
@@ -12,14 +12,14 @@ var karmaTask = function(done) {
     // See: http://stackoverflow.com/questions/26614738/issue-running-karma-task-from-gulp
     // or: https://github.com/gulpjs/gulp/issues/587 for more information
     if (exitStatus) {
-      throw new Error("There are failing unit tests");
-    }else{
+      throw new Error('There are failing unit tests');
+    }else {
       done();
     }
   }).start();
 };
 
-//start test runne 
+//start test runner
 gulp.task('testRunner', karmaTask);
 
 gulp.task('testComplete', function() {
@@ -37,6 +37,4 @@ gulp.task('test', function(cb) {
 });
 
 module.exports = karmaTask;
-
-
 
