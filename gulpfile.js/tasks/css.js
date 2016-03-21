@@ -41,18 +41,22 @@ gulp.task('css', ['stylus'], function () {
       .pipe(browserSync.stream());
 });
 
+var ctr = require('ctr'),
+    typographic = require('typographic');
+
 /*-----------------------------*/
 /// Stylus
 /*-----------------------------*/
 gulp.task('stylus', function () {
   //grabs the plugins from the config file
-  var stylusPlugins = config.tasks.css.stylus.plugins.map(function (plugin) {
-    var _plugin = require(plugin);
-    if (_plugin) {
-      return _plugin();
-    }
-    console.warn('Stylus Plugin Error: ' + plugin + 'not found make sure it is installed via npm.');
-  });
+  // var stylusPlugins = config.tasks.css.stylus.plugins.map(function (plugin) {
+  //   var _plugin = require(plugin);
+  //   if (_plugin) {
+  //     return _plugin();
+  //   }
+  //   console.warn('Stylus Plugin Error: ' + plugin + 'not found make sure it is installed via npm.');
+  // });
+  // console.log(stylusPlugins)
   return gulp.src(paths.src)
     //filter out partials (folders and files starting with "_" )
     .pipe(filter(function (file) {
@@ -70,7 +74,7 @@ gulp.task('stylus', function () {
       hasChanged: compareLastModifiedTime
     }))
     .pipe(stylus({
-      use: stylusPlugins,
+      use: [ctr(), typographic()],
       'include css': true
     }))
     .on('error', handleErrors)
