@@ -2,7 +2,6 @@ var config       = require('../config'),
     browserSync  = require('browser-sync'),
     data         = require('gulp-data'),
     gulp         = require('gulp'),
-    gulpif       = require('gulp-if'),
     handleErrors = require('../lib/handleErrors'),
     htmlmin      = require('gulp-htmlmin'),
     path         = require('path'),
@@ -44,7 +43,8 @@ var getData = function() {
 gulp.task('html', function() {
   render.nunjucks.configure([path.join(config.root.src, config.tasks.html.src)], {watch: false });
   return gulp.src(paths.src)
-    .pipe(data(getData))
+    //pipe in data if any
+    .pipe(gulpif(getData, data(getData)))
     .on('error', handleErrors)
     .pipe(render())
     .on('error', handleErrors)
