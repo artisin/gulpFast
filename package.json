@@ -3,7 +3,7 @@
   "version": "0.0.11",
   "description": "A Gulp Build Tool To Help You Go Fast",
   "engines": {
-    "node": "0.10.36",
+    "node": "5.5.0",
     "npm": "2.3.0"
   },
   "repository": {
@@ -11,7 +11,7 @@
     "url": "https://github.com/artisin/gulpFast"
   },
   "scripts": {
-    "development": "gulp --gulpfile app/gulpfile.js",
+    "development": "gulp",
     "deploy": "gulp deploy --gulpfile app/gulpfile.js",
     "production": "gulp production --gulpfile app/gulpfile.js",
     "demo": "gulp production --gulpfile app/gulpfile.js && gulp server --gulpfile app/gulpfile.js",
@@ -42,7 +42,7 @@
     "colors": "^1.1.2",
     "compression": "^1.5.2",
     "cssnext": "^1.8.3",
-    "ctr": "0.1.13",
+    "ctr": "0.1.21",
     "del": "^2.0.2",
     "express": "^4.13.3",
     "git-repo-name": "0.5.0",
