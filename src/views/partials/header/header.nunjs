@@ -1,7 +1,0 @@
-{#
-  Header Import
-#}
-
-<header id="header" class="primary-header">
-  {% include "partials/header/logo.nunjs" %}
-</header>
