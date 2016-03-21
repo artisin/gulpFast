@@ -20,6 +20,10 @@ var paths = {
 var getData = function() {
   //get folder
   var dataFolder = path.resolve(config.root.src, config.tasks.html.src, config.tasks.html.dataFolder);
+  //no data found
+  if (!fs.existsSync(dataFolder)) {
+    return false;
+  }
   //get files in folder
   var dataFiles = fs.readdirSync(dataFolder);
   //map out files and phrase content

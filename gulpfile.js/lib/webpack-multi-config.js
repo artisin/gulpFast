@@ -126,17 +126,16 @@ module.exports = function(env) {
     webpack.debug = true;
   }
 
-
   if (env === 'production') {
     webpackConfig.plugins.push(
-      new webpackManifest(config.root.destAssets, config.root.destAssets),
+      new webpackManifest(config.tasks.js.dest, config.root.dest),
       new webpack.DefinePlugin({
         'process.env': {
           NODE_ENV: JSON.stringify('production')
         }
       }),
       new webpack.optimize.DedupePlugin(),
-      // new webpack.optimize.UglifyJsPlugin(),
+      new webpack.optimize.UglifyJsPlugin(),
       new webpack.NoErrorsPlugin(),
       new webpack.ProvidePlugin(providePlugin)
     );

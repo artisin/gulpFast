@@ -96,7 +96,7 @@
     },
 
     "rootAssets": {
-      "src": "assets/_root",
+      "src": "public/_root",
       "dest": "./"
     }
   }

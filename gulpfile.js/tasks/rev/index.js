@@ -4,6 +4,8 @@ var gulp         = require('gulp'),
 // If you are familiar with Rails, this task the equivalent of `rake assets:precompile`
 gulp.task('rev', function(cb) {
   gulpSequence(
+    // 1a) inject root assets
+    'root-assets',
     // 1) Add md5 hashes to assets referenced by CSS and JS files
     'rev-assets',
     // 2) Update asset references (images, fonts, etc) with reved filenames in compiled css + js
@@ -12,8 +14,6 @@ gulp.task('rev', function(cb) {
     'rev-css',
     // 4) Update asset references in HTML
     'update-html',
-    // 5) inject root assets
-    'root-assets',
     // 5) Report filesizes
     'size-report',
   cb);

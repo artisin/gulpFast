@@ -12,10 +12,10 @@
   },
   "scripts": {
     "development": "gulp",
-    "deploy": "gulp deploy --gulpfile app/gulpfile.js",
-    "production": "gulp production --gulpfile app/gulpfile.js",
-    "demo": "gulp production --gulpfile app/gulpfile.js && gulp server --gulpfile app/gulpfile.js",
-    "test": "gulp production --gulpfile app/gulpfile.js && gulp test --gulpfile app/gulpfile.js"
+    "deploy": "gulp deploy",
+    "production": "gulp production",
+    "demo": "gulp production && gulp server",
+    "test": "gulp production && gulp test"
   },
   "dependencies": {
     "babel-loader": "^6.0.0",

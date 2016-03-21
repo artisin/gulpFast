@@ -8,7 +8,8 @@ gulp.task('build', ['production-build'], function() {
   console.log('Project Succsess.'.bold.bgBlue);
 });
 
-gulp.task('production-build', function(cb) {
+gulp.task('production', function(cb) {
+  process.env.NODE_ENV = 'production';
   var tasks = getEnabledTasks('production');
   gulpSequence('clean', tasks.assetTasks, tasks.codeTasks, 'rev', cb);
 });
