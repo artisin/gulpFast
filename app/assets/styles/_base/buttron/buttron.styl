@@ -1,0 +1,3425 @@
+//Global obj
+_Buttron = {};
+// _Buttron['production'] = true
+//--------------------------//
+//Create Button Mixin
+//-------------------------//
+ButtronClass($name = null, $option = {})
+  _errorMessage = "[Buttron]:",
+                  "To create a class your first argument must be the name",
+                  "of the variable your assigning the class to in string format.",
+                  "Still Confused? Read the docs."
+  //Basic Check
+  if !$name
+    warn(join(' ', _errorMessage));
+  else if typeof($name) != 'string'
+    warn(join(' ', _errorMessage));
+  //since we cannot pass an argument directly
+  //it has to be stored and picked up
+  //Create global class prop
+  if !_Buttron['class']
+    _Buttron['class'] = {};
+  //Assign class 
+  $class = _Buttron['class']
+  if !$class[$name]
+    $class[$name] = $option; 
+  //Create
+  return @() {
+    buttron(arguments)
+  }
+
+//--------------------------//
+//Button Mixin
+//-------------------------//
+buttron($selector = null)
+  button($Selector, $args)
+    //For eval of private vars
+    eval(t, color, amount)
+      if match('alpha', t)
+        return alpha(color, amount)
+      else if match('darken', t)
+        return darken(color, amount)
+      else if match('lighten', t)
+        return lighten(color, amount)
+      else if match('complement', t)
+        return complement(color)
+      else if match('invert', t)
+        return invert(color, amount)
+      else if match('grayscale', t)
+        return grayscale(color, amount)
+      else if match('shade', t)
+        return shade(color, amount)
+      else if match('desaturate', t)
+        return desaturate(color, amount)
+      else if match('saturate', t)
+        return saturate(color, amount)
+      else if match('tint', t)
+        return tint(color, amount)
+      else if match('spin', t)
+        return spin(color, amount)
+      else
+        warn('Buttron: Could not config your "eval", check your spelling or the docs or the tests')
+    
+    configEval($eval, $key = null)
+      //extract vars if tied to $$
+      extractVal(_val)
+        _val = replace('\s', '', _val)
+        if match('\${2,}', _val)
+          _val = replace('\$\$\[', '', _val)
+          _val = replace('\]', '', _val)
+          return $$[_val]
+        else
+          //check for % if so need to convert
+          //and formate
+          if match('\%', _val)
+            _val = replace('\%', '', _val)
+            _val = convert(_val)
+            return (_val)%
+          else
+            return convert(_val)
+     
+      //determins/assigns val to $$
+      assignVal($evalVal, _key)
+        if match('math', $evalVal)
+          //remove math
+          _equ = clone($evalVal)
+          _equ = replace('^math', '', _equ)
+          _equOrig = clone(_equ)
+          //seperate into parts
+          //so spacing in your math is Cridical!
+          _equ = split(" ", _equ);
+          for $a in 0..length(_equ) - 1
+            _aVal = _equ[$a]
+            if match('\${2,}', _aVal)
+              _aVal = replace('\)|\(', '', _aVal)
+              _aValOrig = clone(_aVal)
+              _aVal = extractVal(_aVal)
+              //Formate $ for regex
+              _aValOrig = replace('\$\$', '\$\$\', _aValOrig)
+              _aVal = "'"+_aVal+"'"
+              _equOrig = replace(_aValOrig, _aVal, _equOrig)
+          //Remove
+          _remove = "\'|\" + '"' + "|calc"
+          _equOrig = replace(_remove, '', _equOrig)
+          $$[_key] = "calc" + s(_equOrig)
+        else if match('\${2,}', $evalVal)
+          //Formate to eval
+          _color = clone($evalVal)
+          _color = replace('^(.*)\(', '', _color)
+          _color = replace('\,(.*)$', '', _color)
+          _color = replace('\)', '', _color)
+          _color = extractVal(_color)
+          _amount = clone($evalVal)
+          _amount = replace('^(.*)\,', '', _amount)
+          _amount = replace('\)', '', _amount)
+          _amount = extractVal(_amount)
+          _amount = _amount ? _amount : ''
+          //assign
+          $$[_key] = eval($evalVal, _color, _amount)
+        else
+          //defualt and assign
+          $$[_key] = $evalVal
+          
+      //Cycle to formate, and check for evel
+      for $e in $eval
+        //regex out parts
+        $evalVal = $eval[$e]
+        if isString($evalVal)
+          assignVal($evalVal, $e)
+        else
+          $$[$e] = $evalVal
+          
+
+    //Gets/checks for private var and return val
+    getVal($val)
+      _$$Props = isObj($$) ? true : false
+      if _$$Props
+        if isString($val)
+          //Check for custom Vars
+          if match('\${2,}', $val)
+            //chop and find babay
+            $val = $$[replace(']', '', substr($val, 3))]
+            //Multiple
+            if length($val) > 1 && !isObj($val)
+              $val = joinProps($val, false);
+            else if isString($val)
+              $val = s($val)
+            else
+              return $val
+          else if isString($val)
+            $val = s($val)
+          else
+            return $val
+        else
+          return $val
+      else
+        if isString($val)
+          return s($val)
+        else
+          return $val
+
+    //Check for optional custom vars
+    if $args['$$']
+      //assign && remove
+      $$ = clone($args['$$'])
+      $args['$$'] = null
+      if isObj($$['eval'])
+        $eval = clone($$['eval'])
+        $$['eval'] = null
+        configEval($eval)
+      
+      //Global for assignObjVal
+      _cleanObj = {}
+      //Assings, object properties, level by level until
+      //all properties are assigned
+      assignObjVal(_obj, $key = null)
+        _refObj = {}
+        //Extracts valuses and assigns any $$ vars
+        //returns var and or adds obj to be _refObj
+        //which determins if the parent funk gets
+        //invoked again
+        extractStr($obj)
+          //deconstruct
+          if $key != null
+            $obj = $obj[$key]
+          _clean = {}
+          for $i in $obj
+            if isString($obj[$i])
+              _clean[$i] = getVal($obj[$i])
+            else if isObj($obj[$i])
+              _tempObj = {}
+              _tempObj[$i] = $obj[$i]
+              _refObj = merge(_refObj, _tempObj)
+            else
+              _clean[$i] = getVal($obj[$i])
+          //reconstruct
+          if $key != null
+            _tempObj = {}
+            _tempObj[$key] = _clean
+            return _tempObj
+          else
+            return _clean
+        //call
+        _check = extractStr(_obj)
+        //merge
+        _cleanObj = merge(_cleanObj, _check)
+        if !(length(_refObj))
+          //if statified return
+          return _cleanObj 
+        else
+          //Cylce through objs untill all $$ refs asinged
+          $objRef = clone(_refObj)
+          _refObj = {}
+          for $k in $objRef
+            //otherwise call to run next next obj level
+            assignObjVal($objRef, $k)
+        
+
+      //Check for objs in $$, and assgins values if
+      for $o in $$
+        if isObj($$[$o])
+          //big blunder was made here!!!
+          //made zero the key insted of o and as a
+          //result i have some serious repeate code
+          //can possibly remove getVal()
+          $$[$o] = assignObjVal($$[$o])
+        
+
+    //Check for imports
+    //Imports are for convinence for basic properties and such
+    //although you coulud prbly push the limit on this
+    //Note, they will overwright class props
+    if $args['import']
+      if !isObj($args[import])
+        warn('Your imports must be in object formate.')
+      else
+        //If imports cycle through and apply
+        $imports = clone($args[import]);
+        for $i in $imports
+          $importObj = $imports[$i];
+          _cloneArgs = clone($args)
+          $args = merge(_cloneArgs, $importObj, true);
+        $args['import'] = null;
+      
+    
+    //String truthy helper
+    isString($val)
+      if $val is a 'string' or $val is a 'ident'
+        return true;
+      else
+        return false;
+    
+    isBoolean($val)
+      return typeof($val) == 'boolean';
+
+    deString($val)
+      return isString($val) ? s($val) : $val;
+
+    //is literal helper 
+    isLit($val)
+      return typeof($val) == 'literal'
+
+    //Check if null, cuz null is not always null it might be a call. stylus.
+    isNull($val)
+      if typeof($val) == call
+        $val = 'call'
+      return $val == null ? true : false;
+    
+    isUnit($val)
+      return typeof($val) == 'unit';
+
+    //check if trans key
+    hasTrans($data, $returnObj = false)
+      //string
+      if isString($data)
+        if $data == 'trans'
+          return 'trans'
+        else if $data == 'transition'
+          return 'transition'
+        else
+          return false
+      else if isObj($data)
+        for $i in $data
+          if $i == 'trans'
+            return $returnObj ? $data[$i] : 'trans';
+          else if $i == 'transition'
+            return $returnObj ? $data[$i] : 'transition';
+        //not found
+        return false
+    //check if trans key
+    hasAnim($data, $returnObj = false)
+      //string
+      if isString($data)
+        if $data == 'anim'
+          return 'anim'
+        else if $data == 'animation'
+          return 'animation'
+        else
+          return false
+      else if isObj($data)
+        for $i in $data
+          if $i == 'anim'
+            return $returnObj ? $data[$i] : 'anim';
+          else if $i == 'animation'
+            return $returnObj ? $data[$i] : 'animation';
+        //not found
+        return false
+
+
+    //Sets $key if specified otherwise defaults.
+    set(_args, $key, $default)
+      $val = $key in _args ? _args[$key] : $default
+      //For multiple values, such as box shadow
+      if length($val) > 1
+        for $p in 0..length($val) - 1
+          //Check for custom val
+          $val[$p] = getVal($val[$p])
+        $val = joinProps($val, false);
+      else if isString($val)
+        //Check for custom val
+        $val = getVal($val)
+      //Remove prop so if needed user can apply custome props
+      //without duplicates. 
+      remove($args, $key)
+      return $val
+    
+    //Join Multiple Properties and formate
+    joinProps($props, $separate = true)
+      _tempProp = null;
+      _cleanProp = null;
+      //properties
+      for $i in $props
+        if isString($i)
+          _i = unquote($i)
+          //Check for $$
+          _$$Props = isObj($$) ? true : false
+          if _$$Props
+            if match('\${2,}', _i)
+              //Chop and find
+              _i = $$[replace(']', '', substr(_i, 3))]
+        else
+          _i = $i
+        //Push
+        if $i
+          push(_tempProp, _i)
+      //Property
+      //This mind-melt is brought tp you by Stylus 
+      //which won't let me escape commas properly
+      //but there is noting proper about this.
+      if length(_tempProp) > 2 && $separate
+        for $j in 0..length(_tempProp) - 1 
+          if _tempProp[$j] != null
+            push(_cleanProp, _tempProp[$j])
+            if $j != length(_tempProp) - 1
+              push(_cleanProp, '!')
+        //Check for nulls
+        for $n in 0..length(_cleanProp) - 1
+          if _cleanProp[$n] == null
+            _cleanProp[$n] = ""
+        return s(replace('!', ',', join(' ', _cleanProp)))
+      else
+        //Single Prop
+        //shift off null
+        shift(_tempProp)
+        return _tempProp
+    
+    //Applies properties, to said selector. Prbly best to look
+    //at the stlyus docs for an explnation here.
+    //TODO optimize
+    apply($props)
+      $props = arguments if length(arguments) > 1
+      for prop in $props
+        //For multiple values, such as box shadow
+        if length($props[prop]) > 1
+          _prop = $props[prop]
+          _tempProps = clone($props[prop])
+          //Cylce and get val to be joined and applied
+          for $p in 0..length(_tempProps) - 1
+            _prop[$p] = getVal(_tempProps[$p])
+          _prop = joinProps(_prop, false);
+          {prop} _prop
+        else if isString($props[prop])
+          //Strings
+          if prop == 'content'
+            //Do not destring conent prop
+            _prop = $props[prop]
+          else
+            _prop = getVal($props[prop])
+          //Assign
+          {prop} _prop
+        else
+          {prop} $props[prop]
+
+    //My main man, gets me my attibutes
+    getAttributes($props)
+      //return emptys if nothing to work with
+      if $props == null || length($props) == 0
+        return {};
+      _removeList = 'before', 'after', 'applyTo', 'selector', 'state', 'element', 'isRoot',
+                    'hover', 'active', 'visited', 'focus', 'link', 'customState',
+                    'anim', 'animation', 'transition', 'override', 'cache', '$$', 'import',
+                    'duration', 'delay', 'ease', 'property', 'root', 'customeElement',
+                    'option', 'globalOption', 'addClass', 'component', 'pseudo', 'error',
+                    'type', 'autoGen', 'style', 'media';
+      _values = null;
+      _keys = null;
+      $cleanObj = {};
+      for $i in $props
+        push(_values, $props[$i])
+        push(_keys, $i)
+      //Remove 
+      for $j in 1..length(_values) - 1
+        if typeof(_values[$j]) != 'object'
+          if !(_keys[$j] in _removeList)
+            $cleanObj[_keys[$j]] = _values[$j]
+      return $cleanObj
+
+    //It does what it says
+    createObj($key, $val)
+      $obj = {};
+      $obj[$key] = $val;
+      return $obj
+
+    // Desc--> 
+    //   Sets default if no val is present
+    // Params-->
+    //   @ {obj - option} - the option object
+    //   @ {obj - props} - the default props to be set
+    // Return-->
+    //   @ {obj} 
+    setD($option, $props = {})
+      for i in $props
+        $option[i] = $option[i] ? $option[i] : $props[i];
+      return $option;
+
+    //Joins strings to formate and returns error
+    error($err)
+      if isObj($err)
+        //precheck msg
+        if isObj($err['msg'])
+          $msg = $err['msg']
+          //syntax
+          if $msg.type == 'syntax'
+            $err['msg'] = "Syntax error: For '" + $msg.key + "' and '" + $msg.val + "' key pair.";
+          else if $msg.type == 'syntaxType'
+            $err['msg'] = "Syntax error: Alas, you have used the wrong 'type' for",
+                          "the " + $msg.key + " property value which currently is",
+                          "a '" + typeof($msg.key) + "'. To fix this use the following type: " + $msg.fix + ".";
+          else if $msg.type == 'syntaxObj'
+            $err['msg'] = "Syntax error: The '" + $msg.key + "' property requires you use object notation.";
+          
+          //check for extra info
+          if $msg.info
+            $err['msg'] = $err['msg'] + $msg.info 
+            
+        warn('~!~ Buttron Error ~!~')
+        warn('Location |=> ' + $id)
+        if $err['scope'] != null
+          $scope = isString($err['scope']) ? $err['scope'] : 'Root'
+          warn('Scope    |=> ' + $scope)
+        if $err['type']
+          warn('Type     |=> ' + join(' ', $err['type']))
+        if $err['msg']
+          warn('Message  |=> ' + join(' ', $err['msg']))
+      else
+        //passing out in favor for obj
+        if $args['error'] != false
+          warn(join(' ', $err))
+          warn('To remove ALL Buttron errors pass error: false in the root object.')
+    
+    //--------------------------//
+    //Defaults Effect
+    //-------------------------//
+    $defaultArgs = $args['default']
+    //Default
+    $defaultDuration = set($defaultArgs, 'duration', 0.5s);
+    $defaultEase = set($defaultArgs, 'ease', $easeInOut);
+    $defaultDelay = set($defaultArgs, 'delay', 0s);
+    //eases
+    $easeOutQuad = cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    $easeInQuad = cubic-bezier(0.550, 0.085, 0.680, 0.530);
+    $easeInOut = cubic-bezier(0.420, 0.000, 0.580, 1.000);
+    
+
+    //--------------------------//
+    //Transition defaults
+    //-------------------------//
+    //Set Defaults
+    $defaultTransVal = {
+      duration: $defaultDuration,
+      ease: $defaultEase,
+      delay: $defaultDelay
+    }
+    $g_defaultTrans = {
+      transition: $defaultTransVal,
+      hover: $defaultTransVal,
+      active: $defaultTransVal,
+      focus: $defaultTransVal,
+      pseudo: $defaultTransVal,
+      visited: $defaultTransVal,
+      link: $defaultTransVal,
+      customState: $defaultTransVal
+    }
+    //If user has set custom defualts cycle through them and apply
+    //them to defaultTrans to store ref
+    if !isNull($defaultArgs)
+      for $state in $g_defaultTrans
+        for $prop in $g_defaultTrans[$state]
+          _current = $g_defaultTrans[$state]
+          _currentArg = $defaultArgs[$state]
+          if _currentArg[$prop]
+            //If defined in args
+            _current[$prop] = getVal(_currentArg[$prop])
+            //Set all to defualt transition if trans set
+            if $state == 'transition'
+              for $s in $g_defaultTrans
+                _key = $g_defaultTrans[$s] 
+                _key[$prop] = getVal(_currentArg[$prop])
+
+    //State List - a ref var to check for multiple states and such
+    $StateList = 'hover', 'active', 'focus', 'visited', 'link', 'customState';
+    //--------------------------//
+    //Defaults Animation
+    //-------------------------//
+    $defaultAminArgs = $defaultArgs['animation'];
+    $adefaultDur = set($defaultAminArgs, 'duration', $defaultDuration);
+    $adefaultEase = set($defaultAminArgs, 'ease', $defaultEase);
+    $adefaultDelay = set($defaultAminArgs, 'delay', $defaultDelay);
+    $adefaultCount = set($defaultAminArgs, 'count', 1);
+    $adefaultDir = set($defaultAminArgs, 'direction', normal);
+    $adefaultMod = set($defaultAminArgs, 'mode', none);
+    $adefaultState = set($defaultAminArgs, 'state', running);
+    //Default
+    $defaultAnim = {
+      duration: $adefaultDur,
+      ease: $adefaultEase,
+      delay: $adefaultDelay,
+      count: $adefaultCount,
+      direction: $adefaultDir,
+      mode: $adefaultMod,
+      state: $adefaultState
+    }
+    //If user has set custom defualts cycle through them and apply
+    if !isNull($defaultAminArgs)
+      _animArgs = $defaultArgs['animation'];
+      for $prop in _animArgs
+        $defaultAnim[$prop] = getVal(_animArgs[$prop]);
+
+    //--------------------------//
+    //Media defaults
+    //-------------------------//
+    $defaultMedia = {
+      xs: 400px,
+      sm: 600px,
+      md: 800px,
+      lg: 1050px,
+      hd: 1800px
+    }
+    //cycle through to assign num val as well
+    for i in 0..length($defaultMedia) - 1
+      pc = 0
+      $$assigned = false
+      _i = "'" + (i + 1) + "'";
+      for j in $defaultMedia
+        if pc == i && !$$assigned
+          $defaultMedia[_i] = $defaultMedia[j]
+          $$assigned = true
+        else
+          pc = pc + 1
+    //max ref for at break point
+    $defaultMedia['max'] = $defaultMedia["'" + (length($defaultMedia) / 2) + "'"]
+
+    //--------------------------//
+    //Main Mixin
+    //-------------------------//
+    //global!!!!!!!!!!!!!!!!!!!!!!!!!
+    {$Selector}
+      if $args['style']
+        $height = set($args, 'height', 60px)
+        $border = set($args, 'border', initial)
+        //Calc line height
+        $lineHeight = $height
+        if $border != 'initial'
+          if typeof($border[0]) == 'unit'
+            $lineHeight = "calc(" + $height + " - " + ($border[0] * 2) + ")"
+        if $args['border-width']
+          $lineHeight = "calc(" + $height + " - " + ($args['border-width'] * 2) + ")"
+        //Check for border- top/bottom
+        if $args['border-top'] || $args['border-bottom']
+          _bdTop = getVal($args['border-top'][0])
+          _bdTop = typeof(_bdTop) == 'unit' ? _bdTop : 0px;
+          _bdBottom = getVal($args['border-bottom'][0])
+          _bdBottom = typeof(_bdBottom) == 'unit' ? _bdBottom : 0px;
+          $lineHeight = "calc(" + $height + " - " + (_bdTop + _bdBottom) + ")"
+        position: set($args, 'position', relative)
+        width: set($args, 'width', 200px)
+        height: $height
+        margin: set($args, 'margin', 0rem)
+        padding: $padding = set($args, 'padding', 0rem)
+        background: set($args, 'background', #2196f3)
+        color: set($args, 'color', white)
+        border: $border
+        border-radius: set($args, 'border-radius', 4px)
+        box-shadow: set($args, 'box-shadow', initial)
+        font-size: set($args, 'font-size', 1rem)
+        font-weight: set($args, 'font-weight', initial)
+        font-family: set($args, 'font-family', initial)
+        text-align: set($args, 'text-align', center)
+        vertical-align: set($args, 'vertical-align', middle)
+        text-decoration: set($args, 'text-decoration', none)
+        if !$args['line-height']
+          line-height: deString($lineHeight)
+        cursor: set($args, 'cursor', pointer)
+        overflow: set($args, 'overflow', hidden)
+        z-index: set($args, 'z-index', 0)
+        transform: set($args, 'transform', translateZ(0))
+        // top: set($args, 'top', initial)
+        // bottom: set($args, 'bottom', initial)
+        // left: set($args, 'left', initial)
+        // right: set($args, 'right', initial)
+        //Custom Args
+        apply(getAttributes($args))
+        if set($args, 'font-smoothing', true)
+          -webkit-backface-visibility: hidden;
+          backface-visibility: hidden;
+          -moz-osx-font-smoothing: grayscale;
+      else
+        //Custom Args
+        apply(getAttributes($args))
+
+    ////////////////////////////////////////////////////////////////////////////////
+    //Mixin Helpers
+    ////////////////////////////////////////////////////////////////////////////////
+    
+    //The heart of the beast
+    createStyle($dataObj, _selector, $key, $Props, $option = {})
+      // p(arguments)
+
+      // str($Props)
+      //delete??????
+      $default = {
+        selector: null
+        applyTo: null
+      }
+      $option = merge($default, $option)
+      // str($option)
+      //Create Style
+      $globalProps = getAttributes($Props['global']);
+      $targetProps = getAttributes($Props['target']);
+      $applyTo = $option['applyTo'];
+      // p('===================')
+      // str($option)
+      $elementSelector = $option['elementSelector']
+      _root = $option['rootState'] ? "&:" : "";
+      _media = $option['media'] ? $option['media'] : false;
+      // p($applyTo)
+      // p(_root)
+      //check for addClass Root
+      // if _root == ""
+      //   _root = $option['rootClass'] ? "&" : "";
+      //for global check, possibly phase out........
+      
+      // Desc--> 
+      //   Generates the actaul css. But this funk is just a wrapper
+      //   funk that gets invoked with or without a media query parent
+      //   which is sorta the best way I could think of to handle mq's
+      // Params-->
+      //   @ None 
+      // Return-->
+      //   @ Nothing
+      //     -> Generates css
+      generateStyle()
+        $selectorId = isString($Selector) ? $Selector : $id;
+        if isNull($applyTo)
+          //Declaritive
+          if isString(_selector) && !$elementSelector
+            {_root}{_selector}
+              {$globalProps}
+              if !$key
+                apply(getAttributes($dataObj))
+              if $key
+                &:{$key}
+                  {$targetProps}
+                  apply(getAttributes($dataObj))
+          else
+            //Inherit
+            //This is the same code block as above with one spacing change
+            //to allow selector to inherit class
+            // p($globalProps)
+            // p(getAttributes($dataObj))
+            // p($key)
+            {_root}{_selector}
+              {$globalProps}
+              if !$key
+                apply(getAttributes($dataObj))
+            if $key
+              //Outdent
+              &:{$elementSelector}{$key}
+                {$targetProps}
+                apply(getAttributes($dataObj))
+        else
+          //Apply To selectors
+          applyTo(_applyGlobal, _applyTarget)
+            //Apply
+            if isString(_selector) && !$elementSelector
+              {_root}{_selector}{_applyGlobal}
+                  {$globalProps}
+                  if !$key
+                    apply(getAttributes($dataObj))
+              if $key
+                {_selector}:{$key}{_applyTarget}
+                  {$targetProps}
+                  apply(getAttributes($dataObj))
+            else
+              //This is the same code block as above with one spacing change
+              //to allow to selector to inherit class
+              {_root}{_selector}{_applyGlobal}
+                {$globalProps}
+                if !$key
+                  apply(getAttributes($dataObj))
+              if $key
+                //outdent
+                &:{$elementSelector}{$key}{_applyTarget}
+                  {$targetProps}
+                  apply(getAttributes($dataObj))
+          
+          //Creates applyTo string selector, for multiple applyTo
+          //If pseudo, no space
+          composeApply(_target)
+            _space = $pseudo == true ? "" : " ";
+            _applySelector = _space
+            //pseudo target override
+            if $Props[_target]
+              $tempTargetProps = $Props[_target]
+              if $tempTargetProps['pseudo']
+                _space = ""
+                _applySelector = ""
+            //compose selector
+            return _applySelector + $applyTo + _space
+          
+
+          //check for object?
+          // $Props = $Props[$applyTo]
+          // str($Props)
+          applyTo(composeApply('global'), composeApply('target'))
+
+      
+      //generateStyle Call
+      if _media
+        //has media query
+        //cycle through rules
+        for r in _media
+          @media _media[r]
+            generateStyle()
+      else
+        //default
+        generateStyle()
+
+    //--------------------------//
+    //Prop Merger
+    //-------------------------//
+    //desc: merges props and anim for said scope
+    //TODO - js
+    propMerger()
+      $props = {
+        global: {}
+        target: {}
+        applyTo: {}
+        rootObj: {}
+        media: {}
+      }
+      $args = arguments
+      //clycle through args
+      for $i in 0..length($args) - 1
+        $argObj = $args[$i]
+        if $argObj
+          $props = merge($props, $argObj, true)
+      //check to see if props populated
+      $pc = 0
+      for $i in $props
+        if length($props[$i]) == 0
+          $pc = $pc + 1
+      //Main Return
+      // p('cunter')
+      // p($props)
+      // p($pc)
+      return $pc != length($props) ? $props : {};
+      
+      
+    //--------------------------//
+    //Configshorthand
+    //-------------------------//
+    //checks if all objs
+    //data
+    //FIX $omitlist is being passed with no vals
+    //TODO - js
+    isAllObjs($data)
+      //make sure obj
+      if !isObj($data)
+        return false;
+      $omitAddOns = arguments
+      $omitList = 'option', 'globalOption', 'shorthand', 'timeline';
+      //clycle through omitAddOns and push to omit list
+      for i in 1..length($omitAddOns) - 1
+        if isString($omitAddOns[i])
+          push($omitList, $omitAddOns[i])
+      $allObjs = 0
+      //cycle through trans to to check if all objs
+      for i in $data
+        if !(i in $omitList) && !isObj($data[i])
+          return false;
+        else if !(i in $omitList)
+          $allObjs = $allObjs + 1
+      return $allObjs > 0;
+
+    //--------------------------//
+    //HasRoot
+    //-------------------------//
+    //Desc: checks if is `root: true` in Obj
+    //its stylus silly, and not the most efficent
+    //but nothing about buttron is efficent.
+    //TODO - js
+    hasRoot($Obj)
+      $rootFound = false
+      //step/////////////////////
+      step($obj, $key = null)
+        _dirtyObj = {}
+        //ex////////////////////
+        extractLevel(_obj)
+          for $i in _obj
+            if isObj(_obj[$i])
+              _dirtyObj = merge(_dirtyObj, _obj[$i])
+            else
+              if $i == 'root' || $i == 'isRoot'
+                if _obj[$i]
+                  push($rootFound, true)
+                  shift($rootFound)
+                else if $i != null && isString($i)
+                  remove(_dirtyObj, $i)
+              else if $i != null && isString($i)
+                remove(_dirtyObj, $i)
+          return $rootFound
+        //ex//////////////////
+        if extractLevel($obj)
+          return $rootFound
+        else 
+          if length(_dirtyObj)
+            step(_dirtyObj)
+          else
+            return false
+      
+      //step/////////////////////
+      return step($Obj)
+
+
+    ////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////
+    //Process Media
+    ////////////////////////////////////////////////////////////////////////////
+    //check if dataObj??? for reteun 
+    processMedia($Media, _Selector, $Option, $$returnVal = false)
+      //start with clean
+      // $Option['media'] = {} //???? how deep can I go here?????
+      //configs mixin
+      _mixinList = 'above' 'from-width' 'below' 'to-width' 'between' 'at' 'landscape' 'portrait' 'density';
+
+      //funk error helper
+      throwErr($msg, _type)
+        error({
+          scope: _Selector,
+          type: 'Media Queries -> processMedia -> ' + _type,
+          msg: $msg
+        })
+      
+      // Desc--> 
+      //   Configures the type of media for the query
+      // Params-->
+      //   @ {str || obj - $type} 
+      // Return-->
+      //   @ {str} - formated type
+      composeType($type)
+        if isObj($type)
+          //single obj - defualts to screen if not specified
+          _type = isString($type['media']) ? $type['media'] : 'screen';
+          _condition = isString($type['condition']) ? $type['condition'] + " " : false;
+          //no condition specified append only
+          if !_condition
+            _type = "only " + _type
+            _condition = ''
+          return _condition + _type;
+        else if isString($type)
+          //string
+          return "only " + $type;
+        else
+          //error
+          $err = {
+            type: 'syntaxType', 
+            key: $type, 
+            fix: 'String or Object',
+            info: " I will just default to 'screen' for the time being."
+          }
+          throwErr($err, 'configType')
+          return "only screen";
+
+      // Desc--> 
+      //   checks to see if val is in default media        
+      // Params-->
+      //   @ {str - loacalVal} - The current value
+      //   @ {bln - mixin} - If it was a mixin since we don't want
+      //                     it to overwright val with default 
+      // Return-->
+      //   @ {str} - The origin value of the corresponing default media val
+      getMQVal(_localVal, $$mixin = false)
+        if $$mixin
+          return _localVal
+        else
+          _localVal = $defaultMedia[_localVal] ? $defaultMedia[_localVal] : _localVal;
+          _localVal = $defaultMedia["'" + _localVal + "'"] ? $defaultMedia["'" + _localVal + "'"] : _localVal;
+          return _localVal;
+
+      // Desc--> 
+      //   Applies any aux options that are passed
+      // Params-->
+      //   @ {str - fet} - The media q feature
+      //   @ {obj} - The options that are passed 
+      // Return-->
+      //   @ {str} - The features with opts applied if any 
+      applyMQOpt(_fet, $opt)
+        if $opt['device-width']
+          if _fet == 'min-width'
+            _fet = 'min-device-width'
+          else if _fet == 'max-width'
+            _fet = 'max-device-width'
+          else if _fet == 'max-height'
+            _fet = 'max-device-height'
+          else if _fet == 'min-height'
+            _fet = 'min-device-height'
+        return _fet
+      
+      
+      // Desc--> 
+      //   Configurs media when using the predefined mixin
+      //   helpers. Should work just like the rupture package
+      //   github.com/jenius/rupture
+      // Params-->
+      //   @ {str - _fet} - The feture type like "at"
+      //   @ {str - _val} - The value for said feture 
+      //   @ {obj - $opt} - Options, which as of right now is only divice-width 
+      // Return-->
+      //   @ {obj} - A configured obj to then be applied
+      configMixin(_fet, _val, $opt)
+        _funkErr = 'configMixin'
+        //above
+        if _fet == 'above' || _fet == 'from-width'
+          return {f: 'min-width', val: getMQVal(_val)}
+        //below
+        else if _fet == 'below' || _fet == 'to-width'
+          return {f: 'max-width', val: getMQVal(_val)}
+        //landscape
+        else if _fet == 'landscape'
+          return {f: 'orientation', val: 'landscape'}
+        //portrait
+        else if _fet == 'portrait'
+          return {f: 'orientation', val: 'portrait'}
+        //density
+        else if _fet == 'density'
+          if !isUnit(_val)
+            return {f: 'min-resolution', val: (_val + "dppx")}
+          else
+            _err = "To use density your value must be a string for aka. the number as a string.";
+            throwErr(_err, _funkErr)
+        //between
+        else if _fet == 'between'
+          if length(_val) == 2
+            return {f: 'min-width' 'max-width', val: getMQVal(_val[0]) getMQVal(_val[1])}
+          else
+            _err = "You must specify two arguments to use the between mixin";
+            throwErr(_err, _funkErr)
+        //at
+        else if _fet == 'at'
+          _min = null
+          _max = null
+          //need to cycle through to find if it exsits in stylus
+          //has a fit and won't look it up, sorta silly feature anyway
+          for b in $defaultMedia
+            if b == _val || b == "'" + _val + "'"
+              _max = $defaultMedia[b]
+            if !_max
+              _min = $defaultMedia[b]
+          //config before we apply
+          if _max
+            //end type - min
+            if _max == $defaultMedia["'" + 1 + "'"]
+              return {f: 'max-width', val: _max}
+            //end type - max
+            else if _max == $defaultMedia['max']
+              return {f: 'min-width', val: _max}
+            else
+              //between 
+              return {f: 'min-width' 'max-width', val: _min _max}
+          else
+            _err = "To use the at mixin you must use a defined break point",
+                   "and " + _val + " is not defined. What is defined is " + $defaultMedia;
+            throwErr(_err, _funkErr)
+          
+      // Desc--> 
+      //   Configures and composes the features for query
+      // Params-->
+      //   @ {obj - $media} - The object that contains features
+      // Return-->
+      //   @ {str - _feature} - Formated features
+      configFeature($media)
+        _funkErr = 'configFeature'
+        _feature = ''
+        // Desc--> 
+        //   Composes feture object and puts that shit together
+        // Params-->
+        //   @ {obj - list} - feture list
+        // Return-->
+        //   @ {str} - formated fetures that are put together
+        composeFet($list)
+          //config overriding opts if any
+          $opt = {}
+          _opt = 'device-width';
+          $$mixin = false;
+          //clean list without opts
+          $newList = {}
+          for f in $list
+            if f in _opt
+              $opt[f] = $list[f]
+            else
+              $newList[f] = $list[f]
+          //reassign
+          $list = $newList
+          //cycle through list and config
+          for f in $list
+            _val = $list[f]
+            //check if mixin
+            if f in _mixinList
+              $$mixin = true
+              $mixin = configMixin(f, _val, $opt)
+              if $mixin
+                //assign - need quotes to advoid conflic
+                f = $mixin['f']
+                _val = $mixin['val']
+              else
+                _err = "Somthing is is wrong with your mixin and I cant return",
+                       "a valid value."
+                throwErr(_err, _funkErr)
+            //check before assign
+            if !isString(_val) && !isUnit(_val) && !isBoolean(_val)
+              _err = "Syntax error for: " + f + " and " + _val + " key pair";
+              throwErr(_err, _funkErr)
+            else
+              //gen wrapper
+              genFeature(_fetKey, _fetVal)
+                return _feature + " and (" + deString(_fetKey) + ": " + deString(_fetVal) + ")";
+              if length(_val) > 1
+                //cycle only becuase between takes two args
+                for i in 0..length(_val) - 1
+                  _feature = genFeature(applyMQOpt(f[i], $opt), getMQVal(_val[i], $$mixin))
+              else
+                _feature = genFeature(applyMQOpt(f, $opt), getMQVal(_val, $$mixin))
+          return _feature;
+          ///FUNKend --> composeFet
+        //find all feature and mixin
+        $feature = {}
+        //catchAll first, parent scoope
+        for i in $media
+          if i != 'type' && i != 'merge' && isString($media[i]) || isUnit($media[i]) || isBoolean($media[i])
+            $feature[i] = $media[i]
+        //declare featuer obj
+        if $media['feature']
+          if !isObj($media['feature'])
+            throwErr({type: 'syntaxObj', key: 'feature'}, _funkErr)
+          else
+            $feature = merge($media['feature'], $feature, true)
+        //declare mixin obj
+        if $media['mixin']
+          if isObj($media['mixin'])
+            $feature = merge($media['mixin'], $feature, true)
+          else
+            $err = {type: 'syntaxType', key: $type, fix: 'Object'}
+            throwErr($err, _funkErr)
+        //call for features to be composed
+        if length($feature)
+          return composeFet($feature);
+        else
+          //none
+          return _feature;
+            
+      // Desc--> 
+      //   First funk to be call and figures out what we are working with.
+      //   And then it send that data off to be formated to be retured
+      // Params-->
+      //   @ {obj - media} - The raw media object
+      // Return-->
+      //   @ {obj} - Formated media queries
+      configMedia($media)
+        _funk = 'configMedia'
+        $mediaToApply = {}
+        $feature = configFeature($media)
+        //helper for type, screen ect. 
+        configType($type, _condition = false)
+          $med = _condition ? {condition: _condition} : {};
+          for i in 0..length($type) - 1
+            _val = $type[i]
+            _key = _val + i
+            $med['media'] = _val
+            $mediaToApply[_key] =  composeType($med) + $feature
+          ///END --> configType 
+        if $media['type']
+          $type = $media['type']
+          //string
+          if isString($type)
+            configType($type)
+          else if isAllObjs($type)
+            //multi obj
+            for i in $type
+              $subType = $type[i]
+              //get media or default to key
+              _media = $subType['media'] ? $subType['media'] : i;
+              _condition = $subType['condition'] ? $subType['condition'] : false;
+              configType(_media, _condition)
+          else if isObj($type)
+            //single obj
+            if isString($type['media'])
+              _media = $type['media']
+              _condition = $type['condition'] ? $type['condition'] : false; 
+              for i in 0..length(_media) - 1
+                configType(_media[i], _condition)
+            else
+              _err = "Your media value must be a string or strings without",
+                     "commas as seperated via spaces.";
+              throwErr(_err, _funk)
+          else
+            //specify
+            _err = "Incorrect 'type' formate or syntax.";
+            throwErr(_err, _funk)
+        else
+          //default media to screen
+          $mediaToApply['screen'] = "only screen" + $feature
+        return $mediaToApply;
+        
+      //--------------------------//
+      //If Controller for processMedia 
+      //-------------------------//
+      if $Media['option'] || $Media['mixin']
+        //merge mixin object
+        $Media['option'] = isObj($Media['mixin']) ? merge($Media['mixin'], $Media['option'], true) : $Media['option'];
+        $Option['media'] = configMedia($Media['option'])
+      //single type shorthand
+      if isString($Media['type']) || isUnit($Media['type'])
+        //If unit we need to put quotes arount cus stylus is silly
+        $Media['type'] = isUnit($Media['type']) ? "'" + $Media['type'] + "'" : $Media['type']; 
+        if $defaultMedia[$Media['type']]
+          $Option['media'] = configMedia({type: 'screen', mixin: {at: $Media['type']}})
+        else
+          _err = "To use a single type media query you must use a defined break point",
+                 "and '" + $Media['type'] + "' is not defined. What is defined is " + $defaultMedia,
+                 "   PS. If you are typing to use type via the numbers the number cannot be a string",
+                 "it must be a unit as in a number without quotes around it.";
+          throwErr(_err, 'If controller')
+      
+      /////////////////
+      //MAIN RETURN --> 
+      if $$returnVal
+        return $Option
+      else
+        _key = $Option['state'] ? $Option['state'] : null;
+        createStyle($Media, _Selector, _key, {}, $Option)
+        //Throw back into Extract
+        extract($Media, _Selector, $Option)
+    
+    //TODO docs
+    //configs media to be sent to be processed
+    composeMedia($Media, _Selector, $Option, $$returnVal = false, $$objOvr = false)
+      throwErr(_msg, _type)
+        error({
+          scope: _Selector,
+          type: "composeMedia --> " + _type,
+          msg: _msg
+        })
+
+      //helper basic checks
+      mediaCheck($media, $$key = false)
+        _funkErr = 'Media Queries'
+        if !isObj($media['option']) && !$media['type']
+          _err = "You need to declare what type of media query you want to",
+                 "use through the option obj or type or property";
+          throwErr(_err, _funkErr)
+          return false;
+        else
+          return true;
+      
+      //check if all objs
+      if !$$objOvr && isAllObjs($Media, 'global')
+        for j in $Media
+          if j != 'global'
+            //check for multiple defined by heiphen
+            for m in split('-', j)
+              $query = clone($Media[j])
+              //if plus in key means user will handle
+              $$override = match('\+', m)
+              //check for proper formating
+              if $$override || $defaultMedia[m] || $defaultMedia["'" + deString(m) + "'"]
+                //if override user will handle
+                if !$$override
+                  //merge if present
+                  if $query['mixin']
+                    $query['mixin'] = merge($query['mixin'], {at: m})
+                  else
+                    $query['mixin'] = {at: m}
+                //check for global and merge if so
+                $query = $Media['global'] ? merge(clone($Media['global']), $query, true) : $query; 
+                //send to be processed
+                processMedia($query, _Selector, $Option, $$returnVal)
+              else
+                _err = "To use the'XXX' type of media notation the object key",
+                       "must be a defined break point and '" + m + "' is not defined.",
+                       "What is defined is " + $defaultMedia;
+                throwErr(_err, _funkErr)
+      else
+        //single object
+        if isObj($Media) 
+          if mediaCheck($Media)
+            processMedia($Media, _Selector, $Option, $$returnVal)
+        else
+          //assume string shorthand
+          $mediaForm = {type: $Media}
+          if mediaCheck($mediaForm)
+            processMedia($mediaForm, _Selector, $Option, $$returnVal)
+          
+
+
+
+    ////////////////////////////////////////////////////////////////////////////
+    //----End Of Process Media
+    ////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////
+
+
+    ////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////
+    //Config Anim
+    ////////////////////////////////////////////////////////////////////////////////
+    //desc: Handles the heavy lifting for anim logic and is called by animExtractor.
+    //Takes
+    //-> animObj = The anim/animation object
+    //-> tlType = timeline type = basic || multiA || multiB
+    //depening on the type the flow is a bit diffrent but output is basically the same
+    //-> propType = global || target; for where props are to be applied 
+    //Return
+    //-> Obj
+    // -> Name; if basic type; name of timeline
+    // -> Type = tlType
+    // -> props[tlType] = anim props from timeline/s
+    configAnim($animObj, $tlType, $propType)
+      //Anim props to be populate
+      $anim = {
+        name: null,
+        duration: null,
+        ease: null,
+        count: null,
+        delay: null,
+        direction: null,
+        mode: null,
+        state: null
+      }
+      //All timeline data will be pushed to this obj
+      $tlObj = {}
+      $cleanAnimTemp = clone($anim)
+      $applyToAnim = {}
+      $attachToAnim = {}
+
+      //--------------------------//
+      //Extract Anim Options
+      //-------------------------//
+      //desc: pushes props to anim or applyToAnim.
+      //Takes
+      //-> obj == animObj; to advoid scoope confusion
+      //-> tlName = name of the timeline pushing props for
+      //-> multiple = boolean; for anim with multiple timelines
+      //Returns
+      //-> nothing; pushes to anim or applyToAnim 
+      extractAnimOpt($obj, $tlName, $tl, $defaultOpt, $multiple = false)
+        //break ref for options don't carry over to next tl
+        _defaultOpt = clone($defaultOpt)
+        //config timeline to be added to global tlObj
+        if isString($tl)
+          //no object just string
+          $tlObj[$tlName] = $tl
+        else if $tlName in $tl
+          //name in timeline
+          $tlObj[$tlName] = $tl[$tlName]
+        else
+          //default
+          $tlObj[$tlName] = $tl
+
+        //anim option object
+        $opt = $obj['option'] ? getVal($obj['option']) : {};
+        //merege option with default
+        $opt = merge(_defaultOpt, $opt)
+        $shorthand = null;
+        //check for shorthand first within global
+        if $obj['shorthand']
+          $shorthand = getVal($obj['shorthand'])
+        else if $opt['shorthand']
+          $shorthand = getVal($opt['shorthand'])
+        //push anim ref object        
+        $animObj = $anim
+        
+        //applyTo or attachTo
+        if $opt['applyTo'] && $opt['attachTo']
+          _aError = "Buttron Error: You cannot use both 'applyTo' and 'attachTo'",
+                    "in your animation. You must use one or the other."
+          error(_aError)
+        else if $opt['applyTo']
+          //check if exists or create, and reassign $animObj to new push
+          _applyTo = $opt['applyTo']
+          if $applyToAnim[_applyTo]
+            $animObj = $applyToAnim[_applyTo]
+          else
+            $applyToAnim[_applyTo] = clone($cleanAnimTemp)
+            $animObj = $applyToAnim[_applyTo]
+        //attachTo
+        // else if $opt['attachTo']
+        //   _attachTo = $opt['attachTo']
+        //   if $attachToAnim[_attachTo]
+        //     $animObj = $attachToAnim[_attachTo]
+        //   else
+        //     $attachToAnim[_attachTo] = clone($cleanAnimTemp)
+        //     $animObj = $attachToAnim[_applyTo]
+        // $animObj['isRoot'] = hasRoot($obj)
+        if hasRoot($obj)
+          if !$animObj['rootProps']
+            $animObj['rootProps'] = clone($cleanAnimTemp)
+            $animObj = $animObj['rootProps']
+            $animObj['isRoot'] = true
+          else
+            p('herererererer anim')
+
+        //if no shorthand
+        if !$shorthand
+          //push name
+          push($animObj['name'], deString($tlName))
+          $omitList = null;
+          //check to see if there is object specific options
+          if $tlName in $opt
+            _indvOpt = $opt[$tlName]
+            if isObj(_indvOpt)
+              for $x in _indvOpt
+                push($omitList, $x)
+                push($animObj[$x], deString(_indvOpt[$x]))
+
+          //cylce through and push options
+          for $o in $opt
+            if !isObj($opt[$o]) && !($o in $omitList)
+              push($animObj[$o], deString($opt[$o]))
+        else
+          //cycle trough amin push obj and assign
+          //shorthand variables to said object
+          pushToAnim($indvShort = '')
+            $c = 0
+            for $a in $animObj
+              if $a != 'name'
+                if $indvShort[$c]
+                  //default key
+                  if $indvShort[$c] == 'default'
+                    push($animObj[$a], deString(_defaultOpt[$a]))
+                  else
+                    push($animObj[$a], deString($indvShort[$c]))
+                else
+                  //default if no shorthand key present
+                  push($animObj[$a], deString(_defaultOpt[$a]))
+                //inc count
+                $c = $c + 1;
+          
+          //multiple
+          if $multiple
+            //check if name exists in shorthand
+            if $tlName in $shorthand
+              //push name
+              push($animObj['name'], deString($tlName))
+              //push options
+              pushToAnim($shorthand[$tlName])
+            else
+              //push with defaults
+              push($animObj['name'], deString($tlName))
+              pushToAnim()
+
+
+          //non-multiple
+          else
+            //shorthand cylce
+            for $i in $shorthand
+              _name = $tlName ? $tlName : $i;
+              //if name already in obj assume single shorthand hack
+              if _name in $animObj['name']
+                _name = $i  
+              //push name
+              push($animObj['name'], deString(_name))
+              //push options
+              pushToAnim($shorthand[$i])
+
+      //--------------------------//
+      //Clean Obj
+      //-------------------------//
+      //desc: removes null from object and joins
+      //Takes
+      //-> obj = anim || applyToAnim
+      //Return
+      //-> cleaned obj || {}
+      // Desc--> 
+      //   removes null from object and joins
+      // Params-->
+      //   @ {obj - anim} - animation obj
+      // Return-->
+      //   @ {obj - anim} - animation obj
+      cleanObj($anim)
+        //shift off null
+        for $i in $anim
+          $val = clone($anim[$i])
+          if $val[0] == null
+            shift($val)
+          if length($val) > 1
+            $anim[$i] = joinProps($val)
+          else if $i == 'name' && length($val) == 1
+            $anim[$i] = s($val)
+          else
+            $anim[$i] = $val
+        //remove any emptys
+        for $i in $anim
+          if length($anim[$i]) == 0
+            remove($anim, $i)
+        return length($anim) ? $anim : {};
+          
+        
+      //--------------------------//
+      //Assign Object
+      //-------------------------//
+      // Desc--> 
+      //   assigns anim object with proper anim css properites
+      // Params-->
+      //   @ {obj - anim} - anim obj
+      // Return-->
+      //   @ {obj - res} - Formated anim obj
+      assignOpt($anim)
+        //basic check
+        if !length($anim)
+          return {};
+        //check to join
+        for $i in $anim
+          if length($anim[$i]) > 1
+            $anim[$i] = joinProps($anim[$i])
+          else if $i == 'name'
+            //de-string
+            $anim[$i] = s($anim[$i])
+        //assign
+        $res = {}
+        $res['animation-name'] = $anim[name];
+        $res['animation-duration'] = $anim[duration];
+        $res['animation-timing-function'] = $anim[ease];
+        $res['animation-iteration-count'] = $anim[count];
+        $res['animation-delay'] = $anim[delay];
+        $res['animation-direction'] = $anim[direction];
+        $res['animation-fill-mode'] = $anim[mode];
+        $res['animation-play-state'] = $anim[state];
+        return $res;
+
+
+      //--------------------------//
+      //getTlName
+      //-------------------------//
+      //desc: gets the timeline name, argubly this is a bit exsessive
+      //and I should just say declare your name in 'x', but nevertheless
+      //I was feeling flexable that staturday.
+      //Takes
+      //-> obj = $animObj
+      //-> tl = the current timeline
+      //Returns
+      //-> $tlName = timeline name or throws warrning that name could not
+      //   be found and defualts to 'noNameFound' 
+      getTlName($obj, $tl, $key = null, $multiple = false)
+        //multiA
+        if $multiple
+          if $tl['name']
+            return $tl['name']
+          else if isString($tl)
+            return $tl
+          else
+            return $key
+        else
+          //basic or multiB
+          _tempName = null
+          //name defined
+          if $obj['name']
+            return $obj['name']
+          //check for tl literal or indent
+          else if !isObj($tl)
+            if isLit($tl) || typeof($tl) == 'ident'
+              return $tl
+          //check option
+          if $obj['option']
+            _opt = $obj['option']
+            if _opt['name']
+              return _opt['name']
+            else if _opt['shorthand']
+              _shorthand = _opt['shorthand']
+              //select first shorthand key
+              _tempName = keys(_shorthand)[0]
+          //check shorthand
+          if $obj['shorthand']
+            _shorthand = $obj['shorthand']
+            //select first shorthand key
+            _tempName = keys(_shorthand)[0]
+          //check object
+          if isObj($obj['timeline'])
+            //tl has name key
+            for $i in $tl
+              $i = deString($i)
+              //check to make use user did not already assign tlName as
+              //the object key
+              if match('[a-zA-Z]+', $i) && $i != 'from' && $i != 'to'
+                if isObj($tl[$i])
+                  return $i
+          //if string for tl
+          else if isString($obj['timeline'])
+            return $obj['timeline']
+          //defualts
+          if _tempName != null
+            return _tempName
+          else if $key
+            //MultiB, parent obj key
+            return $key
+          else
+            //Error
+            _nameError = "Buttron Error: No name found for your animation will",
+                         "default to 'noNameFound'."
+            error(_nameError)
+            return 'noNameFound'
+
+      //--------------------------//
+      //configReturnAnimObj
+      //-------------------------//
+      configReturnAnimObj()
+        // p('------------')
+        // p($anim)
+        configProps(_anim)
+          $props = {}
+          $rootProps = {}
+          if _anim['rootProps']
+            //config
+            $rootProps[$propType] = assignOpt(cleanObj(_anim['rootProps']))
+            remove(_anim, 'rootProps')
+            $props[$propType] = assignOpt(cleanObj(_anim))
+          else
+            $props[$propType] = assignOpt(cleanObj(_anim))
+          // p($props)
+          // p($rootProps)
+          return {
+            props: $props
+            rootProps: $rootProps 
+          }
+            
+        
+        $propList = configProps($anim)
+        
+        //applyTo
+        $applyTo = {}
+        if length($applyToAnim)
+          for $a in $applyToAnim
+            _applyToObj = $applyToAnim[$a]
+            //formate return obj
+            if !$applyTo[$a]
+              $applyTo[$a] = {}
+              _applyToTarget = $applyTo[$a]
+              _applyToTarget[$propType] = assignOpt(cleanObj(_applyToObj))
+            else
+              p('applyTo Anim cylce')
+              $applyTo[$a] = merge($applyTo[$a], $applyToAnim[$a], true)
+        // if length($attachToAnim)
+        
+        $props = $propList['props']
+        $rootProps = $propList['rootProps']
+        
+        $returnObj = {}
+        $props['applyTo'] = $applyTo
+        $returnObj['props'] = $props
+        $returnObj['rootProps'] = $rootProps
+        $returnObj['timeline'] = $tlObj
+        //-> 
+        return $returnObj
+
+
+
+      //--------------------------//
+      //If Controller
+      //-------------------------//
+      //Desc: Three options = basic || multiA || multiB
+      //      controlls flow
+      //default anim options
+      $defaultOpt = clone($defaultAnim)
+      if $tlType == 'basic' 
+        $tl = getVal($animObj['timeline'])
+        //config timeline name
+        $tlName = getTlName($animObj, $tl)
+        // timeline object
+        extractAnimOpt($animObj, $tlName, $tl, $defaultOpt)
+        //Main Return
+        return configReturnAnimObj()
+      //multiA
+      else if $tlType == 'multiA'
+        $tl = getVal($animObj['timeline'])
+        //cylce through timeline
+        for $i in $tl
+          _tempTl = $tl[$i]
+          //config name
+          $tlName = getTlName($animObj, _tempTl, $i, true)
+          extractAnimOpt($animObj, $tlName, _tempTl, $defaultOpt, true)
+        //Main Return
+        return configReturnAnimObj()
+      else if $tlType == 'multiB'
+        //check for global options
+        $globalOption = $animObj['globalOption'] ? $animObj['globalOption'] : {}
+        $globalOption = merge($defaultOpt, $globalOption)
+        //cycle through sub-objs
+        for $i in $animObj
+          if $i != 'globalOption'
+            $subAnim = $animObj[$i] 
+            _tempTl = $subAnim['timeline']
+            $multiple = $subAnim['multiple'] ? true : false
+            //default
+            if !$multiple
+              $tlName = getTlName($subAnim, _tempTl, $i)
+              extractAnimOpt($subAnim, $tlName, _tempTl, $globalOption)
+            else
+              //multiple
+              for $t in _tempTl
+                _subTempTl = _tempTl[$t]
+                $tlName = getTlName($animObj, _subTempTl, $t, true)
+                extractAnimOpt($subAnim, $tlName, _subTempTl, $globalOption, true)
+        //Main Return
+        return configReturnAnimObj()
+
+
+
+    ////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////
+    //Animation Extractor
+    ////////////////////////////////////////////////////////////////////////////////
+    animExtractor($dataObj, $option)
+      _default = {type: 'global'}
+      $option = merge(_default, $option)
+
+      $props = {}
+      
+      $anim = null
+      //check
+      if $dataObj['anim'] 
+        $anim = $dataObj['anim']
+      else if $dataObj['animation']
+        $anim = $dataObj['animation']
+      else
+        return false;
+
+
+      //Option A
+      if $anim['multiple']
+        return configAnim($anim, 'multiA', $option['type'])
+      else if isAllObjs($anim)
+        //Option B - MultiB
+        return configAnim($anim, 'multiB', $option['type'])
+      else
+        //Default
+        return configAnim($anim, 'basic', $option['type'])
+    ////////////////////////////////////////////////////////////////////////////////
+    //---> End of Animation Extractor
+    ////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////
+
+
+    ////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////
+    //Init Animation
+    ////////////////////////////////////////////////////////////////////////////////
+    //desc: create the timeline for names
+    initAnim($animData)
+
+      createTimeline($name, $timeline)
+        //check if tl is a string if so assume that user is using
+        //an exsisting timeline
+        if !isString($tl)
+          @keyframes {$name}
+            for $i in $timeline
+              //basic check
+              if !isObj($timeline[$i]) && $i != 'name'
+                _notObj = "Buttron Error: It looks like your '" + $name + "' animation",
+                          "timeline has a non-object value for the '" + $i + "' key",
+                          "and I can only make timelines with objects only!"
+                error(_notObj)
+              else
+                if $i != 'name'
+                  _i = clone($i)
+                  if (!match('\%', $i)) && $i != 'from' && $i != 'to'
+                    $i = $i + "%"
+                  {$i}
+                    apply($timeline[_i])
+      
+      //cylce through timelines to create
+      $timeline = $animData['timeline'];
+      for $t in $timeline
+        $tl = $timeline[$t]
+        $tlName = $tl['name'] ? $tl['name'] : $t
+        createTimeline($tlName, $tl)
+
+      
+
+    ////////////////////////////////////////////////////////////////////////////////
+    //---> End of Init Anim
+    ////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+    ////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////
+    //Trans transition
+    ////////////////////////////////////////////////////////////////////////////
+    //desc: extracts transitions in defined object scoope
+    //-Looks if a global trans was declare and will priorities those props over
+    //the auto generated to be target props such as states. 
+    //> returns
+    //->global
+    //->targe
+    //->apply
+    //$trans object, $shorthand, or if not global trans false
+
+    // Desc--> 
+    //   So how I had to handle this whole thing is a bit confusing becuase but stylus
+    //   works in mysterious ways. The basic drift is I push the target and
+    //   global trans data into their respecvie locations. Props, ApplyTo, Root, and 
+    //   Media have thier thier own respective homes and then they are joined into
+    //   one big happy faimly to be be applied and make you smile because 
+    //   css doesnt suck so much anymore.  
+    // Params-->
+    //   @ {type} - desc
+    // Return-->
+    //   @ {type} - desc
+    transExtractor($Data, _Selector, $Option = {})
+      //defaults
+      $Option = setD($Option, {
+        type: 'global',
+        state: null
+      })
+      //if trans obj notation this contains attributes to be
+      //applied to globaly
+      $props =  {};
+      //trans obj to be retruned
+      $TransRtn = {
+        property: null,
+        duration: null,
+        ease: null,
+        delay: null,
+        //for selector when applied
+        pseudo: null,
+        //autogen override for global
+        autoGen: null,
+        //Media Data
+        media: null,
+        //applyTo only used when applyTo
+        //is with media
+        applyTo: null
+      }
+      //Root
+      $rootTrans = {}
+      $rootProps = {}
+      //applyTo
+      $applyToTrans = {}
+      $applyToProps = {}
+      //media
+      $mediaTrans = {}
+      $mediaProps = {}
+      //determains if to be appled to root 
+      $$isRoot = false
+      //contains any media objs
+      $mediaObj = {}
+
+      //for applyTo to create clean template
+      $cleanTransTemplate = clone($TransRtn)
+      //omitlist for check isAllObjs
+      $omitList =  'anim', 'animation';
+      //funk error helper
+      throwErr($msg, _type)
+        error({
+          scope: _Selector,
+          type: 'transExtractor -> ' + _type,
+          msg: $msg
+        })
+      //--------------------------//
+      //->objTransExtractor
+      //-------------------------//
+      // Desc--> 
+      //   This funk is my main man and does all the heavey lifting.
+      //   Basically it will deconstruct the trans object or sub-trans objects and 
+      //   then push them to their respective home (objs) which you can see above
+      //   and then those objs will be returned to be processed.
+      // Params-->
+      //   @ {obj - trans} - the trans or state obj of the indv sub-object
+      //   @ {obj - tOpt} - the defualt trans options for said state or trans  
+      //   @ {obj - option} - any options for control flow 
+      // Return-->
+      //   Nothing -> It just be pushi'n to the above global funk objs
+      objTransExtractor($trans, $tOpt, $option = {})
+        // p($trans)
+        // p($trans['media'])
+        // hmm = processMedia($trans['media'], _Selector, $Option, true)
+        // p(hmm)
+        _funkErr = 'objTransExtractor'
+        $option = setD($option, {
+          populateProps: false
+        })
+        $shorthand = null;
+        //assign option
+        $transOpt = $trans['option']
+        //reffrences to what will be pushed, this is a somewhat
+        //mystifying but its the main playboy of the aux objs
+        //and basically is a reffrences/pointer to what we will push up
+        $transRef = null
+        //need to keep original ref
+        $defaultOpt = clone($tOpt)
+        $$isRoot = hasRoot($trans)
+        //--------------------------//
+        //objTransExtractor Helpers 
+        //-------------------------//
+        // Desc--> ******
+        //   Takes the shorthand notation and converts its into object notation
+        // Params-->
+        //   @ {obj - shorthand} - shorthand notation ex. {background: 1s ease-in 0.5s}
+        //   @ {obj - default} - defualt trans props 
+        // Return-->
+        //   @ {obj - trans} - populated $trans 
+        //TODO - js
+        convertShorthand($shorthand, $default)
+          $trans = {
+            property: null,
+            duration: null,
+            ease: null,
+            delay: null
+          }
+          //deconstruct shorthand
+          $c = 0
+          for p in $shorthand
+            $c = 0
+            push($trans['property'], p)
+            $indv = $shorthand[p]
+            //assign val or default
+            for i in $trans
+              if i != 'property'
+                if $indv[$c] != null && $indv[$c] != unquote('default')
+                  push($trans[i], $indv[$c])
+                //if user specifies they want default
+                else if $indv[$c] == unquote('default')
+                  push($trans[i], $default[i])
+                else
+                  push($trans[i], $default[i])
+                $c = $c + 1;
+          //return obj
+          return $trans
+        // Desc--> *****
+        //   Pushed trans data into trans Obj
+        // Params-->
+        //   @ {obj - shorthand} - Formated shorthand, that has been put through convertShorthand
+        // Return-->
+        //   @ Nothing - pushed trans datat into transObj
+        pushTrans($shorthand)
+          $c = 0
+          $omit = null
+          for i in $transRef
+            $c = 0
+            for j in $shorthand[i]
+              $c = $c + 1
+              if i == 'property'
+                if j != null
+                  if !(j in $transRef['property'])
+                    push($transRef['property'], j)
+                  else
+                    push($omit, $c)
+                    //Do not throw error on autoGen
+                    if !$option['autoGen']
+                      _err =  "Duplicate '" + j + "' transition property";
+                      throwErr(_err, _funkErr + ' -> pushTrans')
+              else
+                if $j != null && !($c in $omit)
+                  push($transRef[i], j)
+        // Desc--> ****
+        //   Updates transOpts with props from the option object
+        // Params-->
+        //   @ Nothing
+        // Return-->
+        //   @ Nothing - updates scoope trans default vars
+        updateTransWithOpt()
+          //cylce through option object to check for new defaults
+          for n in $transOpt
+            if n in $defaultOpt
+              //update trans default
+              $defaultOpt[n] = $transOpt[n]
+
+
+
+
+
+        configAux(_aux, $pointTrans, $pointProps)
+          if $transOpt[_aux] && !$option['autoGen']
+            $auxObj = {}
+            $auxElm = null
+            //First gate
+            if length($auxElm) > 1 && _aux == 'applyTo'
+              _err = "As of right now you are limited to one single applyTo string";
+              throwErr(_err, _funkErr + '--> configAux')
+            else if _aux == 'applyTo'
+              //create base obj to be worked with
+              $auxElm = $transOpt[_aux]
+            else if _aux == 'media'
+              //media
+              $media = $transOpt['media']
+              // $media = composeMedia($auxElm, _Selector, $Option, true)
+              if isObj($media)
+                //alright how I had to handle this is a bit weird.
+                //so you cannot make a driect call to create a style via createStyle
+                //if the funk has a return. So what I do here is 
+                //stash the media obj and then call it in applyEffect
+                $mediaData = $transOpt[_aux]
+                //for media data
+                $mediaObjOpt = {}
+                //what going to be applied
+                $mediaObjProps = {option:{}}
+                //merge option with prexisting props
+                $$mqMerge = false
+                //If all objs will add prefix to be regex so that
+                //we process the type correctly
+                _mediaPrefix = ""
+                //add any addition options such as duration, ect
+                for i in $transOpt
+                  if i != 'media'
+                    $mOpt = $mediaObjProps['option']
+                    $mOpt[i] = $transOpt[i]
+                //what we are doing here is creating a new object which
+                //will be in said state ex {hover:{...}} so it be uniform
+                //assume key notation
+                // str($mediaData)
+                if isAllObjs($mediaData, 'option')
+                  //object key notation
+                  _mediaPrefix = "obj_"
+                  $mediaComp = {}
+                  //helper to compose each respective key
+                  composeMediaState($mData, _mKey, $$mqMerge = false)
+                    $mq = {}
+                    if _mKey != 'global'
+                      //move any media options outside
+                      $mqOpt = $mData['option'] ? $mData['option'] : {}
+                      //check merge local over global
+                      $$mqMerge = $mqOpt['merge'] == false ? false : $$mqMerge;
+                      if $mqOpt['merge'] != null
+                        remove($mqOpt, 'merge')
+                      $mq['option'] = $mqOpt
+                      //overwright option with parent
+                      $mData['option'] = $mediaObjProps['option']
+                      $mData = $$mqMerge ? merge($mData, getAttributes($trans)) : $mData;
+                    $mq[$Option['state']] = $mData
+                    $mediaComp[_mKey] = $mq
+                  //config global to pass opts
+                  if $mediaData['global']
+                    $mediaObjProps = merge($mediaObjProps, $mediaData['global'], true)
+                  //cycle through keys
+                  for d in $mediaData
+                    composeMediaState($mediaData[d], d, $mediaObjProps.option['merge'])
+                  //assign
+                  $mediaData = $mediaComp
+                else
+                  //set options
+                  if $mediaData['option']
+                    $mqOpt = $mediaData['option']
+                    $$mqMerge = $mqOpt['merge'] ? true : false;
+                    if $$mqMerge
+                      remove($mediaData['option'], 'merge')
+                    $mediaObjOpt['option'] = $mediaData['option']
+                  else if $mediaData['type']
+                    $mediaObjOpt['type'] = $mediaData['type']
+                  else
+                    _err =  "You need a 'type' string, or 'option' object in",
+                            "your media object!";
+                    throwErr(_err, _funkErr + '-> configAux')
+                  //merge existing parent props
+                  if $$mqMerge
+                    $mediaObjProps = merge($mediaObjProps, getAttributes($trans))
+                  //add specified props
+                  for i in $mediaData
+                    if i != 'type' && i != 'option'
+                      $mediaObjProps[i] = $mediaData[i]
+                
+                  //assign to global scope to be return
+                  $mediaData = merge($mediaObjOpt, createObj($Option['state'], $mediaObjProps), true)
+                $mediaObj[_mediaPrefix + "media_" + length($mediaObj)] = $mediaData
+                return {
+                  transRef: $TransRtn
+                  isMediaObj: true
+                }
+              else if isString($media)
+                //if media is just a string assume shorthand
+                $auxElm = $transOpt[_aux]
+                $media = composeMedia($auxElm, _Selector, $Option, true)
+            
+            //Second gate
+            //check for root
+            if $$isRoot
+              //check/create rootObj 
+              if !$pointTrans['rootObj']
+                $auxObj['rootObj'] = {}
+                $pointTrans = merge($pointTrans, $auxObj, true)
+              //assign
+              $applyRootTrans = $pointTrans['rootObj']
+              //check/create class
+              if !$applyRootTrans[$auxElm]
+                //assign
+                $applyRootTrans[$auxElm] = clone($cleanTransTemplate)
+              //assign pusher
+              $transRef = $applyRootTrans[$auxElm]
+              //config props
+              if !$pointProps['rootObj']
+                $pointProps['rootObj'] = {}
+              //assign
+              $applyRootProps = $pointProps['rootObj']
+              //check/create
+              if !$applyRootProps[$auxElm]
+                $applyRootProps[$auxElm] = {}
+            else
+              //no root - create trans ref obj
+              if !$pointTrans[$auxElm]
+                $auxObj[$transOpt[_aux]] = clone($cleanTransTemplate)
+                $pointTrans = merge($pointTrans, $auxObj)
+                $pointProps[$transOpt[_aux]] = {};
+              //assing ref
+              $transRef = $pointTrans[$transOpt[_aux]]
+              //if Media we need to add media options to be used
+              //for latter ref 
+              if _aux == 'media'
+                $transRef['media'] = $media['media']
+          //config root obj
+          else if !$option['autoGen'] && !$transOpt[_aux] && hasRoot($trans)
+            //populate empty obj
+            if !length($rootTrans)
+              $rootTrans = merge($rootTrans, clone($cleanTransTemplate))
+            //assign
+            $transRef = $rootTrans
+          else
+            $transRef = $TransRtn
+          return {
+            transRef: $transRef
+            isRoot: $$isRoot
+          }
+
+
+        // Desc--> ****
+        //   The transRef get assign to its a pointer global object
+        //   which then we will push to. Also configs varous global
+        //   objs dependant on what we are working with
+        //This first handles media and also takes into account if there is
+        //an applyTo to be added
+        if $transOpt['media'] && !$option['autoGen']
+          $auxConfigRtn = configAux('media', $mediaTrans, $mediaProps)
+          $transRef = $auxConfigRtn['transRef']
+          $transOpt['media'] = $auxConfigRtn['isMediaObj'] ? null : $transOpt['media'];
+          //need to re-run to reassign the ref due to root
+          if $$isRoot && $auxConfigRtn['isMediaObj']
+            $auxConfigRtn = configAux('applyTo', $applyToTrans, $applyToProps)
+            $transRef = $auxConfigRtn['transRef']
+        else if $transOpt['applyTo'] && !$option['autoGen']
+          $auxConfigRtn = configAux('applyTo', $applyToTrans, $applyToProps)
+          $transRef = $auxConfigRtn['transRef']
+        else
+          //no applyTo or media, but still config to keep uniform
+          $auxConfigRtn = configAux('applyTo', $applyToTrans, $applyToProps)
+          $transRef = $auxConfigRtn['transRef']
+        
+
+        //-----------------------------------//
+        //If Controller for objTransExtractor
+        //----------------------------------//
+        // Desc--> 
+        //   Config of shortands various methods and then update trans
+        //opt 1 seperate entites
+        //shorthand in trans plus options present
+        if $trans['shorthand'] && $transOpt
+          $shorthand = $trans['shorthand']
+          updateTransWithOpt()
+          //Create new and merege
+          pushTrans(convertShorthand($trans['shorthand'], $defaultOpt))
+        //opt 2
+        //only shorthand present
+        else if $trans['shorthand']
+          $shorthand = $trans['shorthand']
+          pushTrans(convertShorthand($trans['shorthand'], $defaultOpt))
+        //opt 3
+        //shorthand in option
+        else if $transOpt['shorthand']
+          $shorthand = $transOpt['shorthand']
+          updateTransWithOpt()
+          pushTrans(convertShorthand($transOpt['shorthand'], $defaultOpt))
+        //just option
+        else if $transOpt
+          updateTransWithOpt()
+
+        //Holds reffrences to keys in shorthand so we don't make
+        //duplicates in the next few lines
+        $shorthandKeys = null;
+        if $shorthand
+          for k in $shorthand
+            push($shorthandKeys, k)
+          //shift off null
+          shift($shorthandKeys)
+
+        // Desc--> 
+        //   Populates the trans and configs to be assinged and then pushed
+        $transProps = getAttributes($trans)
+        //only push attributes if no prop defined
+        if !$transOpt['property']
+          if length($transProps)
+            //master-race - for multiple option props
+            $pc = 0
+            //push property attrs
+            for p in $transProps
+              //to make sure we do not make any duplicates if
+              //user is using shorthand
+              if !(p in $shorthandKeys) && !(p in $transRef['property'])
+                push($transRef['property'], p)
+                // push trans opts
+                for d in $defaultOpt
+                  if length($defaultOpt[d]) > 1
+                    $temp = $defaultOpt[d]
+                    //config index prop if multiple
+                    $temp = $temp[$pc] ? $temp[$pc] : $tOpt[d];
+                    push($transRef[d], $temp)
+                  else
+                    push($transRef[d], $defaultOpt[d])
+                $pc = $pc + 1;
+              else
+                //throw warning to user that a duplicate prop was detected
+                if !(p in $shorthandKeys) && (p in $transRef['property'])
+                  //Do not throw error on autoGen
+                  if !$option['autoGen']
+                    _err = "Duplicate '" + p + "' transition property"
+                    throwErr(_err, _funkErr)
+          else if $shorthandKeys == null
+            //if no shorthand && property populate trans with set options
+            //specified in the option object by user
+            if length($transRef['property']) == 1
+              $tempProps = $transRef['property']
+              if $tempProps[0] != null
+                push($transRef['property'], 'all')
+                for d in $defaultOpt
+                  push($transRef[d], $defaultOpt[d])
+              //check to see if there is only options are specified in trans
+              else if $trans['option']
+                push($transRef['property'], 'all')
+                for d in $defaultOpt
+                  push($transRef[d], $defaultOpt[d])
+        //property keys defined in option
+        else
+          $tempProps = $transOpt['property']
+          //master-race -> count for index
+          $pc = 0;
+          for p in $tempProps
+            if !(p in $shorthandKeys)
+              //push deinfed props if they do not exsit
+              push($transRef['property'], p)
+              //push respective options with trans
+              for d in $defaultOpt
+                //check for multiple vals within option
+                $tempOpt = $defaultOpt[d]
+                //check if val exists otherwise default to first
+                $tempOptVal = $tempOpt[$pc] ? $tempOpt[$pc] : $tOpt[d]
+                push($transRef[d], $tempOptVal)
+              $pc = $pc + 1;
+        
+        //Pseudo option
+        if $transOpt['pseudo']
+          push($transRef['pseudo'], true)
+        //AutoGen override, this is need here as well as at
+        //the call becuase applyTo and root
+        if $transOpt['autoGen'] == false
+          push($transRef['autoGen'], false)
+        //None of these options are to be pushed on autoGen
+        if !$option['autoGen']
+          //Populates auxiliary global objs for root and applyto for global return
+          if $transOpt['applyTo'] == null && $transOpt['media'] == null
+            if $$isRoot
+              $rootProps = merge($rootProps, $transProps)
+            else
+              $props = merge($props, $transProps)
+          //ApplyTo and no media
+          if $transOpt['applyTo'] != null && $transOpt['media'] == null
+            if $$isRoot
+              //Root 
+              $applyToPropsRef = $applyToProps['rootObj']
+              $applyToKey = $applyToPropsRef[$transOpt['applyTo']]
+              $applyToKey = merge($applyToKey, $transProps)
+            else
+              //if applyTo without root
+              $applyToKey = $applyToProps[$transOpt['applyTo']]
+              $applyToKey = merge($applyToKey, $transProps)
+          //Media
+          if $transOpt['media'] != null
+            if $transOpt['applyTo']
+              push($transRef['applyTo'], $transOpt['applyTo'])
+            // str($mediaProps)
+            if $$isRoot
+              //Root 
+              $mediaPropsRef = $mediaProps['rootObj']
+              $mediaKey = $mediaPropsRef[$transOpt['media']]
+              $mediaKey = merge($mediaKey, $transProps)
+            else
+              //if media without root
+              $mediaKey = $mediaProps[$transOpt['media']]
+              $mediaKey = merge($mediaKey, $transProps)
+
+      //--------------------------//
+      //transExtractor Helper's
+      //-------------------------//
+      // Desc--> 
+      //   Assigns the trans obj with the proper css notaion
+      // Params-->
+      //   @ {obj - transObj}
+      // Return-->
+      //   @ {obj} - formated trans object with proper keys
+      assignTrans($transObj)
+        if length($transObj) == 0
+          return false;
+        else
+          //Transition obj to be populated
+          $trans = {};
+          //Properties
+          $trans['transition-property'] = $transObj['property'];
+          //Duration
+          $trans['transition-duration'] = $transObj['duration'];
+          //Ease
+          $trans['transition-timing-function'] = $transObj['ease'];
+          //delay
+          $trans['transition-delay'] = $transObj['delay'];
+          //pseudo
+          $trans['pseudo'] = $transObj['pseudo'] ? true : null;
+          //autoGen
+          $trans['autoGen'] = $transObj['autoGen'] == false ? false : null;
+          //media
+          $trans['media'] = $transObj['media'] ? $transObj['media'] : null;
+          //applyTo
+          $trans['applyTo'] = $transObj['applyTo'];
+
+          return $trans
+      // Desc--> 
+      //   Shifts off null if first in list an joins props if needed
+      // Params-->
+      //   @ {obj - obj} - Depends but it will be one of the global return objs
+      //   @ {obj - data} - copy of gloabal Data 
+      // Return-->
+      //   @ {obj} - cleaned and formated obj
+      formateTransObj($obj, $data)
+        //remove count
+        $rc = 0
+        //autogen override which I handle in a somewhat
+        //shity way but im sorta in a cornor.
+        $$autoGenOvr = false;
+        //shift off null
+        for i in $obj
+          $subObj = clone($obj[i])
+          if $subObj[0] == null
+            shift($subObj)
+          //check if all was autoGened and a false-positive
+          if $subObj[0] == 'all' && 1 < length($subObj)
+            if $data['trans']
+              $trans = $data['trans']
+              if $trans['option']
+                $transOpts = $trans['option']
+                if !$transOpts['property']
+                  shift($subObj)
+                  $rc = $rc + 1;
+          else if 3 >= $rc && $rc != 0
+            //shift off props that where autoGened with all
+            shift($subObj)
+            $rc = $rc + 1;
+          //check for autoGen override
+          if i == 'autoGen' && $subObj == false
+            $$autoGenOvr = true
+          //Need to keep media intact
+          if i != 'media' 
+            $obj[i] = joinProps($subObj)
+        //remove any emptys
+        for i in $obj
+          if length($obj[i]) == 0
+            remove($obj, i)
+        if $$autoGenOvr
+          $obj['autoGen'] = false
+        return $obj
+      // Desc--> 
+      //   Removed any animation objs
+      // Params-->
+      //   @ {obj} - data obj
+      // Return-->
+      //   @ {obj} - clean data obj
+      removeAnim($obj)
+        if 'anim' in $obj
+          remove($obj, 'anim')
+        if 'animation' in $obj
+          remove($obj, 'animation')
+        return $obj
+      // Desc--> 
+      //   Finds trans object or boolen value in either the
+      //   parent or option scope
+      // Params-->
+      //   @ {obj} - data obj
+      // Return-->
+      //   @ {obj} - trans obj of data obj
+      findTransObj($obj)
+        //find that trans
+        if $obj['trans']
+          return $obj['trans']
+        else if $obj['transition']
+          return $obj['transition']
+        else
+          if $obj['option']
+            $opt = $obj['option']
+            if $opt['trans']
+              return $opt['trans']
+            else
+              return $opt['transition']
+          else
+            //defualt
+            return $obj['transition']
+      // Desc--> 
+      //   Gets default trans props based on state
+      // Params-->
+      //   @ {str - state} - said state 
+      // Return-->
+      //   @ {obj} - trans props - look at $defaulTrans
+      getTransProps($state = null)
+        if $g_defaultTrans[$state]
+          return $g_defaultTrans[$state]
+        else
+          return $g_defaultTrans['transition']
+      // Desc--> 
+      //   Inkoved if the transtion is defined, globaly or target.
+      // Params-->
+      //   @ {obj -> dataObj} - Defined transition object to be extracted
+      //   @ {obj -> transDefault} - Trans defaults for the transition to be used
+      //   @ {obj -> options} - override the defaults for specific actions
+      // Return-->
+      //   @ Nothing
+      //     -> invokes objTransExtractor to push extracted data to 
+      //        global scoope objects to be return
+      definedTrans($data, $transDefault, _options = {})
+        //remove any animation from obj
+        $data = removeAnim($data)
+        //cycle through trans to to check if all objs
+        $allObjs = isAllObjs($data)
+        //If trans only contains objs we have to cycle through
+        if $allObjs
+          //check for global options
+          if $data['globalOption']
+            $transDefault = merge($transDefault, $data['globalOption'])
+          //cycle through sub-objs
+          for $i in $data
+            if $i != 'globalOption' && isObj($data[$i])
+              objTransExtractor($data[$i], $transDefault, _options)
+        else
+          // p($transDefault)
+          objTransExtractor($data, $transDefault, _options)
+        //check to see if props was populated
+        if 1 > length($TransRtn['property'])
+          //if not populated so default to all
+          push($TransRtn['property'], 'all')
+      // Desc--> 
+      //   used to to generate the global transtion props. It will cycle
+      //   through the current object scoop and look for states and transtions
+      // Params-->
+      //   @ {obj - globalDataObj} - the data obj for the entier scope of obj
+      // Return-->
+      //   @ Nothing
+      //     -> Inkokes 'objTransExtractor' to push data to global scoope
+      //       object to be return
+      autoGenTrans($trans, $data)
+        //helper to find if it has an option
+        findOpt($optScope, _opt, $equals = null)
+          if $optScope
+            if $equals == null 
+              return $optScope[_opt] ? $optScope[_opt] : null; 
+            else
+              return $optScope[_opt] == $equals ? $optScope[_opt] : null; 
+          else
+            return null;
+        //global trans option
+        $transOpt = {}
+        if $trans['option']
+          $transOpt = $trans['option']
+        //cycle through dataObj to auto-gen trans props since 
+        //no trans on global scoope is defined
+        for i in $data
+          //Extract states
+          if (i != null && i in $StateList) || match('customState', i)
+            //assign state
+            $state = i
+            $stateObj = removeAnim($data[i])
+            $stateTransObj = findTransObj($stateObj)
+            //This clone is !!important otherwise it will reassign global vals
+            $transOpts = merge(clone(getTransProps($state)), $transOpt)
+            $$extract = false
+            //check to see if we want to extract
+            if $state == 'link' || $state == 'visited' || match('customState', $state)
+              if $stateTransObj
+                $$extract = true;
+            else
+              if $stateTransObj != false
+                $$extract = true;
+            //extract state trans
+            if $$extract
+              //First check and handle and transition objects
+              if isObj($stateTransObj) && isAllObjs($stateTransObj, $omitList)
+                //check for globalOption to be applied
+                if $stateTransObj['globalOption']
+                  //update defualts
+                  $transOpts = merge($transOpts, $stateTransObj['globalOption'])
+                for $indvObj in $stateTransObj
+                  $indvStateTrans = $stateTransObj[$indvObj]
+                  //autpGen override for global 
+                  $$autoGenOvr = (findOpt($indvStateTrans['option'], 'autoGen', false) != false)
+                  //media str
+                  $$mediaOvr = !isString(findOpt($indvStateTrans['option'], 'root'))
+                  if !$mediaOvr
+                    $$mediaOvr = !isString(findOpt($indvStateTrans['option'], 'media'))
+                  //check  for globalOpts and trans == false and autogen == false
+                  if $indvObj != 'globalOption' && findTransObj($indvStateTrans) != false && $$autoGenOvr && $$mediaOvr
+                    //inits extraction which is dependant on precheck
+                    invokeExtract()
+                      objTransExtractor($indvStateTrans, $transOpts, {autoGen: true})
+                    //Precheck for options in state that would invalidate global
+                    $indvState = $stateTransObj[$indvObj]
+                    $indvTransObj = findTransObj($indvStateTrans)
+                    $stateOpts = $indvState['option']
+                    if $stateOpts
+                      if $stateOpts['root'] //if state has root
+                        invokeExtract()
+                      else if !$stateOpts['applyTo']
+                        invokeExtract()
+                    else
+                      invokeExtract()
+              //No trans obj in state
+              else
+                //autoGen override for global
+                $$autoGenOvr = (findOpt($stateObj['option'], 'autoGen', false) != false)
+                //media str, if media is a string we do not want to gen a global cus
+                //a string says, hey only apply this within said media. But...
+                //if it is being applied to root we need to autoGen since its well
+                //applied to the root which should not be in a mediaQ
+                $$mediaOvr = findOpt($stateObj['option'], 'root')
+                if !$$mediaOvr
+                  $$mediaOvr = !isString(findOpt($stateObj['option'], 'media'))
+                if $$autoGenOvr && $$mediaOvr
+                  //inits extraction which is dependant on precheck
+                  invokeExtract()
+                    //formate for objTransExtractor
+                    objTransExtractor($stateObj, $transOpts, {autoGen: true})
+                  //Precheck for options in state that would invalidate global
+                  //check formate
+                  if isObj($stateTransObj)
+                    //reassing stateObj to trans obj
+                    $stateObj = $stateTransObj;
+                  //check options
+                  $stateOpts = $stateObj['option']
+                  if $stateOpts// if state has options
+                    if $stateOpts['root'] //if state has root
+                      invokeExtract()
+                    else if !$stateOpts['applyTo']
+                      invokeExtract()
+                  else
+                    invokeExtract()
+      // Desc--> 
+      //   Configs obj to see what we are working with and if it needs to be
+      //   extracted
+      // Params-->
+      //   @ {obj - trans} - the obj which will be proccesed - dataObj or sub-child obj
+      //   @ {obj - globalOpts} - the global options for said scope 
+      // Return-->
+      //   @ Nothing
+      //     -> It will either invoke definedTrans or populate $props
+      configDefinedTrans($trans, $globalOpts = {})
+        //If States
+        //set prep vars
+        _state = $Option['state']
+        _options = {state: _state}
+        $$extract = false
+        $transDataObj = findTransObj($trans)
+        //Precheck to extract
+        if _state == 'link' || _state == 'visited' || $Option['customState']
+          //extract if it has trans or if it is within a trans obj via csTransObj
+          //which is determined in the Extract. Although user can override via
+          //seting transition to false if in a trans obj
+          if $transDataObj || ($Option['csTransObj'] && $transDataObj != false)
+            $$extract = true;
+          else
+            //we still need to extract the props due to the way the controll
+            //flow is set up in processState
+            $props = merge($props, getAttributes($trans))
+        else
+          if $transDataObj != false
+            $$extract = true;
+          else
+            $props = merge($props, getAttributes($trans))
+        //If extract config first
+        if $$extract
+          //populate props becuase it is in transition obj and getAttributes
+          //will not extract the attributes
+          _options = merge(_options, {populateProps: true})
+          if $transDataObj
+            if isObj($transDataObj)
+              $trans = $transDataObj
+          //init extraction
+          definedTrans($trans, merge(getTransProps(_state), $globalOpts), _options) 
+      // Desc--> 
+      //   Alright this puppy is a bit of a mind melt becuase of silly stylus. But
+      //   what we are doing here is deconstructing the input objs to configure
+      //   and then compose to be returned. I would love to refrack this whole
+      //   damn thing to handle this a bit cleaner but we are way to deep. If your crazy
+      //   enough to dig your teeth in this one there is a main object and then three
+      //   sub-objs, root, applyTo, and media and depending on the weather they will
+      //   share values. Yeah I know, that such insight. But I did this off the dome
+      //   and two days latter here I am just as confused as you.
+      // Params-->
+      //   @ {obj} - desc
+      //   @ {obj} - desc 
+      // Return-->
+      //   @ Nothing
+      //     Assings new vals to objs
+      composeRtn($auxProps, $auxTrans)
+        $globalMerged = {}
+        // Desc--> 
+        //   Fucking shit, where to being with this one. Bascially, if there is an
+        //   applyTo or media of the same key and one has a root and the other
+        //   does not we have to join to props together for the global trans
+        // Params-->
+        //   @ {obj - objA}
+        //   @ {obj - objA}
+        //   @ {str - key} - The key is the selector ex. span
+        // Return-->
+        //   @ {obj} - merged 
+        gMerger($objA, $objB, _key)
+          $gMerge = !$globalMerged[_key] ? {} : $globalMerged[_key];
+          //Stylus, makes you question your life
+          //just merging without nulls but we must assign the first
+          //value as null and otherwise we cant push the rest of the valid vals
+          cycleObj($obj, $$nullPush)
+            for i in $cleanTransTemplate
+              for j in $obj[i]
+                if !$$nullPush
+                  $gMerge[i] = null
+                  push($gMerge[i], j)
+                else
+                  if j != null
+                    push($gMerge[i], j)
+          cycleObj($objA, false)
+          cycleObj($objB, true)
+          return $gMerge;
+        // Desc--> 
+        //   Assigns the formated and composed values to the defined funk
+        //   input object which then will
+        // Params-->
+        //   @ {str - key} - either 'rootObj' or the selector key
+        //   @ {obj - auxTarget} - Global or target obj to ref
+        //   @ {obj - auxRef} - Gloabl ref
+        //   @ {str - rootKey} - The root selctor key for subobj
+        // Return-->
+        //   @ Nothing
+        //     Assings new vals to input objects 
+        composeAux(_key, $auxTarget, $auxRef = {}, _rootKey = null)
+          $auxPropsRef = $auxProps[_key] 
+          $auxKey = $auxTarget[_key]
+          if _rootKey
+            $auxPropsRef = $auxPropsRef[_rootKey]
+            //if global merged use that ref so that
+            //the transtion is applied properly in the gloabl sense 
+            //Although, honeslty I'm no css wizard 
+            //so with that take a leap of faith with me
+            //cus this shit is getting crazy, stylus crazy
+            $auxKey = $globalMerged[_rootKey] ? $globalMerged[_rootKey] : $auxRef[_rootKey]; 
+          //complie and formate
+          $transRes = assignTrans(formateTransObj($auxKey, $Data))
+          $target = $Option['type'] == 'global' ? null : merge($auxPropsRef, $transRes);
+          $global = {}
+          //check for autogen override, and a
+          if $transRes['autoGen'] != false
+            if $globalMerged[_key]
+              $transRes = assignTrans(formateTransObj($globalMerged[_key], $Data))
+              $global = $transRes
+            else
+              $global =  $Option['type'] == 'global' ? merge($auxPropsRef, $transRes) : $transRes;
+          if _rootKey
+            //check if a global merger was made if so just
+            //apply the target since the global will be taken
+            //care of by the non-root
+            if $globalMerged[_rootKey]
+              $auxTrans[_key] = createObj(_rootKey, {target: $target})
+            else
+              $auxTrans[_key] = createObj(_rootKey, {target: $target, global: $global})
+          else
+            $auxTrans[_key] = {target: $target, global: $global}
+
+        //First check for root overlap
+        if $auxTrans['rootObj']
+          $root = $auxTrans['rootObj']
+          //clycle to check
+          for r in $root
+            if $auxTrans[r]
+              $globalMerged[r] = gMerger($auxTrans[r], $root[r], r)
+        //Cycle through and call to compose
+        for a in $auxTrans
+          if a == 'rootObj'
+            $subRoot = $auxProps[a]
+            for s in $subRoot
+              composeAux(a, $subRoot, $auxTrans[a], s)
+          else
+            composeAux(a, $auxTrans)
+
+
+      //--------------------------//
+      //If controller for func
+      //-------------------------//
+      //autoGen or not, autoGen = state == null
+      if $Option['state'] == null
+        $trans = findTransObj($Data)
+        //init extraction
+        if $trans
+          definedTrans($trans, getTransProps())
+        //AutoGen
+        autoGenTrans($trans, $Data)
+      else
+        //call to be config
+        //find out if in trans obj present if so reassign and check for sub children
+        _transKey = hasTrans($Data);
+        $$hasSubChildren = false
+        if _transKey
+          //check for sub children objs
+          $tempData = $Data[_transKey]
+          if isAllObjs($tempData)
+            $$hasSubChildren = true
+            $Data = $tempData
+        //in trans obj and has sub children
+        if isAllObjs($Data) && $$hasSubChildren
+          //check for global options
+          $globalOpts = $Data['globalOption'] ? $Data['globalOption'] : {};
+          for i in $Data
+            $trans = $Data[i]
+            //single
+            if !isAllObjs($trans)
+              configDefinedTrans($trans, $globalOpts)
+            else
+              //multiple
+              for j in $trans
+                configDefinedTrans($trans[j], $globalOpts)
+        else
+          //defualt
+          configDefinedTrans($Data, $Option['globalOpts'])
+      //--------------------------//
+      //Config and Populate Return
+      //-------------------------//
+      $returnObj = {}
+      //global or target
+      _type = $Option['type']
+      //Main Prop
+      //If nothing is changed in transRtn then no need to assign/formate
+      if $TransRtn != $cleanTransTemplate
+        $returnObj[_type] = merge($props, assignTrans(formateTransObj($TransRtn, $Data)))
+      else
+        $returnObj[_type] = $props
+      //Main Root Prop
+      if length($rootTrans)
+        //This just used to create an obj to be used in the
+        //composeRtn funk
+        createRoot($main, $mRoot)
+          return {
+            _MAIN: $main
+            rootObj: {_MAIN: $mRoot}
+          }
+        $toBeReturned = composeRtn(createRoot($props, $rootProps), createRoot($TransRtn, $rootTrans))
+        $returnObj['rootObj'] = {}
+        $rootObj = $returnObj['rootObj']
+        $toBeReturned = $toBeReturned['_MAIN']
+        $rootObj[_type] = $toBeReturned[_type]
+
+      //ApplyTO
+      if length($applyToTrans)
+        composeRtn($applyToProps, $applyToTrans)
+        $returnObj['applyTo'] = $applyToTrans
+
+      //Media
+      if length($mediaTrans)
+        composeRtn($mediaProps, $mediaTrans)
+        $returnObj['media'] = $mediaTrans
+      //Media Obj
+      if length($mediaObj)
+        $returnObj['mediaObj'] = $mediaObj
+        
+      
+      //Trans Return
+      return $returnObj;
+    ////////////////////////////////////////////////////////////////////////////
+    //---> End of Trans transition
+    ////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+    ////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////
+    //Apply Effects
+    ////////////////////////////////////////////////////////////////////////////
+    applyEffect($dataObj, $selector, $state, $props, $option = {})
+      // str($option)
+      // p(arguments)
+      $applied = false;
+      //Global transtion for states
+      if $option['globalTrans']
+        $applied = true;
+        //don't want to apply the dataObj since props already applied
+        createStyle($dataObj, $selector, $state, $props, $option)
+      
+      //default
+      if !$applied
+        if $option['element']
+          if $option['pseudo']
+            //apply pseudo elm to state
+            $state = $state + ":" + $option['element']
+            createStyle($dataObj, $selector, $state, $props, $option)
+          else
+            //apply elm to state
+            $state = $option['element'] + ":" + $state
+            createStyle($dataObj, $selector, $state, $props, $option)
+        else if $option['isRoot'] == true //Root
+          if $inheritSelector
+            //Modify selector to be reflect root
+            _selector = length($selector) ? $selector : '';
+            _selector = $state + _selector;
+            //check for applyTo
+            if $option['applyTo']
+              //global
+              $option['rootState'] = false
+              createStyle(null, $selector, null, $props, $option)
+              $option['rootState'] = true
+              //target
+              _applyTarget = {global: $props['target']}
+              createStyle(null, _selector, null, _applyTarget, $option)
+            else
+              // str($option)
+              //TODO?????????????????????????????? Do I need
+              //point props to global
+              $option['rootState'] = true
+              createStyle(null, _selector, null, {global: $props['target']}, $option)
+              $option['rootState'] = false
+              createStyle(null, _selector, null, {target: $props['target']}, $option)
+          else
+            //Modify selector to be reflect root
+            _rootState = $id + ":" + $state;
+            _selector = replace($id, _rootState, $selector);
+            if $option['applyTo']
+              //global ??????????????? $$ ???????????
+              createStyle(null, $selector, null, $props, $option)
+              //target
+              _applyTarget = {global: $props['target']}
+              createStyle(null, _selector, null, _applyTarget, $option)
+            else
+              //point props to global
+              $props['global'] = $props['target']
+              createStyle(null, _selector, null, $props, $option)
+        else
+          // str('cunnnnnnnnnnnnnnnnnt')
+          // // str($props)
+          // p($option)
+          createStyle($dataObj, $selector, $state, $props, $option)
+        
+        
+    ////////////////////////////////////////////////////////////////////////////
+    //---> End Of Apply Effects
+    ////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////
+
+
+
+    ////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////
+    //Process State
+    ////////////////////////////////////////////////////////////////////////////
+    processState($dataObj, _Selector, $state = null, $option = {})
+      $default = {state: $state, type: 'target'}
+      $option = merge($default, $option) 
+      if !isObj($dataObj)
+        warn('You have specified a ' + $state + ' state, but there is no '+$state+ ' object! ' + 'Its a ' + typeof($dataObj)+"!")
+      else if length($dataObj) == 0
+        warn('You have specified a ' + $state + ' state, but your '+$state+ ' object is empty!')
+      
+
+      //By default we extract the transition properties regadless
+      $transObj = transExtractor(clone($dataObj), _Selector, $option)
+      $animObj = animExtractor(clone($dataObj), $option)
+
+      //if anim init timeline creation
+      if $animObj
+        initAnim($animObj)
+
+      $props = propMerger($transObj, $animObj['props'])
+      $rootProps = clone($props['rootObj'])
+      // $props['rootObj'] = {}
+      // p('---------------->OUTPUT')
+      // str($props)
+      // str($props)      
+
+      if length($props)
+        applyEffect(null, _Selector, $state, $props, $option)
+      if length($rootProps)
+        $option['isRoot'] = true
+        applyEffect(null, _Selector, $state, $rootProps, $option)
+
+
+      // Desc--> 
+      //   Configures the options, it should be noted that I do not remove any
+      //   extra data in this option object such as props to be applied and or
+      //   transition prop data becuase there is no need for the extra work.
+      //   it then proceed so send data off to be confied by applyEffect
+      // Params-->
+      //   @ {obj - aux} - data obj along with options
+      //   @ {obj - target} - only used with applyTo as key 
+      //   @ {bolean - isRoot} - if root or not 
+      // Return-->
+      //   @ {obj} - that is merged with other global opts and such 
+      auxOpt($aux, $target, $$isRoot)
+        // p('---------------------------------------')
+        // str($aux)
+        $target['isRoot'] = $$isRoot
+        if $aux['media']
+          return merge(merge($option, $target), $aux)
+        else
+          return merge($option, $target);
+      auxConfig($aux, $target = {}, $$isRoot = false)
+        if $aux['global']
+          $targetOpt = auxOpt($aux['global'], $target, $$isRoot) 
+          applyEffect(null, _Selector, $state, {global: $aux['global']}, $targetOpt)
+        if $aux['target']
+          $targetOpt = auxOpt($aux['target'], $target, $$isRoot) 
+          applyEffect(null, _Selector, $state, {target: $aux['target']}, $targetOpt)
+
+
+      //Apply To
+      if $props['applyTo']
+        $applyToProps = $props['applyTo']
+        //clycle through apply keys
+        for a in $applyToProps
+          if a == 'rootObj'
+            $rootProps = $applyToProps[a]
+            for r in $rootProps
+              auxConfig($rootProps[r], createObj('applyTo', r), true)
+          else
+            auxConfig($applyToProps[a], createObj('applyTo', a))
+
+
+      //Media
+      if $props['media']
+        $mediaProps = $props['media']
+        // p($mediaProps)
+        for i in $mediaProps
+          if i == 'rootObj'
+            $rootProps = $mediaProps[i]
+            for r in $rootProps
+              auxConfig($rootProps[r], {}, true)
+          else
+            auxConfig($mediaProps[i])
+
+      //Media Obj
+      if $props['mediaObj']
+        $mediaObj = $props['mediaObj']
+        // str($mediaObj)
+        for i in $mediaObj
+          if match('^obj', i)
+            //copsed up of all objs
+            composeMedia($mediaObj[i], _Selector, $option, false, false)
+          else
+            composeMedia($mediaObj[i], _Selector, $option, false, true)
+
+
+
+    ////////////////////////////////////////////////////////////////////////////
+    //----End Of Process State
+    ////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////
+
+    ////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////
+    //Process Element
+    ////////////////////////////////////////////////////////////////////////////
+    processElement($dataObj, $selector, $element = null, $option = {})
+      $default = {
+        pseudo: false, 
+        element: $element,
+        globalEffect: false
+      }
+      $option = merge($default, $option)
+      //check for pseudo elem
+      if $element == 'after' || $element == 'before'
+        $option['pseudo'] = true
+      //check if pseudo of non pseudo
+      if $dataObj['pseudo'] != null
+        $option['pseudo'] = $dataObj['pseudo']
+
+      //generate target trans and anim 
+      $transObj = transExtractor(clone($dataObj), $selector, {type: 'target'})
+      $animObj = animExtractor(clone($dataObj), {type: 'target'})
+      //if animation apply
+      if $animObj
+        initAnim($animObj)
+      //Pass dataObj attributes so they will be applied first
+      //if there is any anim or trans for better readablity
+      $props = propMerger({target: getAttributes($dataObj)}, $transObj, $animObj['props'])
+
+      //Create style
+      createStyle(null, $selector, $element, $props, $option) 
+      
+      //Extract
+      extract($dataObj, $selector, $option)
+
+    ////////////////////////////////////////////////////////////////////////////
+    //----End Of Process State
+    ////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////
+
+
+    ////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////
+    //Process component
+    ////////////////////////////////////////////////////////////////////////////
+    processComponent($compObj, $compKey, $selector, $option)
+      //Do I need?????
+      $option = setD($option, {
+        globalEffect: false
+      })
+
+      //Config element key
+      if $compObj['element']
+        $compElement = $compObj['element'];
+      else
+        //If none specified, defualt to key
+        $compElement = $compKey;
+
+      //Config selector
+      $selector = $selector == {} ? '' : $selector;
+      //config selector 
+      if $compObj['selector'] || $compObj['pseudo']
+        $compSelector = $compObj['selector'] != null ? $compObj['selector'] : " > ";
+        $selectorSpace = " " 
+        //check pseudo option
+        if $compObj['pseudo']
+          $selectorSpace = "" 
+          $option['pseudo'] = true
+        //compose
+        if isString($compSelector)
+          $compSelector = s($compSelector)
+        $compSelector = $selectorSpace + $compSelector + $selectorSpace
+      else
+        $compSelector = " > "
+      
+      //selector
+      $selector = $selector + $compSelector + $compElement;
+
+      //Check applyTo
+      if $compObj['applyTo']
+        $option['applyTo'] = $compObj['applyTo'];
+      
+      //generate target trans and anim 
+      $transObj = transExtractor(clone($compObj), $selector, {type: 'global'})
+      $animObj = animExtractor(clone($compObj), {type: 'global'})
+      //if animation apply
+      if $animObj
+        initAnim($animObj)
+      //Pass compObj attributes so they will be applied first
+      //if there is any anim or trans for better readablity
+      $props = propMerger({global: getAttributes($compObj)}, $transObj, $animObj['props'])
+      
+      //Create style
+      createStyle(null, $selector, null, $props, $option) 
+      //applyTO
+      if length($props['applyTo'])
+        _applyTo = $props['applyTo']
+        _option = clone($option)
+        for $a in _applyTo
+          _globalOpt = merge(_option, {applyTo: $a})
+          createStyle(null, $selector, null, _applyTo[$a], _globalOpt)
+      
+      //Extract
+      extract($compObj, $selector, $option)
+    ////////////////////////////////////////////////////////////////////////////
+    //----End Of Process component
+    ////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////
+
+
+
+    ////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////
+    //Extract Content
+    ////////////////////////////////////////////////////////////////////////////
+    extract($dataObj, _Selector, $option = {})
+      _default = {
+        // pseudo: false, 
+        // pseudoElm: null,
+        // elementSelector: false, 
+        // component: false, 
+        // compElement: null,
+        // globalEffect: true
+      }
+      // $option = merge(_default, $option)
+      //error helper
+      throwErr(_msg, _type)
+        error({
+          scope: _Selector,
+          type: "extract --> " + _type,
+          msg: _msg
+        })
+      //Checks for $$ and assigns
+      //??????????????????? DO I NEED THIS
+      if isObj($$)
+        for $val in $dataObj
+          _val = $dataObj[$val]
+          if isString(_val)
+            if match('\${2,}', _val)
+              _val = replace('\$\$\[', '', _val)
+              _val = replace('\]', '', _val)
+              $dataObj[$val] = $$[_val]
+
+
+      //--------------------------//
+      //components
+      //-------------------------//
+      //need 
+      components(_selector)
+        $opt = length($opt) ? merge(clone($option), $opt) : $option; 
+        for $i in $dataObj
+          if match('component', $i)
+            $compObj = $dataObj[$i]
+            for $comp in $compObj
+              if isObj($compObj[$comp])
+                processComponent($compObj[$comp], $comp, _selector, $option)
+              else
+                if $compObj[$comp] != null
+                  _err = "The component object can only contain objects and it",
+                           "appears that: " + $comp + " is not a object.";
+                  throwErr(_err, "Components")
+
+
+      //--------------------------//
+      //Check for Effects
+      //-------------------------//
+      effects(_selector)
+        //--------------------------//
+        //Global Effects
+        if $option['globalEffect'] != false
+          //Check for both gloabl anim and trnas
+          $globalAnim = animExtractor(clone($dataObj), {type: 'global'})
+          $globalTrans = transExtractor(clone($dataObj), _selector, {type: 'global'})
+          //Merge the results
+          $globalProps = propMerger($globalTrans, $globalAnim['props'])
+          //Both trans and anim
+          $globalTransOpt = merge(clone($option), {globalTrans: true})
+          if $globalTrans && $globalAnim
+            //create timelines
+            initAnim($globalAnim)
+            applyEffect(null, _selector, null, $globalProps, $globalTransOpt)
+          //Trans Only
+          else if $globalTrans
+            //Create global trans styles
+            applyEffect(null, _selector, null, $globalProps, $globalTransOpt)
+          //Anim Only
+          else if $globalAnim
+            initAnim($globalAnim)
+            applyEffect(null, _selector, null, $globalProps, $globalTransOpt)
+          
+          //applyTo for both anim and trans based on globalProps
+          if length($globalProps['applyTo'])
+            _applyTo = $globalProps['applyTo']
+            _option = clone($option)
+            for $a in _applyTo
+              _globalOpt = merge(_option, {applyTo: $a})
+              applyEffect(null, _selector, null, _applyTo[$a], _globalOpt)
+        
+
+        //State Cycle
+        //Cycle Through States to be applied
+        for $i in $dataObj
+          //Hover
+          if $i == 'hover'
+            processState($dataObj['hover'], _selector, 'hover', $option)
+          //Active
+          if $i == 'active'
+            processState($dataObj['active'], _selector, 'active', $option)
+          //Focus
+          if $i == 'focus'
+            processState($dataObj['focus'], _selector, 'focus', $option)
+          //link
+          if $i == 'link'
+            processState($dataObj['link'], _selector, 'link', $option)
+          //link
+          if $i == 'visited'
+            processState($dataObj['visited'], _selector, 'visited', $option)
+          //Custom State
+          if match('customState', $i)
+            //error helper
+            csError()
+              _err = "You need to define a Custom State. To fix this",
+                          "add a state key-pair (state: <custom-state>) property",
+                          "within your customState."
+              throwErr(_err, "Custom State")
+            // Desc--> 
+            //   Helper to find custom states name aka. state
+            // Params-->
+            //   @ {obj - csObj}
+            // Return-->
+            //   @ {str || boolen}
+            findState($csObj)
+              if $csObj['state']
+                return $csObj['state']
+              else if $csObj['option']
+                //check options
+                $csObjOpt = $csObj['option']
+                if $csObjOpt['state']
+                  return $csObjOpt['state']
+                else
+                  return false
+              else
+                return false
+            //custom state obj
+            $customState = $dataObj[$i];
+            $option['customState'] = true;
+            
+            // Desc--> 
+            //   Configures custome states who are made up of objects
+            // Params-->
+            //   @ {obj - csObj} - the obj to be sent to processState
+            //   @ {str - key} - objecy key if one 
+            // Return-->
+            //   @ Nothing
+            //     Sends things off to processState 
+            configCs($csObj, _key = null, $$cycled = false)
+              //if funk gets called again for multi state list
+              $$repeat = false
+              // Desc--> 
+              //  cycle back into exctactor to process other
+              //  things like components
+              // Params-->
+              //   @ {obj - comp} - the object that is going to be processed
+              //   @ {str - _csState} - the selector string to be passed 
+              // Return-->
+              //   @ Nothing
+              //      Is thrown back into extract
+              cycleCheck($comp, _csState)
+                if !$$cycled
+                  //remove trans and anim so they are not reproccesed
+                  cleanComp(_cKey)
+                    if $comp[_cKey]
+                      $comp[_cKey] = null 
+                  cleanComp('trans')
+                  cleanComp('transition')
+                  cleanComp('anim')
+                  cleanComp('animation')
+                  //for some reson we need this root var
+                  //otherwise stylus has a fit
+                  $$isRoot = _selector == {}
+                  _compSelector = $$isRoot ? '' : clone(_selector);
+                  $opt = $$isRoot ? {rootState: true} : {};
+                  //composes
+                  _csState = $$isRoot ? _csState : _compSelector + ":" + _csState;
+                  extract($comp, _csState, $opt)
+                
+              //default global state but can be obj key
+              _globalState = findState($csObj)
+              _globalState = _globalState ? _globalState : _key;
+              //check if there is an anim obj
+              $hasAnim = hasAnim(clone($csObj), true)
+              if $hasAnim
+                if !_globalState
+                  csError()
+              //This is a bit tricky cus we have to factor in anim and trans objs
+              //which are handled a bit diffrently depending on those factors 
+              $hasTrans = hasTrans(clone($csObj), true)
+              if isAllObjs($hasTrans)
+                //take care of animation first send seperatly
+                if $hasAnim && _globalState
+                  processState({animation: $hasAnim}, _selector, _globalState, $option)
+                //set options
+                $option['csTransObj'] = true;
+                $option['globalOpts'] = $hasTrans['globalOption'] ? $hasTrans['globalOption'] : {};
+                //cycle thorough sub trans objs
+                for t in $hasTrans
+                  //use specified > global > key obj
+                  _csState = findState($hasTrans[t])
+                  _csState = _csState ? _csState : _globalState;
+                  _csState = _csState ? _csState : t;
+                  cycleCheck(clone($hasTrans[t]), _csState)
+                  //multiple state
+                  for csI in _csState
+                    processState($hasTrans[t], _selector, csI, $option)
+              else
+                _csState = null
+                // p($csObj)
+                if !_key
+                  //defualt globalState but fall back trans if one
+                  _csState = _globalState ? _globalState : findState($hasTrans);
+                else
+                  //means this funk was called again so we pick up specified key
+                  _csState = _key
+                //no trans object - defualt
+                if _csState
+                  if length(_csState) > 1
+                    $$repeat = true
+                  cycleCheck(clone($csObj), _csState)
+                  processState($csObj, _selector, _csState[0], $option)
+                  if $$repeate
+                    //Cus stylus is silly and if we shift off it will
+                    //throw that garbage into your css so we have to
+                    //do this walkaround here to shift off the val
+                    _csState[0] = null
+                    cleanCs(_csList)
+                      _cleanList = null
+                      for i in _csList
+                        if i != null
+                          push(_cleanList, i)
+                      shift(_cleanList)
+                      return _cleanList;
+                    //clean
+                    _csState = cleanCs(_csState)
+                    if length(_csState)
+                      configCs($csObj, _csState)
+                else
+                  csError()
+              
+            //If controller for funk
+            //made up of sub-objs
+            if isAllObjs($customState, 'trans', 'transition', 'anim', 'animation')
+              for c in $customState
+                _key = findState($customState[c])
+                _key = _key ? _key : c;
+                configCs($customState[c], _key)
+            else if isAllObjs($customState, 'state', 'anim', 'animation')
+              //for trans sub-objs
+              configCs($customState)
+            else
+              //defualt
+              configCs($customState)
+                
+
+
+
+
+      //--------------------------//
+      //Elements
+      //-------------------------//    
+      elements(_selector)
+        for $i in $dataObj
+          //Child or element
+          if match('-child|-type|customEl', $i)
+            //Get selector
+            $childElm = clone($dataObj[$i]);
+            $childSelector = null;
+            //defined element within obj
+            if $childElm['element']
+              $childSelector = $childElm['element'];
+              if typeof($childSelector) == 'call'
+                warn('Sorry you need to formate your '+$childSelector+' element as a string.')
+              else if $childSelector == null 
+                warn('You need to specify a element that you wish to target')
+              else
+                //Clone for cycle
+                _customElms = clone($childElm['element'])
+                //Remove elm component  
+                $childElm['element'] = null;
+                for $e in 0..length(_customElms) - 1
+                  processElement($childElm, _selector, _customElms[$e], $option)
+            else
+              //selector will be key in none specified
+              $childSelector = $i;
+              processElement($childElm, _selector, $childSelector, $option)
+          //Before
+          if $i == 'before'
+            processElement($dataObj['before'], _selector, 'before', $option)
+          //After
+          if $i == 'after'
+            processElement($dataObj['after'], _selector, 'after', $option)
+
+
+                  
+
+      //Add Classes
+      classes(_selector)
+        for $i in $dataObj
+          if match('addClass', $i)
+            $classObj = $dataObj[$i];
+            $classElement = $classObj['element']
+            if !$classElement
+              //Check for multiple class objs
+              _onlyObjs = true
+              for $elm in $classObj
+                //Cycle through and check for all objs
+                if !isObj($classObj[$elm])
+                  _onlyObjs = false
+              //only objs in addClass assums multiple classes
+              if _onlyObjs
+                for $elm in $classObj
+                  _classObj = $classObj[$elm]
+                  //check for specified element otherwise defualt as key
+                  if _classObj['element']
+                    _className = _classObj['element']
+                  else
+                    _className = $elm
+                  //Create
+                  addClass(_className, _classObj, _selector, $option)
+              else
+                _err = "You specified a addClass object but Knob does not",
+                          "know what you want to do with it. There is no",
+                          "element specified to target or its not comprised",
+                          "completly of class Objects.";
+                throwErr(_err, 'Classes')
+            else
+              addClass($classElement, $classObj, _selector, $option)
+              // for $className in $dataObj['addClass']
+              // $classObj = $dataObj.addClass[$className]
+        
+
+      media(_selector)
+        for i in $dataObj
+          if match('media', i)
+            $media = $dataObj[i]
+            composeMedia($media, _selector, $option)
+
+              
+      //CAller
+      effects(_Selector)
+      elements(_Selector)
+      components(_Selector)
+      media(_Selector)
+      // classes(selector)
+    ////////////////////////////////////////////////////////////////////////////
+    //---> End of Extract Content
+    ////////////////////////////////////////////////////////////////////////////
+
+
+    //Extract Main obj
+    extract($args, $Selector)
+
+  ////////////////////////////////////////////////////////////////////////////////
+  //Call 
+  ////////////////////////////////////////////////////////////////////////////////
+  //Due to how stylus handles the cache, if the user wished to use buttron
+  //in a imperative fashion in which buttron does not inherit a selector
+  //and it is given cache will not work. And I had to resort to solving that
+  //issue in this somewhat ugly fashion.
+  
+  //String helper
+  isString($val)
+    if $val is a 'string' or $val is a 'ident'
+      return true
+    else
+      return false;
+  isObj($val)
+    return typeof($val) == 'object'
+
+
+  //Assign main vars 
+  $selector = null;
+  $args = null;
+  $id = null;
+  if isString(arguments[0])
+    $selector = arguments[0];
+    $id = $selector
+    $args = arguments[1];
+  else
+    $args = arguments[0];
+    $selector = {};
+    $id = selector();
+  //Reassing Args if null
+  $args = $args != null ? $args : {};
+  
+  //Check for class, and create if so
+  if called-from
+    $class = called-from
+    _args = clone($args)
+    _class = clone(_Buttron.class[$class])
+    //Check $$ merge override
+    if _args['$$']
+      _$$ = _args['$$']
+      if _$$['merge'] == false
+        _$$ = _args['$$']
+        $$Overwrite = true
+    //Apply if class exists
+    $args = merge(_class, _args, true)
+    //Reassing if no merge desired
+    if $$Overwrite == true
+      $args['$$'] = _$$
+  
+
+  //stylus cache has hissy-fit if you pass the selector in as string
+  if selector() != '&'
+    $inheritSelector = true;
+    //Only cache on production or cache indicated
+    if _Buttron['production'] || _Buttron['cache'] || $args['cache']
+      +cache($args)
+        button($selector, $args)
+    else
+        button($selector, $args)
+  else
+    $inheritSelector = false;
+    button($selector, $args)
