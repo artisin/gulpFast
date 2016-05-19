@@ -18,23 +18,68 @@ ks-normalize()
 @import '_base/*'
 //Mixins
 @import '_base/mixins/*'
-//Generated Icons
-@import '_generated/*'
-
+@import '_base/buttron/buttron'
 //Defualt bg
 body
   background: $bg
-  transition: background 1s ease-in-out;
-  +below(700px)
-    transition: background 1s ease-in-out;
-    background: alpha(lighten($sc-spc[1], 70%), 0.75)
 
-//code styl
-code
-  padding: 0
-  padding-top: 0.2em
-  padding-bottom: 0.2em
-  margin: 0
-  font-size: 85%
-  background-color: rgba(0,0,0,0.04)
-  border-radius: 3px
+//#27AE60
+
+
+.title
+  height: 100vh !important
+  .click
+    // width: 100vw !important
+    align(bottom)
+    position: absolute
+    left: 0
+    right: 0%
+    bottom: 50%
+    top: 0
+  .move
+    align(top)
+    position: absolute
+    left: 0
+    right: 0
+    bottom: 0
+    top: 50%
+  h1
+    buttron({
+      font-size: 15em !important
+      color: alpha(#2980B9, 0.6) !important
+      text-shadow: 1px 1px 2px rgba(0,0,0, 0.25)
+      padding: 0
+      margin: 0
+      font-weight: bold
+      anim:{
+        name: 'color'
+        option:{
+          count: infinite
+          duration: 45s
+        }
+        timeline:{
+          "12.5":{
+            opacity: 0.9
+          }
+          "25":{
+            color: alpha(#27AE60, 0.6) !important
+            opacity: 1
+          },
+          "32.5":{
+            opacity: 0.9
+          }
+          "50":{
+            color: alpha(#8E44AD, 0.6) !important          
+          }
+          "62.5":{
+            opacity: 0.9
+          }
+          "75":{
+            color: alpha(#C0392B, 0.6) !important
+          }
+          "82.5":{
+            opacity: 0.9
+          }
+        }
+      }
+    })

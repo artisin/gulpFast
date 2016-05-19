@@ -10,12 +10,10 @@ var gulp         = require('gulp'),
 gulp.task('build', function(cb) {
   process.env.NODE_ENV = 'production';
   gulpSequence(
-    'test',
     'clean', 
     ['fonts', 'images', 'iconFont', 'svg-sprite'], 
     ['post-css', 'webpack:production'],
     'jade', 
-    'rev', 
     'cleanTemp', 
     'complete', 
     cb);
